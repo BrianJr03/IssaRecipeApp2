@@ -20,10 +20,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import components.ShareDialog
+import constants.APP_NAME
+import constants.ASK
+import constants.FAVORITES
+import constants.GENERATE
+import constants.HomeConstants
+import constants.MENU
+import constants.SETTINGS
+import constants.SHARE
 import navigation.homeScreen.HomeScreenComponent
 import navigation.homeScreen.HomeScreenEvent
 
@@ -56,22 +62,27 @@ fun HomeScreen(component: HomeScreenComponent) {
 private fun HomeScreenComponent.HeaderRow() {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(10.dp)
+        modifier = Modifier.padding(
+            top = HomeConstants.HEADER_ROW_PADDING_TOP,
+            bottom = HomeConstants.HEADER_ROW_PADDING_BOTTOM,
+            start = HomeConstants.HOME_PADDING_START,
+            end = HomeConstants.HOME_PADDING_END
+        )
     ) {
         Icon(
             imageVector = Icons.Rounded.Menu,
-            contentDescription = "Menu",
+            contentDescription = MENU,
         )
 
         Spacer(Modifier.weight(1f))
 
-        Text("Issa Recipe App 2")
+        Text(APP_NAME)
 
         Spacer(Modifier.weight(1f))
 
         Icon(
             imageVector = Icons.Rounded.Share,
-            contentDescription = "Share",
+            contentDescription = SHARE,
             modifier = Modifier.clickable {
                 onEvent(
                     HomeScreenEvent.OnShareClick
@@ -86,7 +97,7 @@ private fun HomeScreenComponent.OptionCardRow() {
     LazyRow {
         item {
             OptionCard(
-                text = "Ask",
+                text = ASK,
                 onClick = {
                     onEvent(
                         HomeScreenEvent.OnAskClick
@@ -94,7 +105,7 @@ private fun HomeScreenComponent.OptionCardRow() {
                 }
             )
             OptionCard(
-                text = "Generate",
+                text = GENERATE,
                 onClick = {
                     onEvent(
                         HomeScreenEvent.OnGenerateClick
@@ -102,7 +113,7 @@ private fun HomeScreenComponent.OptionCardRow() {
                 }
             )
             OptionCard(
-                text = "Favorites",
+                text = FAVORITES,
                 onClick = {
                     onEvent(
                         HomeScreenEvent.OnFavoritesClick
@@ -110,7 +121,7 @@ private fun HomeScreenComponent.OptionCardRow() {
                 }
             )
             OptionCard(
-                text = "Settings",
+                text = SETTINGS,
                 onClick = {
                     onEvent(
                         HomeScreenEvent.OnSettingsClick
@@ -128,10 +139,13 @@ private fun OptionCard(
 ) {
     Card(
         modifier = Modifier
-            .height(60.dp)
-            .padding(10.dp)
+            .height(HomeConstants.OPTION_CARD_HEIGHT)
+            .padding(
+                start = HomeConstants.HOME_PADDING_START,
+                end = HomeConstants.OPTION_CARD_PADDING_END
+            )
             .clickable { onClick() },
-        elevation = 10.dp
+        elevation = HomeConstants.OPTION_CARD_ELEVATION
     ) {
         Box(
             modifier = Modifier,
@@ -142,9 +156,12 @@ private fun OptionCard(
             ) {
                 Text(
                     text = text,
-                    style = TextStyle(fontSize = 18.sp),
+                    style = TextStyle(fontSize = HomeConstants.OPTION_CARD_TEXT_FONT_SIZE),
                     color = Color.Black,
-                    modifier = Modifier.padding(start = 15.dp, end = 15.dp)
+                    modifier = Modifier.padding(
+                        start = HomeConstants.OPTION_CARD_TEXT_PADDING_START,
+                        end = HomeConstants.OPTION_CARD_TEXT_PADDING_END
+                    )
                 )
             }
         }
