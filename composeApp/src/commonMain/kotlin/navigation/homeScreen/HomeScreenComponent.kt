@@ -6,7 +6,9 @@ import com.arkivanov.decompose.value.Value
 
 class HomeScreenComponent(
     componentContext: ComponentContext,
-    private val onNavToScreenB: (String) -> Unit
+    private val onNavToAsk: () -> Unit,
+    private val onNavToGenerate: () -> Unit,
+    private val onNavToSettings: () -> Unit
 ) : ComponentContext by componentContext {
 
     private var _text = MutableValue("")
@@ -14,9 +16,16 @@ class HomeScreenComponent(
 
     fun onEvent(event: HomeScreenEvent) {
         when (event) {
-            is HomeScreenEvent.ClickButtonHome -> onNavToScreenB(_text.value)
-            is HomeScreenEvent.UpdateText -> {
-                _text.value = event.text
+            is HomeScreenEvent.OnAskClick -> {
+                onNavToAsk()
+            }
+
+            is HomeScreenEvent.OnGenerateClick -> {
+                onNavToGenerate()
+            }
+
+            is HomeScreenEvent.OnSettingsClick -> {
+                onNavToSettings()
             }
         }
     }

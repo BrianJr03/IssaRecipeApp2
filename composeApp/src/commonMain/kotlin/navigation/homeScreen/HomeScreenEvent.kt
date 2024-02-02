@@ -1,6 +1,7 @@
 package navigation.homeScreen
 
 sealed interface HomeScreenEvent {
-    data object ClickButtonHome: HomeScreenEvent
-    data class UpdateText(val text: String): HomeScreenEvent
+    data object OnAskClick: HomeScreenEvent
+    data object OnGenerateClick: HomeScreenEvent
+    data object OnSettingsClick: HomeScreenEvent
 }

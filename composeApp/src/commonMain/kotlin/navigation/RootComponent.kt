@@ -7,8 +7,10 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
 import kotlinx.serialization.Serializable
+import navigation.askScreen.AskScreenComponent
+import navigation.askScreen.GenerateScreenComponent
+import navigation.settingsScreen.SettingsScreenComponent
 import navigation.homeScreen.HomeScreenComponent
-import navigation.screenB.ScreenBComponent
 
 class RootComponent(
     componentContext: ComponentContext
@@ -18,7 +20,7 @@ class RootComponent(
     val childStack = childStack(
         source = navigation,
         serializer = Config.serializer(),
-        initialConfiguration = Config.ScreenA,
+        initialConfiguration = Config.HomeScreen,
         handleBackButton = true,
         childFactory = ::createChild
     )
@@ -29,38 +31,65 @@ class RootComponent(
         context: ComponentContext
     ): Child {
         return when (config) {
-            is Config.ScreenA -> Child.ScreenA(
-                HomeScreenComponent(
-                    componentContext = context,
-                    onNavToScreenB = {
-                        navigation.pushNew(Config.ScreenB(it))
-                    }
+            is Config.HomeScreen -> {
+                Child.HomeScreen(
+                    HomeScreenComponent(
+                        componentContext = context,
+                        onNavToAsk = {
+                            navigation.pushNew(Config.AskScreen)
+                        },
+                        onNavToGenerate = {
+                            navigation.pushNew(Config.GenerateScreen)
+                        },
+                        onNavToSettings = {
+                            navigation.pushNew(Config.Settings)
+                        }
+                    )
                 )
-            )
+            }
 
-            is Config.ScreenB -> Child.ScreenB(
-                ScreenBComponent(
-                    text = config.text,
-                    componentContext = context,
-                    onNavBack = {
-                        navigation.pop()
-                    }
+            is Config.AskScreen -> {
+                Child.AskScreen(
+                    AskScreenComponent(
+                        componentContext = context,
+                        onNavBack = { navigation.pop() }
+                    )
                 )
-            )
+            }
+
+            is Config.GenerateScreen -> {
+                Child.GenerateScreen(
+                    GenerateScreenComponent(
+                        componentContext = context,
+                        onNavBack = { navigation.pop() }
+                    )
+                )
+            }
+
+            is Config.Settings -> {
+                Child.SettingsScreen(
+                    SettingsScreenComponent(
+                        componentContext = context,
+                        onNavBack = { navigation.pop() }
+                    )
+                )
+            }
         }
     }
 
     sealed class Child {
-        data class ScreenA(val component: HomeScreenComponent) : Child()
-        data class ScreenB(val component: ScreenBComponent) : Child()
+        data class HomeScreen(val component: HomeScreenComponent) : Child()
+        data class AskScreen(val component: AskScreenComponent) : Child()
+        data class GenerateScreen(val component: GenerateScreenComponent) : Child()
+        data class SettingsScreen(val component: SettingsScreenComponent) : Child()
     }
 
     @Serializable
     sealed class Config {
         @Serializable
-        data object ScreenA : Config()
-
-        @Serializable
-        data class ScreenB(val text: String) : Config()
+        data object HomeScreen : Config()
+        data object AskScreen : Config()
+        data object GenerateScreen : Config()
+        data object Settings : Config()
     }
 }

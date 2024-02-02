@@ -8,24 +8,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import navigation.screenB.ScreenBComponent
+import navigation.settingsScreen.SettingsScreenComponent
+import navigation.settingsScreen.SettingsScreenEvent
 
 @Composable
-fun ScreenB(
-    text: String,
-    component: ScreenBComponent
-) {
+fun SettingsScreen(component: SettingsScreenComponent) {
     Column(
-        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize()
     ) {
-        Text("B: $text")
-
         Button(onClick = {
-            component.goBack()
+            component.onEvent(SettingsScreenEvent.OnNavBack)
         }) {
-            Text("Nav to Home")
+            Text("Back - Settings")
         }
     }
 }

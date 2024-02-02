@@ -1,47 +1,115 @@
 package screens
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedTextField
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
+import androidx.compose.ui.unit.sp
 import navigation.homeScreen.HomeScreenComponent
 import navigation.homeScreen.HomeScreenEvent
 
 @Composable
 fun HomeScreen(component: HomeScreenComponent) {
-    val text by component.text.subscribeAsState()
-
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
-        Text("Home")
-        OutlinedTextField(
-            value = text,
-            onValueChange = {
-                component.onEvent(
-                    HomeScreenEvent.UpdateText(it)
+        LazyRow {
+            item {
+                OptionCard(
+                    text = "Ask",
+                    icon = Icons.Rounded.Add,
+                    onClick = {
+                        component.onEvent(
+                            HomeScreenEvent.OnAskClick
+                        )
+                    }
                 )
+                OptionCard(
+                    text = "Generate",
+                    icon = Icons.Rounded.Add,
+                    onClick = {
+                        component.onEvent(
+                            HomeScreenEvent.OnGenerateClick
+                        )
+                    }
+                )
+                OptionCard(
+                    text = "Settings",
+                    icon = Icons.Rounded.Add,
+                    onClick = {
+                        component.onEvent(
+                            HomeScreenEvent.OnSettingsClick
+                        )
+                    }
+                )
+            }
+        }
+
+//        OutlinedTextField(
+//            value = text, onValueChange = {
+//                component.onEvent(
+//                    HomeScreenEvent.UpdateText(it)
+//                )
+//            }, modifier = Modifier.fillMaxWidth().padding(16.dp)
+//        )
+    }
+}
+
+@Composable
+fun OptionCard(
+    text: String,
+    icon: ImageVector,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .height(60.dp)
+            .padding(10.dp)
+            .clickable {
+                onClick()
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        )
-        Button(onClick = {
-            component.onEvent(HomeScreenEvent.ClickButtonHome)
-        }) {
-            Text("Nav to B")
+        elevation = 8.dp
+    ) {
+        Box(
+            modifier = Modifier,
+            contentAlignment = Alignment.Center
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    icon,
+                    contentDescription = "",
+                    modifier = Modifier.padding(start = 15.dp)
+                )
+                Spacer(Modifier.width(5.dp))
+                Text(
+                    text = text,
+                    style = TextStyle(fontSize = 18.sp),
+                    color = Color.Black,
+
+                    modifier = Modifier.padding(end = 15.dp)
+                )
+            }
         }
     }
 }
