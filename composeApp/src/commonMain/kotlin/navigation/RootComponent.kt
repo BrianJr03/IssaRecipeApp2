@@ -8,6 +8,7 @@ import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
 import kotlinx.serialization.Serializable
 import navigation.askScreen.AskScreenComponent
+import navigation.favoritesScreen.FavsScreenComponent
 import navigation.askScreen.GenerateScreenComponent
 import navigation.settingsScreen.SettingsScreenComponent
 import navigation.homeScreen.HomeScreenComponent
@@ -41,6 +42,9 @@ class RootComponent(
                         onNavToGenerate = {
                             navigation.pushNew(Config.GenerateScreen)
                         },
+                        onNavToFavorites = {
+                            navigation.pushNew(Config.FavoritesScreen)
+                        },
                         onNavToSettings = {
                             navigation.pushNew(Config.Settings)
                         }
@@ -51,6 +55,15 @@ class RootComponent(
             is Config.AskScreen -> {
                 Child.AskScreen(
                     AskScreenComponent(
+                        componentContext = context,
+                        onNavBack = { navigation.pop() }
+                    )
+                )
+            }
+
+            is Config.FavoritesScreen -> {
+                Child.FavoritesScreen(
+                    FavsScreenComponent(
                         componentContext = context,
                         onNavBack = { navigation.pop() }
                     )
@@ -81,6 +94,7 @@ class RootComponent(
         data class HomeScreen(val component: HomeScreenComponent) : Child()
         data class AskScreen(val component: AskScreenComponent) : Child()
         data class GenerateScreen(val component: GenerateScreenComponent) : Child()
+        data class FavoritesScreen(val component: FavsScreenComponent) : Child()
         data class SettingsScreen(val component: SettingsScreenComponent) : Child()
     }
 
@@ -90,6 +104,7 @@ class RootComponent(
         data object HomeScreen : Config()
         data object AskScreen : Config()
         data object GenerateScreen : Config()
+        data object FavoritesScreen : Config()
         data object Settings : Config()
     }
 }

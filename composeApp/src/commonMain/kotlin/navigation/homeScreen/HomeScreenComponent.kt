@@ -8,6 +8,7 @@ class HomeScreenComponent(
     componentContext: ComponentContext,
     private val onNavToAsk: () -> Unit,
     private val onNavToGenerate: () -> Unit,
+    private val onNavToFavorites: () -> Unit,
     private val onNavToSettings: () -> Unit
 ) : ComponentContext by componentContext {
 
@@ -16,17 +17,10 @@ class HomeScreenComponent(
 
     fun onEvent(event: HomeScreenEvent) {
         when (event) {
-            is HomeScreenEvent.OnAskClick -> {
-                onNavToAsk()
-            }
-
-            is HomeScreenEvent.OnGenerateClick -> {
-                onNavToGenerate()
-            }
-
-            is HomeScreenEvent.OnSettingsClick -> {
-                onNavToSettings()
-            }
+            is HomeScreenEvent.OnAskClick -> onNavToAsk()
+            is HomeScreenEvent.OnGenerateClick -> onNavToGenerate()
+            is HomeScreenEvent.OnFavoritesClick -> onNavToFavorites()
+            is HomeScreenEvent.OnSettingsClick -> onNavToSettings()
         }
     }
 }
