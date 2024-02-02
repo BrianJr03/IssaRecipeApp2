@@ -12,14 +12,14 @@ import navigation.askScreen.GenerateScreenComponent
 import navigation.generateScreen.GenerateScreenEvent
 
 @Composable
-fun GenerateScreen(component: GenerateScreenComponent) {
+fun GenerateScreenComponent.GenerateScreen() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
         Button(onClick = {
-            component.onEvent(GenerateScreenEvent.OnNavBack)
+            onEvent(GenerateScreenEvent.OnNavBack)
         }) {
             Text("Back - Generate")
         }

@@ -34,27 +34,25 @@ import navigation.homeScreen.HomeScreenComponent
 import navigation.homeScreen.HomeScreenEvent
 
 @Composable
-fun HomeScreen(component: HomeScreenComponent) {
+fun HomeScreenComponent.HomeScreen() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        with(component) {
-            val isShareShowing = isShareDialogShowing.subscribeAsState()
+        val isShareShowing = isShareDialogShowing.subscribeAsState()
 
-            ShareDialog(
-                isShowing = isShareShowing.value,
-                onConfirmClick = {
-                    hideShareDialog()
-                },
-                onDismissRequest = {
-                    hideShareDialog()
-                }
-            )
+        ShareDialog(
+            isShowing = isShareShowing.value,
+            onConfirmClick = {
+                hideShareDialog()
+            },
+            onDismissRequest = {
+                hideShareDialog()
+            }
+        )
 
-            HeaderRow()
-            OptionCardRow()
-        }
+        HeaderRow()
+        OptionCardRow()
     }
 }
 

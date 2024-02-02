@@ -12,14 +12,14 @@ import navigation.favoritesScreen.FavsScreenComponent
 import navigation.favoritesScreen.FavsScreenEvent
 
 @Composable
-fun FavoritesScreen(component: FavsScreenComponent) {
+fun FavsScreenComponent.FavoritesScreen() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
         Button(onClick = {
-            component.onEvent(FavsScreenEvent.OnNavBack)
+            onEvent(FavsScreenEvent.OnNavBack)
         }) {
             Text("Back - Favorites")
         }

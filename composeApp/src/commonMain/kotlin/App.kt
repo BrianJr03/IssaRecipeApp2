@@ -17,11 +17,11 @@ fun App(root: RootComponent) {
             animation = stackAnimation(slide())
         ) { child ->
             when (val instance = child.instance) {
-                is RootComponent.Child.HomeScreen -> HomeScreen(instance.component)
-                is RootComponent.Child.AskScreen -> AskScreen(instance.component)
-                is RootComponent.Child.GenerateScreen -> GenerateScreen(instance.component)
-                is RootComponent.Child.FavoritesScreen -> FavoritesScreen(instance.component)
-                is RootComponent.Child.SettingsScreen -> SettingsScreen(instance.component)
+                is RootComponent.Child.HomeScreen -> instance.component.HomeScreen()
+                is RootComponent.Child.AskScreen -> instance.component.AskScreen()
+                is RootComponent.Child.GenerateScreen -> instance.component.GenerateScreen()
+                is RootComponent.Child.FavoritesScreen -> instance.component.FavoritesScreen()
+                is RootComponent.Child.SettingsScreen -> instance.component.SettingsScreen()
             }
         }
     }

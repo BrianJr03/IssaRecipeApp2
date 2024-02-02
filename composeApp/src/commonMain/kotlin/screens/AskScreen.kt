@@ -12,14 +12,14 @@ import navigation.askScreen.AskScreenComponent
 import navigation.askScreen.AskScreenEvent
 
 @Composable
-fun AskScreen(component: AskScreenComponent) {
+fun AskScreenComponent.AskScreen() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
         Button(onClick = {
-            component.onEvent(AskScreenEvent.OnNavBack)
+            onEvent(AskScreenEvent.OnNavBack)
         }) {
             Text("Back - Ask")
         }

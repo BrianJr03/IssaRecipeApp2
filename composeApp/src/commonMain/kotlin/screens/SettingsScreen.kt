@@ -12,14 +12,14 @@ import navigation.settingsScreen.SettingsScreenComponent
 import navigation.settingsScreen.SettingsScreenEvent
 
 @Composable
-fun SettingsScreen(component: SettingsScreenComponent) {
+fun SettingsScreenComponent.SettingsScreen() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
         Button(onClick = {
-            component.onEvent(SettingsScreenEvent.OnNavBack)
+            onEvent(SettingsScreenEvent.OnNavBack)
         }) {
             Text("Back - Settings")
         }
