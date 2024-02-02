@@ -11,9 +11,16 @@ class HomeScreenComponent(
     private val onNavToFavorites: () -> Unit,
     private val onNavToSettings: () -> Unit
 ) : ComponentContext by componentContext {
+    private var _isShareDialogShowing = MutableValue(false)
+    val isShareDialogShowing: Value<Boolean> = _isShareDialogShowing
 
-    private var _text = MutableValue("")
-    val text: Value<String> = _text
+    private fun showShareDialog() {
+        _isShareDialogShowing.value = true
+    }
+
+    fun hideShareDialog() {
+        _isShareDialogShowing.value = false
+    }
 
     fun onEvent(event: HomeScreenEvent) {
         when (event) {
@@ -21,6 +28,7 @@ class HomeScreenComponent(
             is HomeScreenEvent.OnGenerateClick -> onNavToGenerate()
             is HomeScreenEvent.OnFavoritesClick -> onNavToFavorites()
             is HomeScreenEvent.OnSettingsClick -> onNavToSettings()
+            is HomeScreenEvent.OnShareClick -> showShareDialog()
         }
     }
 }
