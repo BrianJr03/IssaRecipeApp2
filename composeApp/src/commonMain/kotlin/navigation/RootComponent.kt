@@ -7,11 +7,13 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
 import kotlinx.serialization.Serializable
+import model.local.RecentRecipe
 import navigation.askScreen.AskScreenComponent
 import navigation.favoritesScreen.FavsScreenComponent
 import navigation.askScreen.GenerateScreenComponent
 import navigation.settingsScreen.SettingsScreenComponent
 import navigation.homeScreen.HomeScreenComponent
+import navigation.recipeScreen.RecipeScreenComponent
 
 class RootComponent(
     componentContext: ComponentContext
@@ -47,6 +49,10 @@ class RootComponent(
                         },
                         onNavToSettings = {
                             navigation.pushNew(Config.Settings)
+                        },
+                        onNavToRecipePage = {
+                            navigation.pushNew(Config.RecipeScreen(it))
+                            // TODO - FIND WAY TO SHOW RECENT RECIPE IN SCREEN
                         }
                     )
                 )
@@ -79,6 +85,16 @@ class RootComponent(
                 )
             }
 
+            is Config.RecipeScreen -> {
+                Child.RecipeScreen(
+                    RecipeScreenComponent(
+                        componentContext = context,
+                        recipe = config.recentRecipe,
+                        onNavBack = { navigation.pop() }
+                    )
+                )
+            }
+
             is Config.Settings -> {
                 Child.SettingsScreen(
                     SettingsScreenComponent(
@@ -93,6 +109,7 @@ class RootComponent(
     sealed class Child {
         data class HomeScreen(val component: HomeScreenComponent) : Child()
         data class AskScreen(val component: AskScreenComponent) : Child()
+        data class RecipeScreen(val component: RecipeScreenComponent) : Child()
         data class GenerateScreen(val component: GenerateScreenComponent) : Child()
         data class FavoritesScreen(val component: FavsScreenComponent) : Child()
         data class SettingsScreen(val component: SettingsScreenComponent) : Child()
@@ -102,9 +119,15 @@ class RootComponent(
     sealed class Config {
         @Serializable
         data object HomeScreen : Config()
+        @Serializable
         data object AskScreen : Config()
+        @Serializable
+        data class RecipeScreen(val recentRecipe: RecentRecipe): Config()
+        @Serializable
         data object GenerateScreen : Config()
+        @Serializable
         data object FavoritesScreen : Config()
+        @Serializable
         data object Settings : Config()
     }
 }

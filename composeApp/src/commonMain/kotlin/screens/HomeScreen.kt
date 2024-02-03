@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import components.ShareDialog
 import constants.APP_NAME
@@ -28,8 +30,10 @@ import constants.FAVORITES
 import constants.GENERATE
 import constants.HomeConstants
 import constants.MENU
+import constants.RECENT_RECIPES
 import constants.SETTINGS
 import constants.SHARE
+import model.local.TEST_RECENT_RECIPES
 import navigation.homeScreen.HomeScreenComponent
 import navigation.homeScreen.HomeScreenEvent
 
@@ -53,6 +57,7 @@ fun HomeScreenComponent.HomeScreen() {
 
         HeaderRow()
         OptionCardRow()
+        RecentRecipesRow()
     }
 }
 
@@ -143,7 +148,7 @@ private fun OptionCard(
                 end = HomeConstants.OPTION_CARD_PADDING_END
             )
             .clickable { onClick() },
-        elevation = HomeConstants.OPTION_CARD_ELEVATION
+        elevation = HomeConstants.CARD_ELEVATION
     ) {
         Box(
             modifier = Modifier,
@@ -159,6 +164,66 @@ private fun OptionCard(
                     modifier = Modifier.padding(
                         start = HomeConstants.OPTION_CARD_TEXT_PADDING_START,
                         end = HomeConstants.OPTION_CARD_TEXT_PADDING_END
+                    )
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun HomeScreenComponent.RecentRecipesRow() {
+    Column {
+        Text(
+            RECENT_RECIPES,
+            modifier = Modifier.padding(
+                start = HomeConstants.HOME_PADDING_START,
+                top = HomeConstants.ROW_LABEL_PADDING_TOP,
+                bottom = HomeConstants.ROW_LABEL_PADDING_BOTTOM
+            )
+        )
+        Spacer(Modifier.height(5.dp))
+        LazyRow {
+            items(TEST_RECENT_RECIPES.size) { index ->
+                RecentRecipeCard {
+                    onEvent(
+                        HomeScreenEvent.OnRecentRecipeClick(TEST_RECENT_RECIPES[index])
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RecentRecipeCard(
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .height(HomeConstants.RECIPE_CARD_HEIGHT)
+            .width(HomeConstants.RECIPE_CARD_WIDTH)
+            .padding(
+                start = HomeConstants.HOME_PADDING_START,
+                end = HomeConstants.RECIPE_CARD_PADDING_END
+            )
+            .clickable { onClick() },
+        elevation = HomeConstants.CARD_ELEVATION
+    ) {
+        Box(
+            modifier = Modifier,
+            contentAlignment = Alignment.Center
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "text",
+                    style = TextStyle(fontSize = HomeConstants.RECIPE_CARD_TEXT_FONT_SIZE),
+                    color = Color.Black,
+                    modifier = Modifier.padding(
+                        start = HomeConstants.RECIPE_CARD_TEXT_PADDING_START,
+                        end = HomeConstants.RECIPE_CARD_TEXT_PADDING_END
                     )
                 )
             }

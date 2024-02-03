@@ -21,6 +21,9 @@ fun App(root: RootComponent) {
                 is RootComponent.Child.AskScreen -> instance.component.AskScreen()
                 is RootComponent.Child.GenerateScreen -> instance.component.GenerateScreen()
                 is RootComponent.Child.FavoritesScreen -> instance.component.FavoritesScreen()
+                is RootComponent.Child.RecipeScreen -> {
+                    instance.component.RecipeScreen(instance.component.recipe)
+                }
                 is RootComponent.Child.SettingsScreen -> instance.component.SettingsScreen()
             }
         }

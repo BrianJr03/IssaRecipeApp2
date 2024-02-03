@@ -9,3 +9,5 @@ const val SETTINGS = "Settings"
 
 const val MENU = "Menu"
 const val SHARE = "Share"
+
+const val RECENT_RECIPES = "Recent Recipes"
