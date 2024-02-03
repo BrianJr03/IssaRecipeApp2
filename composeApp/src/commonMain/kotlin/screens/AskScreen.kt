@@ -8,8 +8,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import navigation.askScreen.AskScreenComponent
-import navigation.askScreen.AskScreenEvent
+import blocs.askScreen.AskScreenComponent
+import blocs.askScreen.AskScreenEvent
 
 @Composable
 fun AskScreenComponent.AskScreen() {
