@@ -11,9 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import model.local.RecentRecipe
-import navigation.recipeScreen.RecipeScreenComponent
-import navigation.recipeScreen.RecipeScreenEvent
+import models.local.RecentRecipe
+import blocs.recipeScreen.RecipeScreenComponent
+import blocs.recipeScreen.RecipeScreenEvent
 
 @Composable
 fun RecipeScreenComponent.RecipeScreen(recentRecipe: RecentRecipe) {

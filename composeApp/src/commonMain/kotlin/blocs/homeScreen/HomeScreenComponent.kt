@@ -1,9 +1,9 @@
-package navigation.homeScreen
+package blocs.homeScreen
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import model.local.RecentRecipe
+import models.local.RecentRecipe
 
 class HomeScreenComponent(
     componentContext: ComponentContext,

@@ -1,6 +1,6 @@
-package navigation.homeScreen
+package blocs.homeScreen
 
-import model.local.RecentRecipe
+import models.local.RecentRecipe
 
 sealed interface HomeScreenEvent {
     data class OnRecentRecipeClick(

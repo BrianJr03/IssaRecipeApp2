@@ -1,4 +1,4 @@
-package navigation.recipeScreen
+package blocs.recipeScreen
 
 sealed interface RecipeScreenEvent {
     data object OnNavBack: RecipeScreenEvent

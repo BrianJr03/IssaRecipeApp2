@@ -1,11 +1,10 @@
-package navigation.askScreen
+package blocs.favoritesScreen
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import navigation.generateScreen.GenerateScreenEvent
 
-class GenerateScreenComponent(
+class FavsScreenComponent(
     componentContext: ComponentContext,
     private val onNavBack: () -> Unit
 ) : ComponentContext by componentContext {
@@ -13,11 +12,9 @@ class GenerateScreenComponent(
     private var _text = MutableValue("")
     val text: Value<String> = _text
 
-    fun onEvent(event: GenerateScreenEvent) {
+    fun onEvent(event: FavsScreenEvent) {
         when (event) {
-            GenerateScreenEvent.OnGenerateRecipe -> TODO()
-            GenerateScreenEvent.OnRandomizeRecipe -> TODO()
-            GenerateScreenEvent.OnNavBack -> {
+            FavsScreenEvent.OnNavBack -> {
                 onNavBack()
             }
         }

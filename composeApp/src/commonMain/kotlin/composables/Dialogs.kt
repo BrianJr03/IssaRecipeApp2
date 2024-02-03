@@ -1,4 +1,4 @@
-package components
+package composables
 
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button

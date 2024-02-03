@@ -1,10 +1,10 @@
-package navigation.favoritesScreen
+package blocs.askScreen
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 
-class FavsScreenComponent(
+class AskScreenComponent(
     componentContext: ComponentContext,
     private val onNavBack: () -> Unit
 ) : ComponentContext by componentContext {
@@ -12,11 +12,12 @@ class FavsScreenComponent(
     private var _text = MutableValue("")
     val text: Value<String> = _text
 
-    fun onEvent(event: FavsScreenEvent) {
+    fun onEvent(event: AskScreenEvent) {
         when (event) {
-            FavsScreenEvent.OnNavBack -> {
+            AskScreenEvent.OnNavBack -> {
                 onNavBack()
             }
+            AskScreenEvent.OnSendClick -> TODO()
         }
     }
 }

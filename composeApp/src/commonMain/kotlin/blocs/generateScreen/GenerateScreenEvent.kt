@@ -1,4 +1,4 @@
-package navigation.generateScreen
+package blocs.generateScreen
 
 sealed interface GenerateScreenEvent {
     data object OnNavBack: GenerateScreenEvent

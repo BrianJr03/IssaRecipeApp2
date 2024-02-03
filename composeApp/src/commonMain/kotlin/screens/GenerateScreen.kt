@@ -8,8 +8,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import navigation.askScreen.GenerateScreenComponent
-import navigation.generateScreen.GenerateScreenEvent
+import blocs.askScreen.GenerateScreenComponent
+import blocs.generateScreen.GenerateScreenEvent
 
 @Composable
 fun GenerateScreenComponent.GenerateScreen() {

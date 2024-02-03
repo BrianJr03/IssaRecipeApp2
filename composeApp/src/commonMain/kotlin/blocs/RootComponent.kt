@@ -1,4 +1,4 @@
-package navigation
+package blocs
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.ExperimentalDecomposeApi
@@ -7,13 +7,13 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
 import kotlinx.serialization.Serializable
-import model.local.RecentRecipe
-import navigation.askScreen.AskScreenComponent
-import navigation.favoritesScreen.FavsScreenComponent
-import navigation.askScreen.GenerateScreenComponent
-import navigation.settingsScreen.SettingsScreenComponent
-import navigation.homeScreen.HomeScreenComponent
-import navigation.recipeScreen.RecipeScreenComponent
+import models.local.RecentRecipe
+import blocs.askScreen.AskScreenComponent
+import blocs.favoritesScreen.FavsScreenComponent
+import blocs.askScreen.GenerateScreenComponent
+import blocs.settingsScreen.SettingsScreenComponent
+import blocs.homeScreen.HomeScreenComponent
+import blocs.recipeScreen.RecipeScreenComponent
 
 class RootComponent(
     componentContext: ComponentContext
@@ -52,7 +52,6 @@ class RootComponent(
                         },
                         onNavToRecipePage = {
                             navigation.pushNew(Config.RecipeScreen(it))
-                            // TODO - FIND WAY TO SHOW RECENT RECIPE IN SCREEN
                         }
                     )
                 )

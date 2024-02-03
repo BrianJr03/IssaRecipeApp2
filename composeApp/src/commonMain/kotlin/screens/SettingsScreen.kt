@@ -8,8 +8,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import navigation.settingsScreen.SettingsScreenComponent
-import navigation.settingsScreen.SettingsScreenEvent
+import blocs.settingsScreen.SettingsScreenComponent
+import blocs.settingsScreen.SettingsScreenEvent
 
 @Composable
 fun SettingsScreenComponent.SettingsScreen() {

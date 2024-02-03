@@ -1,10 +1,10 @@
-package navigation.askScreen
+package blocs.settingsScreen
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 
-class AskScreenComponent(
+class SettingsScreenComponent(
     componentContext: ComponentContext,
     private val onNavBack: () -> Unit
 ) : ComponentContext by componentContext {
@@ -12,12 +12,12 @@ class AskScreenComponent(
     private var _text = MutableValue("")
     val text: Value<String> = _text
 
-    fun onEvent(event: AskScreenEvent) {
+    fun onEvent(event: SettingsScreenEvent) {
         when (event) {
-            AskScreenEvent.OnNavBack -> {
+            SettingsScreenEvent.OnNavBack -> {
                 onNavBack()
             }
-            AskScreenEvent.OnSendClick -> TODO()
+            SettingsScreenEvent.OnSaveApiKey -> TODO()
         }
     }
 }

@@ -1,7 +1,7 @@
-package navigation.recipeScreen
+package blocs.recipeScreen
 
 import com.arkivanov.decompose.ComponentContext
-import model.local.RecentRecipe
+import models.local.RecentRecipe
 
 class RecipeScreenComponent(
     componentContext: ComponentContext,

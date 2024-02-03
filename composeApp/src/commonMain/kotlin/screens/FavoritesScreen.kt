@@ -8,8 +8,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import navigation.favoritesScreen.FavsScreenComponent
-import navigation.favoritesScreen.FavsScreenEvent
+import blocs.favoritesScreen.FavsScreenComponent
+import blocs.favoritesScreen.FavsScreenEvent
 
 @Composable
 fun FavsScreenComponent.FavoritesScreen() {

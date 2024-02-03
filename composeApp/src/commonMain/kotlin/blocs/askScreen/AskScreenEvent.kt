@@ -1,4 +1,4 @@
-package navigation.askScreen
+package blocs.askScreen
 
 sealed interface AskScreenEvent {
     data object OnNavBack: AskScreenEvent

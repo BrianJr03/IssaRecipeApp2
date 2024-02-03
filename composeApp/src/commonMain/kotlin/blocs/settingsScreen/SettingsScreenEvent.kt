@@ -1,4 +1,4 @@
-package navigation.settingsScreen
+package blocs.settingsScreen
 
 sealed interface SettingsScreenEvent {
     data object OnNavBack: SettingsScreenEvent
