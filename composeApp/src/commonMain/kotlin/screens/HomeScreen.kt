@@ -80,7 +80,9 @@ fun HomeScreenComponent.HomeScreen() {
 
         item {
             SeeAllCard {
-
+                onEvent(
+                    HomeScreenEvent.OnSeeAllClick
+                )
             }
         }
     }

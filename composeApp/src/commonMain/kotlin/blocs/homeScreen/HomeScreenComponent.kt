@@ -11,7 +11,8 @@ class HomeScreenComponent(
     private val onNavToGenerate: () -> Unit,
     private val onNavToFavorites: () -> Unit,
     private val onNavToSettings: () -> Unit,
-    private val onNavToRecipePage: (Recipe) -> Unit
+    private val onNavToRecipePage: (Recipe) -> Unit,
+    private val onNavToSeeAll: () -> Unit,
 ) : ComponentContext by componentContext {
     private var _isShareDialogShowing = MutableValue(false)
     val isShareDialogShowing: Value<Boolean> = _isShareDialogShowing
@@ -32,6 +33,7 @@ class HomeScreenComponent(
             is HomeScreenEvent.OnSettingsClick -> onNavToSettings()
             is HomeScreenEvent.OnShareClick -> showShareDialog()
             is HomeScreenEvent.OnRecentRecipeClick -> onNavToRecipePage(event.recipe)
+            is HomeScreenEvent.OnSeeAllClick -> onNavToSeeAll()
         }
     }
 }

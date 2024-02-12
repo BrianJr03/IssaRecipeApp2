@@ -14,6 +14,7 @@ import blocs.askScreen.GenerateScreenComponent
 import blocs.settingsScreen.SettingsScreenComponent
 import blocs.homeScreen.HomeScreenComponent
 import blocs.recipeScreen.RecipeScreenComponent
+import blocs.seeAllScreen.SeeAllScreenComponent
 
 class RootComponent(
     componentContext: ComponentContext
@@ -52,6 +53,9 @@ class RootComponent(
                         },
                         onNavToRecipePage = {
                             navigation.pushNew(Config.RecipeScreen(it))
+                        },
+                        onNavToSeeAll = {
+                            navigation.pushNew(Config.SeeAllScreen)
                         }
                     )
                 )
@@ -102,6 +106,15 @@ class RootComponent(
                     )
                 )
             }
+
+            is Config.SeeAllScreen -> {
+                Child.SeeAllScreen(
+                    SeeAllScreenComponent(
+                        componentContext = context,
+                        onNavBack = { navigation.pop() }
+                    )
+                )
+            }
         }
     }
 
@@ -109,6 +122,7 @@ class RootComponent(
         data class HomeScreen(val component: HomeScreenComponent) : Child()
         data class AskScreen(val component: AskScreenComponent) : Child()
         data class RecipeScreen(val component: RecipeScreenComponent) : Child()
+        data class SeeAllScreen(val component: SeeAllScreenComponent) : Child()
         data class GenerateScreen(val component: GenerateScreenComponent) : Child()
         data class FavoritesScreen(val component: FavsScreenComponent) : Child()
         data class SettingsScreen(val component: SettingsScreenComponent) : Child()
@@ -122,6 +136,7 @@ class RootComponent(
         data object AskScreen : Config()
         @Serializable
         data class RecipeScreen(val recipe: Recipe): Config()
+        data object SeeAllScreen: Config()
         @Serializable
         data object GenerateScreen : Config()
         @Serializable
