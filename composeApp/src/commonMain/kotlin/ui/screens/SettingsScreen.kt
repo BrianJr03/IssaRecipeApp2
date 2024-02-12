@@ -1,4 +1,4 @@
-package screens
+package ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,20 +8,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import blocs.askScreen.GenerateScreenComponent
-import blocs.generateScreen.GenerateScreenEvent
+import blocs.settingsScreen.SettingsScreenComponent
+import blocs.settingsScreen.SettingsScreenEvent
 
 @Composable
-fun GenerateScreenComponent.GenerateScreen() {
+fun SettingsScreenComponent.SettingsScreen() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
         Button(onClick = {
-            onEvent(GenerateScreenEvent.OnNavBack)
+            onEvent(SettingsScreenEvent.OnNavBack)
         }) {
-            Text("Back - Generate")
+            Text("Back - Settings")
         }
     }
 }

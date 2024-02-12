@@ -6,7 +6,13 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slid
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import blocs.RootComponent
-import screens.*
+import ui.screens.AskScreen
+import ui.screens.FavoritesScreen
+import ui.screens.GenerateScreen
+import ui.screens.HomeScreen
+import ui.screens.RecipeScreen
+import ui.screens.SeeAllScreen
+import ui.screens.SettingsScreen
 
 @Composable
 fun App(root: RootComponent) {

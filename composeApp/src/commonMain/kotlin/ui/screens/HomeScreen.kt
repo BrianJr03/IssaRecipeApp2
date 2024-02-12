@@ -1,4 +1,4 @@
-package screens
+package ui.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import composables.ShareDialog
+import ui.composables.ShareDialog
 import constants.APP_NAME
 import constants.ASK
 import constants.FAVORITES
@@ -32,11 +32,11 @@ import constants.SHARE
 import models.local.TEST_RECENT_RECIPES
 import blocs.homeScreen.HomeScreenComponent
 import blocs.homeScreen.HomeScreenEvent
-import composables.ArrowIcon
-import composables.OptionCard
-import composables.VerticalRecipeCard
-import composables.HorizontalRecipeCard
-import composables.SeeAllCard
+import ui.composables.ArrowIcon
+import ui.composables.OptionCard
+import ui.composables.VerticalRecipeCard
+import ui.composables.HorizontalRecipeCard
+import ui.composables.SeeAllCard
 import constants.YOU_GOTTA_TRY_THIS
 
 @Composable

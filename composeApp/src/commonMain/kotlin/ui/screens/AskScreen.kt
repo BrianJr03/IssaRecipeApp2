@@ -1,4 +1,4 @@
-package screens
+package ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,20 +8,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import blocs.favoritesScreen.FavsScreenComponent
-import blocs.favoritesScreen.FavsScreenEvent
+import blocs.askScreen.AskScreenComponent
+import blocs.askScreen.AskScreenEvent
 
 @Composable
-fun FavsScreenComponent.FavoritesScreen() {
+fun AskScreenComponent.AskScreen() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
         Button(onClick = {
-            onEvent(FavsScreenEvent.OnNavBack)
+            onEvent(AskScreenEvent.OnNavBack)
         }) {
-            Text("Back - Favorites")
+            Text("Back - Ask")
         }
     }
 }

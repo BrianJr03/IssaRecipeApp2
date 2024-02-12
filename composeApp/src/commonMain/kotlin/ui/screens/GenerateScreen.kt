@@ -1,4 +1,4 @@
-package screens
+package ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,20 +8,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import blocs.seeAllScreen.SeeAllScreenComponent
-import blocs.seeAllScreen.SeeAllScreenEvent
+import blocs.askScreen.GenerateScreenComponent
+import blocs.generateScreen.GenerateScreenEvent
 
 @Composable
-fun SeeAllScreenComponent.SeeAllScreen() {
+fun GenerateScreenComponent.GenerateScreen() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
         Button(onClick = {
-            onEvent(SeeAllScreenEvent.OnNavBack)
+            onEvent(GenerateScreenEvent.OnNavBack)
         }) {
-            Text("Back - See All")
+            Text("Back - Generate")
         }
     }
 }

@@ -1,4 +1,4 @@
-package composables
+package ui.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,7 +35,8 @@ import util.getRatingBoxColor
 
 @Composable
 fun VerticalRecipeCard(
-    recipe: Recipe, onClick: () -> Unit
+    recipe: Recipe,
+    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier.height(RECIPE_CARD_HEIGHT).width(RECIPE_CARD_WIDTH).padding(
@@ -97,7 +98,8 @@ fun VerticalRecipeCard(
 
 @Composable
 fun OptionCard(
-    text: String, onClick: () -> Unit, trailingIcon: @Composable (() -> Unit)? = null
+    text: String, onClick: () -> Unit,
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier.height(OPTION_CARD_HEIGHT).padding(
@@ -126,7 +128,8 @@ fun OptionCard(
 
 @Composable
 fun HorizontalRecipeCard(
-    recipe: Recipe, onClick: () -> Unit
+    recipe: Recipe,
+    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier.height(100.dp).padding(
