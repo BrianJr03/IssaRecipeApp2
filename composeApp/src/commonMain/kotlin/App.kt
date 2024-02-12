@@ -5,8 +5,14 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import navigation.RootComponent
-import screens.*
+import blocs.RootComponent
+import ui.screens.AskScreen
+import ui.screens.FavoritesScreen
+import ui.screens.GenerateScreen
+import ui.screens.HomeScreen
+import ui.screens.RecipeScreen
+import ui.screens.SeeAllScreen
+import ui.screens.SettingsScreen
 
 @Composable
 fun App(root: RootComponent) {
@@ -17,11 +23,15 @@ fun App(root: RootComponent) {
             animation = stackAnimation(slide())
         ) { child ->
             when (val instance = child.instance) {
-                is RootComponent.Child.HomeScreen -> HomeScreen(instance.component)
-                is RootComponent.Child.AskScreen -> AskScreen(instance.component)
-                is RootComponent.Child.GenerateScreen -> GenerateScreen(instance.component)
-                is RootComponent.Child.FavoritesScreen -> FavoritesScreen(instance.component)
-                is RootComponent.Child.SettingsScreen -> SettingsScreen(instance.component)
+                is RootComponent.Child.HomeScreen -> instance.component.HomeScreen()
+                is RootComponent.Child.AskScreen -> instance.component.AskScreen()
+                is RootComponent.Child.GenerateScreen -> instance.component.GenerateScreen()
+                is RootComponent.Child.FavoritesScreen -> instance.component.FavoritesScreen()
+                is RootComponent.Child.SettingsScreen -> instance.component.SettingsScreen()
+                is RootComponent.Child.SeeAllScreen -> instance.component.SeeAllScreen()
+                is RootComponent.Child.RecipeScreen -> {
+                    instance.component.RecipeScreen(instance.component.recipe)
+                }
             }
         }
     }
