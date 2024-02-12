@@ -10,10 +10,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ArrowIcon() {
+fun ArrowIcon(
+    modifier: Modifier = Modifier
+) {
     Icon(
         imageVector = Icons.Rounded.ArrowForward,
         contentDescription = "",
-        modifier = Modifier.padding(end = 10.dp).size(20.dp)
+        modifier = modifier.padding(end = 10.dp).size(20.dp)
     )
 }

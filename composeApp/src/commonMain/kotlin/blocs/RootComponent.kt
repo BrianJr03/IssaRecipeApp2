@@ -65,7 +65,9 @@ class RootComponent(
                 Child.AskScreen(
                     AskScreenComponent(
                         componentContext = context,
-                        onNavBack = { navigation.pop() }
+                        onNavBack = { navigation.pop() },
+                        onNavToSettings = {},
+                        onNavToAskContext = {}
                     )
                 )
             }
