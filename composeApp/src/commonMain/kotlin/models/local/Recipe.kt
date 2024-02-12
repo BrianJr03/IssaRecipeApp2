@@ -31,7 +31,9 @@ data class Recipe(
     }
 }
 
-private const val BACON = "https://www.realsimple.com/thmb/uwmEcWtairipZTGavdWVbkV_dqw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/chocolatechip-cookies_300-d6a402fc30814fdf87af28be97b5fcdc.jpg"
+private const val COOKIE2 = "https://www.realsimple.com/thmb/uwmEcWtairipZTGavdWVbkV_dqw" +
+        "=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/chocolatechip" +
+        "-cookies_300-d6a402fc30814fdf87af28be97b5fcdc.jpg"
 
 private const val APPLE = "https://pbs.twimg.com/profile_images/17170136649544990" +
         "72/2dcJ0Unw_400x400.png"
@@ -41,15 +43,15 @@ private const val COOKIE = "https://upload.wikimedia.org/wikipedia/commons/thumb
 
 val TEST_RECENT_RECIPES = listOf( // TODO - Replace with actual data
     Recipe(
-        BACON,
-        "Bacon",
+        COOKIE2,
+        "COOKIE 2",
         "Lunch",
         "40 Min",
         "5.0"
     ),
     Recipe(
         COOKIE,
-        "Egg",
+        "Cookie",
         "Breakfast",
         "20 Min",
         "0.2"
@@ -63,7 +65,7 @@ val TEST_RECENT_RECIPES = listOf( // TODO - Replace with actual data
     ),
     Recipe(
         COOKIE,
-        "Egg",
+        "Cookie",
         "Breakfast",
         "20 Min",
         "0.2"
@@ -76,22 +78,22 @@ val TEST_RECENT_RECIPES = listOf( // TODO - Replace with actual data
         "3.0"
     ),
     Recipe(
-        BACON,
-        "Bacon",
+        COOKIE2,
+        "COOKIE 2",
         "Lunch",
         "40 Min",
         "5.0"
     ),
     Recipe(
         COOKIE,
-        "Egg",
+        "Cookie",
         "Breakfast",
         "20 Min",
         "0.2"
     ),
     Recipe(
-        BACON,
-        "Bacon",
+        COOKIE2,
+        "COOKIE 2",
         "Lunch",
         "40 Min",
         "5.0"
