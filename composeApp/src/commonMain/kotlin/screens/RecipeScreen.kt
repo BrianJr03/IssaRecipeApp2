@@ -11,18 +11,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import models.local.RecentRecipe
+import models.local.Recipe
 import blocs.recipeScreen.RecipeScreenComponent
 import blocs.recipeScreen.RecipeScreenEvent
 
 @Composable
-fun RecipeScreenComponent.RecipeScreen(recentRecipe: RecentRecipe) {
+fun RecipeScreenComponent.RecipeScreen(recipe: Recipe) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        Text(recentRecipe.toString())
+        Text(recipe.toString())
         Spacer(Modifier.height(10.dp))
         Button(onClick = {
             onEvent(RecipeScreenEvent.OnNavBack)

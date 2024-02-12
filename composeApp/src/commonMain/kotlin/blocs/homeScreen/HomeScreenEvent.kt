@@ -1,10 +1,10 @@
 package blocs.homeScreen
 
-import models.local.RecentRecipe
+import models.local.Recipe
 
 sealed interface HomeScreenEvent {
     data class OnRecentRecipeClick(
-        val recentRecipe: RecentRecipe
+        val recipe: Recipe
     ): HomeScreenEvent
 
     data object OnAskClick: HomeScreenEvent

@@ -3,7 +3,7 @@ package blocs.homeScreen
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import models.local.RecentRecipe
+import models.local.Recipe
 
 class HomeScreenComponent(
     componentContext: ComponentContext,
@@ -11,7 +11,7 @@ class HomeScreenComponent(
     private val onNavToGenerate: () -> Unit,
     private val onNavToFavorites: () -> Unit,
     private val onNavToSettings: () -> Unit,
-    private val onNavToRecipePage: (RecentRecipe) -> Unit
+    private val onNavToRecipePage: (Recipe) -> Unit
 ) : ComponentContext by componentContext {
     private var _isShareDialogShowing = MutableValue(false)
     val isShareDialogShowing: Value<Boolean> = _isShareDialogShowing
@@ -31,7 +31,7 @@ class HomeScreenComponent(
             is HomeScreenEvent.OnFavoritesClick -> onNavToFavorites()
             is HomeScreenEvent.OnSettingsClick -> onNavToSettings()
             is HomeScreenEvent.OnShareClick -> showShareDialog()
-            is HomeScreenEvent.OnRecentRecipeClick -> onNavToRecipePage(event.recentRecipe)
+            is HomeScreenEvent.OnRecentRecipeClick -> onNavToRecipePage(event.recipe)
         }
     }
 }

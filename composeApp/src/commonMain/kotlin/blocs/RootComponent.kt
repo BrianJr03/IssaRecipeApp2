@@ -7,7 +7,7 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
 import kotlinx.serialization.Serializable
-import models.local.RecentRecipe
+import models.local.Recipe
 import blocs.askScreen.AskScreenComponent
 import blocs.favoritesScreen.FavsScreenComponent
 import blocs.askScreen.GenerateScreenComponent
@@ -88,7 +88,7 @@ class RootComponent(
                 Child.RecipeScreen(
                     RecipeScreenComponent(
                         componentContext = context,
-                        recipe = config.recentRecipe,
+                        recipe = config.recipe,
                         onNavBack = { navigation.pop() }
                     )
                 )
@@ -121,7 +121,7 @@ class RootComponent(
         @Serializable
         data object AskScreen : Config()
         @Serializable
-        data class RecipeScreen(val recentRecipe: RecentRecipe): Config()
+        data class RecipeScreen(val recipe: Recipe): Config()
         @Serializable
         data object GenerateScreen : Config()
         @Serializable

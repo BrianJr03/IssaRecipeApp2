@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -31,30 +32,57 @@ import constants.SHARE
 import models.local.TEST_RECENT_RECIPES
 import blocs.homeScreen.HomeScreenComponent
 import blocs.homeScreen.HomeScreenEvent
+import composables.ArrowIcon
 import composables.OptionCard
-import composables.RecentRecipeCard
+import composables.VerticalRecipeCard
+import composables.HorizontalRecipeCard
+import composables.SeeAllCard
+import constants.YOU_GOTTA_TRY_THIS
 
 @Composable
 fun HomeScreenComponent.HomeScreen() {
-    Column(
+    LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val isShareShowing = isShareDialogShowing.subscribeAsState()
+        item {
+            val isShareShowing = isShareDialogShowing.subscribeAsState()
 
-        ShareDialog(
-            isShowing = isShareShowing.value,
-            onConfirmClick = {
-                hideShareDialog()
-            },
-            onDismissRequest = {
-                hideShareDialog()
+            ShareDialog(
+                isShowing = isShareShowing.value,
+                onConfirmClick = {
+                    hideShareDialog()
+                },
+                onDismissRequest = {
+                    hideShareDialog()
+                }
+            )
+
+            HeaderRow()
+            ScreenOptionCardRow()
+            RecipesRow(rowLabel = RECENT_RECIPES)
+        }
+
+        item {
+            Text(
+                YOU_GOTTA_TRY_THIS,
+                modifier = Modifier.padding(
+                    start = HOME_PADDING_START,
+                    bottom = ROW_LABEL_PADDING_BOTTOM
+                )
+            )
+        }
+
+        items(TEST_RECENT_RECIPES.take(5).size) {
+            HorizontalRecipeCard(TEST_RECENT_RECIPES[it]) {
+
             }
-        )
+        }
 
-        HeaderRow()
-        OptionCardRow()
-        RecentRecipesRow()
+        item {
+            SeeAllCard {
+
+            }
+        }
     }
 }
 
@@ -93,7 +121,7 @@ private fun HomeScreenComponent.HeaderRow() {
 }
 
 @Composable
-private fun HomeScreenComponent.OptionCardRow() {
+private fun HomeScreenComponent.ScreenOptionCardRow() {
     LazyRow {
         item {
             OptionCard(
@@ -102,6 +130,9 @@ private fun HomeScreenComponent.OptionCardRow() {
                     onEvent(
                         HomeScreenEvent.OnAskClick
                     )
+                },
+                trailingIcon = {
+                    ArrowIcon()
                 }
             )
             OptionCard(
@@ -110,6 +141,9 @@ private fun HomeScreenComponent.OptionCardRow() {
                     onEvent(
                         HomeScreenEvent.OnGenerateClick
                     )
+                },
+                trailingIcon = {
+                    ArrowIcon()
                 }
             )
             OptionCard(
@@ -118,6 +152,9 @@ private fun HomeScreenComponent.OptionCardRow() {
                     onEvent(
                         HomeScreenEvent.OnFavoritesClick
                     )
+                },
+                trailingIcon = {
+                    ArrowIcon()
                 }
             )
             OptionCard(
@@ -126,6 +163,9 @@ private fun HomeScreenComponent.OptionCardRow() {
                     onEvent(
                         HomeScreenEvent.OnSettingsClick
                     )
+                },
+                trailingIcon = {
+                    ArrowIcon()
                 }
             )
         }
@@ -133,10 +173,12 @@ private fun HomeScreenComponent.OptionCardRow() {
 }
 
 @Composable
-private fun HomeScreenComponent.RecentRecipesRow() {
-    Column {
+private fun HomeScreenComponent.RecipesRow(
+    rowLabel: String
+) {
+    Column(modifier = Modifier.padding(bottom = SECTION_PADDING_BOTTOM)) {
         Text(
-            RECENT_RECIPES,
+            rowLabel,
             modifier = Modifier.padding(
                 start = HOME_PADDING_START,
                 top = ROW_LABEL_PADDING_TOP,
@@ -145,8 +187,8 @@ private fun HomeScreenComponent.RecentRecipesRow() {
         )
         Spacer(Modifier.height(5.dp))
         LazyRow {
-            items(TEST_RECENT_RECIPES.size) { index ->
-                RecentRecipeCard {
+            items(TEST_RECENT_RECIPES.takeLast(7).size) { index ->
+                VerticalRecipeCard(TEST_RECENT_RECIPES[index]) {
                     onEvent(
                         HomeScreenEvent.OnRecentRecipeClick(TEST_RECENT_RECIPES[index])
                     )
