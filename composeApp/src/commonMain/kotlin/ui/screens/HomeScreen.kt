@@ -74,7 +74,9 @@ fun HomeScreenComponent.HomeScreen() {
 
         items(TEST_RECENT_RECIPES.take(5).size) {
             HorizontalRecipeCard(TEST_RECENT_RECIPES[it]) {
-
+                onEvent(
+                    HomeScreenEvent.OnRecentRecipeClick(TEST_RECENT_RECIPES[it])
+                )
             }
         }
 
@@ -132,9 +134,6 @@ private fun HomeScreenComponent.ScreenOptionCardRow() {
                     onEvent(
                         HomeScreenEvent.OnAskClick
                     )
-                },
-                trailingIcon = {
-                    ArrowIcon()
                 }
             )
             OptionCard(
@@ -143,9 +142,6 @@ private fun HomeScreenComponent.ScreenOptionCardRow() {
                     onEvent(
                         HomeScreenEvent.OnGenerateClick
                     )
-                },
-                trailingIcon = {
-                    ArrowIcon()
                 }
             )
             OptionCard(
@@ -154,9 +150,6 @@ private fun HomeScreenComponent.ScreenOptionCardRow() {
                     onEvent(
                         HomeScreenEvent.OnFavoritesClick
                     )
-                },
-                trailingIcon = {
-                    ArrowIcon()
                 }
             )
             OptionCard(
@@ -165,9 +158,6 @@ private fun HomeScreenComponent.ScreenOptionCardRow() {
                     onEvent(
                         HomeScreenEvent.OnSettingsClick
                     )
-                },
-                trailingIcon = {
-                    ArrowIcon()
                 }
             )
         }
