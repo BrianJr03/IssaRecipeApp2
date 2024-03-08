@@ -56,7 +56,6 @@ fun DefaultTextField(
             Text(
                 text = label,
                 style = TextStyle(
-                    color = GREEN,
                     fontWeight = FontWeight.Bold
                 )
             )

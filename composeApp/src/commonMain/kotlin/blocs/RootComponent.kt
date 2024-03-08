@@ -83,6 +83,12 @@ class RootComponent(
                 Child.GenerateScreen(
                     GenerateScreenComponent(
                         componentContext = context,
+                        onGenerateRecipe = {
+
+                        },
+                        onRandomizeRecipe = {
+
+                        },
                         onNavBack = { navigation.pop() }
                     )
                 )

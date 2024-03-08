@@ -7,6 +7,8 @@ import blocs.generateScreen.GenerateScreenEvent
 
 class GenerateScreenComponent(
     componentContext: ComponentContext,
+    private val onGenerateRecipe: () -> Unit,
+    private val onRandomizeRecipe: () -> Unit,
     private val onNavBack: () -> Unit
 ) : ComponentContext by componentContext {
 
@@ -15,8 +17,12 @@ class GenerateScreenComponent(
 
     fun onEvent(event: GenerateScreenEvent) {
         when (event) {
-            GenerateScreenEvent.OnGenerateRecipe -> TODO()
-            GenerateScreenEvent.OnRandomizeRecipe -> TODO()
+            GenerateScreenEvent.OnGenerateRecipe -> {
+                onGenerateRecipe()
+            }
+            GenerateScreenEvent.OnRandomizeRecipe -> {
+                onRandomizeRecipe()
+            }
             GenerateScreenEvent.OnNavBack -> {
                 onNavBack()
             }

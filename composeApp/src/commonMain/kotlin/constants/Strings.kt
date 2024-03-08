@@ -20,3 +20,10 @@ const val YOU_GOTTA_TRY_THIS = "You Gotta Try This!"
 const val RECIPE_IMAGE = "Recipe Image"
 
 const val SEE_ALL = "SEE ALL"
+
+const val INGREDIENTS_LABEL = "Ingredients"
+const val PARTY_SIZE_LABEL = "Party Size"
+const val OCCASION_LABEL = "Occasion"
+const val DIETARY_LABEL = "Dietary Restrictions"
+const val FOOD_ALLERGIES = "Food Allergies"
+const val OTHER_INFO = "Other Info"
