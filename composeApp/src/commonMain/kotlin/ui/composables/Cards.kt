@@ -144,7 +144,7 @@ fun HorizontalRecipeCard(
             Row(Modifier.padding(top = 7.dp)) {
                 Image(
                     painter = painter,
-                    modifier = Modifier.size(100.dp).padding(top = 10.dp, bottom = 10.dp),
+                    modifier = Modifier.size(100.dp).padding(top = 5.dp, bottom = 5.dp),
                     contentDescription = RECIPE_IMAGE
                 )
 

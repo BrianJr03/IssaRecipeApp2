@@ -34,15 +34,15 @@ data class Recipe(
     }
 }
 
-private const val COOKIE2 = "https://www.realsimple.com/thmb/uwmEcWtairipZTGavdWVbkV_dqw" +
-        "=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/chocolatechip" +
-        "-cookies_300-d6a402fc30814fdf87af28be97b5fcdc.jpg"
+private const val TEST_RECIPE_PIC = "https://www.foodandwine.com/thmb/fVmYbaQzXCz1Prx8VxrW9sMcjMU=" +
+        "/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Brac" +
+        "iole-FT-RECIPE1122-66acf49cef0e4390bec780945709e7f3.jpg"
 
-private const val APPLE = "https://pbs.twimg.com/profile_images/17170136649544990" +
-        "72/2dcJ0Unw_400x400.png"
+private const val TEST_RECIPE_PIC2 = "https://www.modernhoney.com/wp-content/uploads/" +
+        "2023/01/Ground-Beef-Tacos-11-crop-scaled.jpg"
 
-private const val COOKIE = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Choc" +
-        "-Chip-Cookie.jpg/640px-Choc-Chip-Cookie.jpg"
+private const val TEST_RECIPE_PIC3 = "https://www.cookwithmanali.com/wp-co" +
+        "ntent/uploads/2014/04/Bhindi-Masala-500x500.jpg"
 
 private const val TEST_CONTENT = "✨ Grilled Peach and Goat Cheese Salad with Pistachios ✨" +
         "\n\nCalories: 350\nFat: 21g\nCarbs: 32g\nProtein: 10g" +
@@ -66,75 +66,75 @@ private const val TEST_CONTENT = "✨ Grilled Peach and Goat Cheese Salad with P
 
 val TEST_RECENT_RECIPES = listOf( // TODO - Replace with actual data
     Recipe(
-        COOKIE2,
-        "COOKIE 2",
+        TEST_RECIPE_PIC,
+        "Food 1",
         TEST_CONTENT,
         "Lunch",
         "40 Min",
         "5.0"
     ),
     Recipe(
-        COOKIE,
-        "Cookie",
+        TEST_RECIPE_PIC3,
+        "Food 2",
         TEST_CONTENT,
         "Breakfast",
         "20 Min",
         "0.2"
     ),
     Recipe(
-        APPLE,
-        "Apple",
+        TEST_RECIPE_PIC2,
+        "Food 3",
         TEST_CONTENT,
-        "Technology :(",
-        "Since 1976",
+        "Dinner",
+        "15 Min",
         "3.0"
     ),
     Recipe(
-        COOKIE,
-        "Cookie",
+        TEST_RECIPE_PIC3,
+        "Food 4",
         TEST_CONTENT,
         "Breakfast",
         "20 Min",
         "0.2"
     ),
     Recipe(
-        APPLE,
-        "Apple",
+        TEST_RECIPE_PIC2,
+        "Food 5",
         TEST_CONTENT,
-        "Technology :(",
-        "Since 1976",
+        "Dinner",
+        "15 Min",
         "3.0"
     ),
     Recipe(
-        COOKIE2,
-        "COOKIE 2",
+        TEST_RECIPE_PIC,
+        "Food 5",
         TEST_CONTENT,
         "Lunch",
         "40 Min",
         "5.0"
     ),
     Recipe(
-        COOKIE,
-        "Cookie",
+        TEST_RECIPE_PIC3,
+        "Food 6",
         TEST_CONTENT,
         "Breakfast",
         "20 Min",
         "0.2"
     ),
     Recipe(
-        COOKIE2,
-        "COOKIE 2",
+        TEST_RECIPE_PIC,
+        "Food 7",
         TEST_CONTENT,
         "Lunch",
         "40 Min",
         "5.0"
     ),
     Recipe(
-        APPLE,
-        "Apple",
+        TEST_RECIPE_PIC2,
+        "Food 8",
         TEST_CONTENT,
-        "Technology :(",
-        "Since 1976",
+        "Dinner",
+        "15 Min",
         "3.0"
     )
 )

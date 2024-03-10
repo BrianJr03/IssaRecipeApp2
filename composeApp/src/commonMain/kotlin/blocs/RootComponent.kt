@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 import models.local.Recipe
 import blocs.askScreen.AskScreenComponent
 import blocs.favoritesScreen.FavsScreenComponent
-import blocs.askScreen.GenerateScreenComponent
+import blocs.generateScreen.GenerateScreenComponent
 import blocs.settingsScreen.SettingsScreenComponent
 import blocs.homeScreen.HomeScreenComponent
 import blocs.recipeScreen.RecipeScreenComponent
@@ -84,10 +84,10 @@ class RootComponent(
                     GenerateScreenComponent(
                         componentContext = context,
                         onGenerateRecipe = {
-
+                            navigation.pushNew(Config.RecipeScreen(it))
                         },
                         onRandomizeRecipe = {
-
+                            navigation.pushNew(Config.RecipeScreen(it))
                         },
                         onNavBack = { navigation.pop() }
                     )

@@ -15,3 +15,10 @@ fun String.getRatingBoxColor(): Color {
     }
     return Color.Transparent
 }
+
+fun String.validateIngredients() = ifBlank { "Any" }
+fun String.validatePartySize() = ifBlank { "1" }
+fun String.validateOccasion() = ifBlank { "Any" }
+fun String.validateDietary() = ifBlank { "None" }
+fun String.validateAllergies() = ifBlank { "None" }
+fun String.validateOtherInfo() = ifBlank { "" }
