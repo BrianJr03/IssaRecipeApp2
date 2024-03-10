@@ -3,7 +3,6 @@ package blocs.generateScreen
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import blocs.generateScreen.GenerateScreenEvent
 import models.local.Recipe
 
 class GenerateScreenComponent(

@@ -30,10 +30,10 @@ kotlin {
             isStatic = true
         }
     }
-    
+
+    @OptIn(ExperimentalComposeLibrary::class)
     sourceSets {
         val desktopMain by getting
-        
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
@@ -42,12 +42,12 @@ kotlin {
             implementation(libs.android.driver)
         }
         commonMain.dependencies {
+            api(libs.image.loader)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.material3)
             implementation(compose.ui)
-            @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
             implementation(libs.decompose)
             implementation(libs.decompose.jetbrains)
@@ -59,7 +59,13 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.runtime)
             implementation(libs.kotlinx.datetime)
-            api(libs.image.loader)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.peekaboo.ui)
+            implementation(libs.peekaboo.image.picker)
+            implementation(libs.multiplatform.markdown.renderer)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
