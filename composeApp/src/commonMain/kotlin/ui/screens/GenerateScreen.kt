@@ -3,13 +3,16 @@ package ui.screens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -31,17 +34,25 @@ import constants.INGREDIENTS_LABEL
 import constants.OCCASION_LABEL
 import constants.OTHER_INFO
 import constants.PARTY_SIZE_LABEL
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import models.local.Recipe
-import models.local.TEST_RECENT_RECIPES
+import models.local.Status
+import repositories.GeminiRepositoryImpl
+import ui.animation.LoadingAnimation
 import ui.composables.DefaultTextField
+import ui.screens.RecipeCache.saveRecipe
+import util.generateRecipeQuery
+import util.loadingHints
 import util.validateAllergies
 import util.validateDietary
 import util.validateIngredients
 import util.validateOccasion
 import util.validateOtherInfo
 import util.validatePartySize
+
+object API {
+    val geminiRepository = GeminiRepositoryImpl()
+}
 
 @Composable
 fun GenerateScreenComponent.GenerateScreen() {
@@ -60,6 +71,8 @@ fun GenerateScreenComponent.GenerateScreen() {
                 focusManager.clearFocus()
             }
     ) {
+        val loadingHint = rememberSaveable { mutableStateOf(loadingHints.random()) }
+
         val ingredients = rememberSaveable { mutableStateOf("") }
         val partySize = rememberSaveable { mutableStateOf("") }
         val occasion = rememberSaveable { mutableStateOf("") }
@@ -276,13 +289,23 @@ fun GenerateScreenComponent.GenerateScreen() {
                 onClick = {
                     if (ingredients.value.isNotEmpty()) {
                         scope.launch {
-                            isRecipeGenerated.value = false
-                            isLoading.value = true
                             validateTextFields()
-                            delay(3000) // TODO - FETCH DATA HERE
-                            isRecipeGenerated.value = true
+                            isLoading.value = true
+                            isRecipeGenerated.value = false
+                            loadingHint.value = loadingHints.random()
+                            val status = API.geminiRepository.generate(
+                                generateRecipeQuery(
+                                    ingredients = ingredients.value,
+                                    partySize = partySize.value,
+                                    occasion = occasion.value,
+                                    dietaryRestrictions = dietaryRestrictions.value,
+                                    foodAllergies = foodAllergies.value,
+                                    otherInfo = otherInfo.value
+                                )
+                            )
                             isLoading.value = false
-                            RecipeCache.recipe = TEST_RECENT_RECIPES.random() // TODO - POPULATE WITH ACTUAL DATA
+                            isRecipeGenerated.value = true
+                            status.saveRecipe()
                             onEvent(
                                 GenerateScreenEvent.OnGenerateRecipe(
                                     recipe = RecipeCache.recipe
@@ -307,14 +330,24 @@ fun GenerateScreenComponent.GenerateScreen() {
                     ),
                 onClick = {
                     scope.launch {
-                        isRecipeGenerated.value = false
-                        isLoading.value = true
                         resetTextFields()
                         validateTextFields()
-                        delay(3000) // TODO - FETCH DATA HERE
-                        isRecipeGenerated.value = true
+                        isLoading.value = true
+                        isRecipeGenerated.value = false
+                        loadingHint.value = loadingHints.random()
+                        val status = API.geminiRepository.generate(
+                            generateRecipeQuery(
+                                ingredients = ingredients.value,
+                                partySize = partySize.value,
+                                occasion = occasion.value,
+                                dietaryRestrictions = dietaryRestrictions.value,
+                                foodAllergies = foodAllergies.value,
+                                otherInfo = otherInfo.value
+                            )
+                        )
                         isLoading.value = false
-                        RecipeCache.recipe = TEST_RECENT_RECIPES.random() // TODO - POPULATE WITH ACTUAL DATA
+                        isRecipeGenerated.value = true
+                        status.saveRecipe()
                         onEvent(
                             GenerateScreenEvent.OnRandomizeRecipe(
                                 recipe = RecipeCache.recipe
@@ -327,11 +360,20 @@ fun GenerateScreenComponent.GenerateScreen() {
         }
 
         AnimatedVisibility(isLoading.value) {
-            Text(
-                text = "Generating Your Recipe ...",
-                style = TextStyle(fontSize = 16.sp),
-                modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
-            )
+            Row(horizontalArrangement = Arrangement.Center) {
+                Text(
+                    text = loadingHint.value,
+                    style = TextStyle(fontSize = 16.sp),
+                    modifier = Modifier.padding(top = 10.dp, bottom = 10.dp, end = 10.dp)
+                )
+                LoadingAnimation(
+                    circleSize = 8.dp,
+                    spaceBetween = 5.dp,
+                    travelDistance = 10.dp,
+                    circleColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+                    modifier = Modifier.padding(top = 14.dp)
+                )
+            }
         }
 
         Button(
@@ -355,5 +397,16 @@ private object RecipeCache {
     @Suppress("unused")
     fun reset() {
         recipe = Recipe.EMPTY
+    }
+    fun Status.saveRecipe() {
+        when (this) {
+            is Status.Success -> {
+                recipe = Recipe.EMPTY.copy(content = this.data)
+            }
+            is Status.Error -> {
+                recipe = Recipe.EMPTY.copy(content = this.message)
+            }
+            else -> Unit
+        }
     }
 }

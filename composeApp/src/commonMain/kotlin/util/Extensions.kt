@@ -16,9 +16,17 @@ fun String.getRatingBoxColor(): Color {
     return Color.Transparent
 }
 
-fun String.validateIngredients() = ifBlank { "Any" }
+fun String.validateIngredients() = ifBlank { "Provide random ingredients." }
 fun String.validatePartySize() = ifBlank { "1" }
-fun String.validateOccasion() = ifBlank { "Any" }
+fun String.validateOccasion() = ifBlank {
+    listOf(
+        "Breakfast",
+        "Brunch",
+        "Lunch",
+        "Dinner",
+        "Dessert"
+    ).random()
+}
 fun String.validateDietary() = ifBlank { "None" }
 fun String.validateAllergies() = ifBlank { "None" }
 fun String.validateOtherInfo() = ifBlank { "" }
