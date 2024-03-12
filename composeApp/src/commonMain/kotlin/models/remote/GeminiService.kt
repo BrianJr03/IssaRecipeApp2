@@ -17,7 +17,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-
 const val TIMEOUT = 30000L
 
 @OptIn(ExperimentalSerializationApi::class, InternalAPI::class)
@@ -42,7 +41,8 @@ class GeminiService {
         }
     }
 
-    private var apiKey: String = ""
+    // TODO - SAVE TO LOCAL STORAGE
+    private var apiKey: String = "AIzaSyD9jCURxSyLtSe5tL4KsPdEeW2a3dvgnDM"
 
     fun getApiKey(): String {
         return apiKey
@@ -67,8 +67,13 @@ class GeminiService {
         }
     }
 
-    private suspend fun makeApiRequest(url: String, requestBuilder: Request.RequestBuilder.() -> Unit): Response {
-        val request = Request.RequestBuilder().apply(requestBuilder).build()
+    private suspend fun makeApiRequest(
+        url: String,
+        requestBuilder: Request.RequestBuilder.() -> Unit
+    ): Response {
+        val request = Request.RequestBuilder().apply(
+            requestBuilder
+        ).build()
 
         val response: String = client.post(url) {
             body = Json.encodeToString(request)

@@ -4,6 +4,10 @@ import models.remote.GeminiService
 import models.local.Status
 import io.ktor.utils.io.errors.IOException
 
+object API {
+    val geminiRepository = GeminiRepositoryImpl()
+}
+
 class GeminiRepositoryImpl : GeminiRepository {
     private val geminiService = GeminiService()
 

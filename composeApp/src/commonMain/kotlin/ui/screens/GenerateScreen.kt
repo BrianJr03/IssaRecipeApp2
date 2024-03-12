@@ -37,7 +37,7 @@ import constants.PARTY_SIZE_LABEL
 import kotlinx.coroutines.launch
 import models.local.Recipe
 import models.local.Status
-import repositories.GeminiRepositoryImpl
+import repositories.API
 import ui.animation.LoadingAnimation
 import ui.composables.DefaultTextField
 import ui.screens.RecipeCache.saveRecipe
@@ -49,10 +49,6 @@ import util.validateIngredients
 import util.validateOccasion
 import util.validateOtherInfo
 import util.validatePartySize
-
-object API {
-    val geminiRepository = GeminiRepositoryImpl()
-}
 
 @Composable
 fun GenerateScreenComponent.GenerateScreen() {
