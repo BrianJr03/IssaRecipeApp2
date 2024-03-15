@@ -66,6 +66,11 @@ kotlin {
             implementation(libs.peekaboo.ui)
             implementation(libs.peekaboo.image.picker)
             implementation(libs.multiplatform.markdown.renderer)
+            implementation(libs.multiplatform.settings.no.arg)
+            implementation(libs.kotlinx.serialization.json.v141)
+            implementation(libs.multiplatform.settings.serialization)
+            implementation(libs.kotlinx.coroutines.core.v164)
+            implementation(libs.multiplatform.settings.coroutines)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

@@ -14,7 +14,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.DateRange
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,8 +43,7 @@ import util.getRatingBoxColor
 
 @Composable
 fun VerticalRecipeCard(
-    recipe: Recipe,
-    onClick: () -> Unit
+    recipe: Recipe, onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier.height(RECIPE_CARD_HEIGHT).width(RECIPE_CARD_WIDTH).padding(
@@ -98,8 +105,7 @@ fun VerticalRecipeCard(
 
 @Composable
 fun OptionCard(
-    text: String, onClick: () -> Unit,
-    trailingIcon: @Composable (() -> Unit)? = null
+    text: String, onClick: () -> Unit, trailingIcon: @Composable (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier.height(OPTION_CARD_HEIGHT).padding(
@@ -128,8 +134,7 @@ fun OptionCard(
 
 @Composable
 fun HorizontalRecipeCard(
-    recipe: Recipe,
-    onClick: () -> Unit
+    recipe: Recipe, onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier.height(100.dp).padding(
@@ -141,36 +146,59 @@ fun HorizontalRecipeCard(
         ) {
             val painter = rememberImagePainter(url = recipe.imageUrl)
 
-            Row(Modifier.padding(top = 7.dp)) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = 7.dp,
+                        start = 10.dp,
+                        bottom = 5.dp
+                    )
+            ) {
                 Image(
                     painter = painter,
                     modifier = Modifier.size(100.dp).padding(top = 5.dp, bottom = 5.dp),
                     contentDescription = RECIPE_IMAGE
                 )
 
-                Column {
-                    Row(modifier = Modifier.padding(start = 10.dp, end = 10.dp)) {
-                        Text(
-                            recipe.title, modifier = Modifier.padding(bottom = 5.dp)
+                Column(modifier = Modifier.padding(start = 10.dp)) {
+
+//                    Row(modifier = Modifier.padding(bottom = 10.dp)) {
+//                        Spacer(Modifier.weight(1f))
+//                        T
+//                        Spacer(Modifier.weight(1f))
+//                    }
+
+                    Text(recipe.title, modifier = Modifier.padding(start = 5.dp, bottom = 10.dp))
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Rounded.Star,
+                            contentDescription = Icons.Rounded.Star.name,
+                            tint = MaterialTheme.colors.primary,
+                            modifier = Modifier.size(20.dp)
                         )
-                        Spacer(Modifier.weight(1f))
-                        Box(
-                            modifier = Modifier.background(recipe.rating.getRatingBoxColor())
-                                .width(40.dp), contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                recipe.rating, color = Color.White, modifier = Modifier.padding(
-                                    start = 5.dp, end = 5.dp
-                                )
-                            )
-                        }
+
+                        Spacer(Modifier.width(5.dp))
+
+                        Text(recipe.courseType)
                     }
 
-                    Text(
-                        recipe.courseType, modifier = Modifier.padding(start = 10.dp, bottom = 5.dp)
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Rounded.Info,
+                            contentDescription = Icons.Rounded.Info.name,
+                            tint = MaterialTheme.colors.primary,
+                            modifier = Modifier.size(18.dp)
+                        )
 
-                    Text(recipe.duration, modifier = Modifier.padding(start = 10.dp, bottom = 5.dp))
+                        Spacer(Modifier.width(5.dp))
+
+                        Text(
+                            recipe.duration
+                        )
+                    }
+
                 }
             }
         }
