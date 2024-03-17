@@ -43,9 +43,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.preat.peekaboo.image.picker.SelectionMode
-import com.preat.peekaboo.image.picker.rememberImagePickerLauncher
-import com.preat.peekaboo.image.picker.toImageBitmap
+//import com.preat.peekaboo.image.picker.SelectionMode
+//import com.preat.peekaboo.image.picker.rememberImagePickerLauncher
+//import com.preat.peekaboo.image.picker.toImageBitmap
 import models.local.Status
 
 /**
@@ -61,26 +61,26 @@ fun CustomBottomBar(
     val images = remember { mutableStateOf(listOf<ByteArray>()) }
 
     val scope = rememberCoroutineScope()
-    val multipleImagePicker = rememberImagePickerLauncher(
-        selectionMode = SelectionMode.Multiple(),
-        scope = scope,
-        onResult = { images.value = it }
-    )
+//    val multipleImagePicker = rememberImagePickerLauncher(
+//        selectionMode = SelectionMode.Multiple(),
+//        scope = scope,
+//        onResult = { images.value = it }
+//    )
     Column {
-        LazyRow {
-            items(images.value.size) { index ->
-                val bitmap = images.value[index].toImageBitmap()
-                ImageAttachment(
-                    bitmap = bitmap,
-                    onCloseClick = {
-                        val mutableImages = images.value.toMutableList()
-                        mutableImages.removeAt(index)
-                        images.value = mutableImages
-                    }
-                )
-
-            }
-        }
+//        LazyRow {
+//            items(images.value.size) { index ->
+//                val bitmap = images.value[index].toImageBitmap()
+//                ImageAttachment(
+//                    bitmap = bitmap,
+//                    onCloseClick = {
+//                        val mutableImages = images.value.toMutableList()
+//                        mutableImages.removeAt(index)
+//                        images.value = mutableImages
+//                    }
+//                )
+//
+//            }
+//        }
         TextField(
             value = textState.value,
             onValueChange = { textState.value = it },
@@ -136,7 +136,7 @@ fun CustomBottomBar(
             leadingIcon = {
                 IconButton(
                     onClick = {
-                        multipleImagePicker.launch()
+//                        multipleImagePicker.launch()
                     },
                     content = {
                         Icon(

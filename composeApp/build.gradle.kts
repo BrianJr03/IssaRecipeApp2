@@ -39,7 +39,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.decompose)
             implementation(libs.ktor.client.android)
-            implementation(libs.android.driver)
+            implementation(libs.sqldelight.android)
         }
         commonMain.dependencies {
             api(libs.image.loader)
@@ -63,21 +63,41 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
-            implementation(libs.peekaboo.ui)
-            implementation(libs.peekaboo.image.picker)
+//            implementation(libs.peekaboo.ui)
+//            implementation(libs.peekaboo.image.picker)
             implementation(libs.multiplatform.markdown.renderer)
             implementation(libs.multiplatform.settings.no.arg)
             implementation(libs.kotlinx.serialization.json.v141)
             implementation(libs.multiplatform.settings.serialization)
             implementation(libs.kotlinx.coroutines.core.v164)
             implementation(libs.multiplatform.settings.coroutines)
+            implementation(libs.sqldelight.coroutines)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
-            implementation(libs.native.driver)
+            implementation(libs.sqldelight.ios)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+        }
+        nativeMain.dependencies {
+            implementation(libs.sqldelight.ios)
+        }
+    }
+
+    targets.configureEach {
+        compilations.configureEach {
+            compilerOptions.configure {
+                freeCompilerArgs.add("-Xexpect-actual-classes")
+            }
+        }
+    }
+}
+
+sqldelight {
+    databases {
+        create("AppDatabase") {
+            packageName = "jr.brian.shared.database"
         }
     }
 }

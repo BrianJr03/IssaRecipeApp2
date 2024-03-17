@@ -88,9 +88,8 @@ class RootComponent(
                         },
                         onRandomizeRecipe = {
                             navigation.pushNew(Config.RecipeScreen(it))
-                        },
-                        onNavBack = { navigation.pop() }
-                    )
+                        }
+                    ) { navigation.pop() }
                 )
             }
 

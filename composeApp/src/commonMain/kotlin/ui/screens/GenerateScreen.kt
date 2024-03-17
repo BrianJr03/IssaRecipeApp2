@@ -34,13 +34,14 @@ import constants.INGREDIENTS_LABEL
 import constants.OCCASION_LABEL
 import constants.OTHER_INFO
 import constants.PARTY_SIZE_LABEL
+import jr.brian.shared.database.AppDatabase
 import kotlinx.coroutines.launch
 import models.local.Recipe
 import models.local.Status
 import repositories.API
 import ui.animation.LoadingAnimation
 import ui.composables.DefaultTextField
-import ui.screens.RecipeCache.saveRecipe
+import ui.screens.RecipeCache.saveRecipeInCache
 import util.generateRecipeQuery
 import util.loadingHints
 import util.validateAllergies
@@ -51,7 +52,9 @@ import util.validateOtherInfo
 import util.validatePartySize
 
 @Composable
-fun GenerateScreenComponent.GenerateScreen() {
+fun GenerateScreenComponent.GenerateScreen(
+    appDatabase: AppDatabase
+) {
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -301,7 +304,15 @@ fun GenerateScreenComponent.GenerateScreen() {
                             )
                             isLoading.value = false
                             isRecipeGenerated.value = true
-                            status.saveRecipe()
+                            status.saveRecipeInCache()
+                            appDatabase.appDatabaseQueries.insertRecipe(
+                                RecipeCache.recipe.imageUrl,
+                                RecipeCache.recipe.title,
+                                RecipeCache.recipe.content,
+                                RecipeCache.recipe.courseType,
+                                RecipeCache.recipe.duration,
+                                RecipeCache.recipe.rating,
+                            )
                             onEvent(
                                 GenerateScreenEvent.OnGenerateRecipe(
                                     recipe = RecipeCache.recipe
@@ -343,7 +354,7 @@ fun GenerateScreenComponent.GenerateScreen() {
                         )
                         isLoading.value = false
                         isRecipeGenerated.value = true
-                        status.saveRecipe()
+                        status.saveRecipeInCache()
                         onEvent(
                             GenerateScreenEvent.OnRandomizeRecipe(
                                 recipe = RecipeCache.recipe
@@ -394,7 +405,7 @@ private object RecipeCache {
     fun reset() {
         recipe = Recipe.EMPTY
     }
-    fun Status.saveRecipe() {
+    fun Status.saveRecipeInCache() {
         when (this) {
             is Status.Success -> {
                 recipe = Recipe.EMPTY.copy(content = this.data)

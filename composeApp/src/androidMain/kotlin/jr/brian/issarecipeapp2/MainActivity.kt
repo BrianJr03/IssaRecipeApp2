@@ -2,9 +2,12 @@ package jr.brian.issarecipeapp2
 
 import App
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.retainedComponent
@@ -15,6 +18,9 @@ import com.seiko.imageloader.cache.memory.maxSizePercent
 import com.seiko.imageloader.component.setupDefaultComponents
 import com.seiko.imageloader.defaultImageResultMemoryCache
 import com.seiko.imageloader.option.androidContext
+import jr.brian.shared.database.AppDatabase
+import models.local.DatabaseDriver
+import models.local.SqlDataSourceImpl
 import okio.Path.Companion.toOkioPath
 
 class MainActivity : ComponentActivity() {
@@ -27,10 +33,16 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
+            val driver = DatabaseDriver(applicationContext).createDriver()
+            val appDatabase = AppDatabase(driver)
+
             CompositionLocalProvider(
                 LocalImageLoader provides remember { generateImageLoader() }
             ) {
-                App(root)
+                App(
+                    root = root,
+                    appDatabase = appDatabase
+                )
             }
         }
     }
