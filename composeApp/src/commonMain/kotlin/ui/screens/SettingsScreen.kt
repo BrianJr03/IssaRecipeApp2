@@ -37,8 +37,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import blocs.settingsScreen.SettingsScreenComponent
 import blocs.settingsScreen.SettingsScreenEvent
+import jr.brian.shared.database.AppDatabase
 import kotlinx.coroutines.launch
 import models.local.LocalStorage
+import models.local.SqlDataSourceImpl
 import repositories.API
 import ui.composables.DefaultTextField
 import ui.composables.OptionsDialog
@@ -49,7 +51,9 @@ import util.allergyOptions
 import util.dietaryOptions
 
 @Composable
-fun SettingsScreenComponent.SettingsScreen() {
+fun SettingsScreenComponent.SettingsScreen(
+    sqlDataSourceImpl: SqlDataSourceImpl
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -57,6 +61,7 @@ fun SettingsScreenComponent.SettingsScreen() {
     ) {
         val settingsConfig = LocalStorage.keyValueStorage.settingsConfig
         SettingsPage(
+            sqlDataSourceImpl = sqlDataSourceImpl,
             apiKey = settingsConfig?.apiKey.orEmpty(),
             dietaryRestrictions = settingsConfig?.dietaryRestrictions.orEmpty(),
             foodAllergies = settingsConfig?.foodAllergies.orEmpty(),
@@ -69,6 +74,7 @@ fun SettingsScreenComponent.SettingsScreen() {
 
 @Composable
 fun SettingsPage(
+    sqlDataSourceImpl: SqlDataSourceImpl,
     apiKey: String,
     dietaryRestrictions: String,
     foodAllergies: String,
@@ -98,6 +104,7 @@ fun SettingsPage(
 
     Scaffold {
         Settings(
+            sqlDataSourceImpl = sqlDataSourceImpl,
             apiKey = key.value,
             dietaryRestrictions = dietary.value,
             isImageGenEnabled = isImageGenEnabled.value,
@@ -141,6 +148,7 @@ fun SettingsPage(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Settings(
+    sqlDataSourceImpl: SqlDataSourceImpl,
     apiKey: String,
     dietaryRestrictions: String,
     isImageGenEnabled: Boolean,
@@ -334,7 +342,9 @@ fun Settings(
                     modifier = Modifier.combinedClickable(
                         onLongClick = {
                             if (!isClearFavsInfoShowing.value) {
-//                                dao.removeAllRecipes()
+                                scope.launch {
+                                    sqlDataSourceImpl.removeAllRecipes()
+                                }
 //                                Toast.makeText(context, "Cleared!", Toast.LENGTH_SHORT).show()
                                 handleLabelChange()
                             }

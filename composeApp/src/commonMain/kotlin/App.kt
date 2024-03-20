@@ -7,6 +7,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stac
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import blocs.RootComponent
 import jr.brian.shared.database.AppDatabase
+import models.local.SqlDataSourceImpl
 import ui.screens.AskScreen
 import ui.screens.FavoritesScreen
 import ui.screens.GenerateScreen
@@ -20,6 +21,7 @@ fun App(
     root: RootComponent,
     appDatabase: AppDatabase
 ) {
+    val sqlDataSourceImpl = SqlDataSourceImpl(appDatabase)
     MaterialTheme {
         val childStack by root.childStack.subscribeAsState()
         Children(
@@ -27,14 +29,30 @@ fun App(
             animation = stackAnimation(slide())
         ) { child ->
             when (val instance = child.instance) {
-                is RootComponent.Child.HomeScreen -> instance.component.HomeScreen()
-                is RootComponent.Child.AskScreen -> instance.component.AskScreen()
-                is RootComponent.Child.GenerateScreen -> {
-                    instance.component.GenerateScreen(appDatabase)
+                is RootComponent.Child.HomeScreen -> {
+                    instance.component.HomeScreen(sqlDataSourceImpl)
                 }
-                is RootComponent.Child.FavoritesScreen -> instance.component.FavoritesScreen()
-                is RootComponent.Child.SettingsScreen -> instance.component.SettingsScreen()
-                is RootComponent.Child.SeeAllScreen -> instance.component.SeeAllScreen()
+
+                is RootComponent.Child.AskScreen -> {
+                    instance.component.AskScreen()
+                }
+
+                is RootComponent.Child.GenerateScreen -> {
+                    instance.component.GenerateScreen(sqlDataSourceImpl)
+                }
+
+                is RootComponent.Child.FavoritesScreen -> {
+                    instance.component.FavoritesScreen()
+                }
+
+                is RootComponent.Child.SettingsScreen -> {
+                    instance.component.SettingsScreen(sqlDataSourceImpl)
+                }
+
+                is RootComponent.Child.SeeAllScreen -> {
+                    instance.component.SeeAllScreen()
+                }
+
                 is RootComponent.Child.RecipeScreen -> {
                     instance.component.RecipeScreen(instance.component.recipe)
                 }

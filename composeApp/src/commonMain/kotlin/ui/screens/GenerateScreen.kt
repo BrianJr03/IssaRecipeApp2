@@ -37,11 +37,14 @@ import constants.PARTY_SIZE_LABEL
 import jr.brian.shared.database.AppDatabase
 import kotlinx.coroutines.launch
 import models.local.Recipe
+import models.local.SqlDataSourceImpl
 import models.local.Status
+import models.local.TEST_RECENT_RECIPES
 import repositories.API
 import ui.animation.LoadingAnimation
 import ui.composables.DefaultTextField
 import ui.screens.RecipeCache.saveRecipeInCache
+import util.extractRecipeTitle
 import util.generateRecipeQuery
 import util.loadingHints
 import util.validateAllergies
@@ -53,7 +56,7 @@ import util.validatePartySize
 
 @Composable
 fun GenerateScreenComponent.GenerateScreen(
-    appDatabase: AppDatabase
+    sqlDataSourceImpl: SqlDataSourceImpl
 ) {
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
@@ -305,13 +308,13 @@ fun GenerateScreenComponent.GenerateScreen(
                             isLoading.value = false
                             isRecipeGenerated.value = true
                             status.saveRecipeInCache()
-                            appDatabase.appDatabaseQueries.insertRecipe(
-                                RecipeCache.recipe.imageUrl,
-                                RecipeCache.recipe.title,
-                                RecipeCache.recipe.content,
-                                RecipeCache.recipe.courseType,
-                                RecipeCache.recipe.duration,
-                                RecipeCache.recipe.rating,
+                            sqlDataSourceImpl.insert(
+                                imageUrl = RecipeCache.recipe.imageUrl,
+                                title = RecipeCache.recipe.content.extractRecipeTitle(),
+                                content = RecipeCache.recipe.content,
+                                courseType = RecipeCache.recipe.courseType,
+                                duration = RecipeCache.recipe.duration,
+                                rating = RecipeCache.recipe.rating,
                             )
                             onEvent(
                                 GenerateScreenEvent.OnGenerateRecipe(

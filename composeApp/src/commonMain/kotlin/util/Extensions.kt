@@ -30,3 +30,9 @@ fun String.validateOccasion() = ifBlank {
 fun String.validateDietary() = ifBlank { "None" }
 fun String.validateAllergies() = ifBlank { "None" }
 fun String.validateOtherInfo() = ifBlank { "" }
+
+fun String.extractRecipeTitle(): String {
+    val regex = Regex("""✨(.*?)✨""")
+    val matchResult = regex.find(this)
+    return matchResult?.groupValues?.get(1)?.trim() ?: DEFAULT_RECIPE_TITLE
+}

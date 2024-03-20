@@ -9,8 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 
-interface SqlDataSource {
-    val favoriteRecipes : Flow<List<Recipe>>
+private interface SqlDataSource {
+    val recipes : Flow<List<Recipe>>
     suspend fun removeAllRecipes()
     suspend fun deleteWithId(id: String)
     suspend fun insert(
@@ -23,12 +23,12 @@ interface SqlDataSource {
     )
 }
 
-internal class SqlDataSourceImpl internal constructor(
+class SqlDataSourceImpl internal constructor(
     private val database: AppDatabase,
     ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SqlDataSource {
 
-    override val favoriteRecipes: Flow<List<Recipe>> =
+    override val recipes: Flow<List<Recipe>> =
         database.appDatabaseQueries.selectAllRecipes().asFlow().mapToList(ioDispatcher)
 
     override suspend fun removeAllRecipes() {

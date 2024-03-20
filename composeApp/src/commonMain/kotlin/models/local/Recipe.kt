@@ -1,6 +1,7 @@
 package models.local
 
 import kotlinx.serialization.Serializable
+import jrbrianshareddatabase.Recipe as SqlRecipe
 
 @Serializable
 data class Recipe(
@@ -10,8 +11,7 @@ data class Recipe(
     val courseType: String,
     val duration: String,
     val rating: String
-) {
-    override fun toString(): String {
+) { override fun toString(): String {
         return "imgUrl: $imageUrl\n" +
                 "title: $title\n" +
                 "content: $content\n" +
@@ -34,9 +34,32 @@ data class Recipe(
     }
 }
 
-private const val TEST_RECIPE_PIC = "https://www.foodandwine.com/thmb/fVmYbaQzXCz1Prx8VxrW9sMcjMU=" +
-        "/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Brac" +
-        "iole-FT-RECIPE1122-66acf49cef0e4390bec780945709e7f3.jpg"
+fun SqlRecipe.toRecipe(): Recipe {
+    return Recipe(
+        imageUrl,
+        title,
+        content,
+        courseType,
+        duration,
+        rating
+    )
+}
+
+fun Recipe.toSqlRecipe() : SqlRecipe {
+    return SqlRecipe(
+        imageUrl,
+        title,
+        content,
+        courseType,
+        duration,
+        rating
+    )
+}
+
+private const val TEST_RECIPE_PIC =
+    "https://www.foodandwine.com/thmb/fVmYbaQzXCz1Prx8VxrW9sMcjMU=" +
+            "/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Brac" +
+            "iole-FT-RECIPE1122-66acf49cef0e4390bec780945709e7f3.jpg"
 
 private const val TEST_RECIPE_PIC2 = "https://www.modernhoney.com/wp-content/uploads/" +
         "2023/01/Ground-Beef-Tacos-11-crop-scaled.jpg"
