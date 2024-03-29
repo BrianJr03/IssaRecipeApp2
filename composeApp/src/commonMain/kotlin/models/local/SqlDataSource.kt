@@ -32,7 +32,7 @@ class SqlDataSourceImpl internal constructor(
         database.appDatabaseQueries.selectAllRecipes().asFlow().mapToList(ioDispatcher)
 
     override suspend fun removeAllRecipes() {
-        database.appDatabaseQueries.removeAllFavorites()
+        database.appDatabaseQueries.removeAllRecentRecipes()
     }
 
     override suspend fun deleteWithId(id: String) {

@@ -48,15 +48,20 @@ fun VerticalRecipeCard(
     recipe: Recipe, onClick: () -> Unit
 ) {
     Card(
-        modifier = Modifier.height(RECIPE_CARD_HEIGHT).width(RECIPE_CARD_WIDTH).padding(
-            start = HOME_PADDING_START, end = RECIPE_CARD_PADDING_END
-        ).clickable { onClick() }, elevation = CARD_ELEVATION
+        modifier = Modifier
+            .height(RECIPE_CARD_HEIGHT)
+            .width(RECIPE_CARD_WIDTH)
+            .padding(start = 15.dp, end = 15.dp)
+            .clickable { onClick() },
+        elevation = CARD_ELEVATION
     ) {
+        val painter = rememberImagePainter(url = recipe.imageUrl)
+
         Box(
             modifier = Modifier, contentAlignment = Alignment.Center
         ) {
 //            Column {
-                val painter = rememberImagePainter(url = recipe.imageUrl)
+            if (recipe.imageUrl.isNotBlank()) {
                 Image(
                     painter = painter,
                     modifier = Modifier.fillMaxSize()
@@ -66,16 +71,12 @@ fun VerticalRecipeCard(
                         ),
                     contentDescription = RECIPE_IMAGE
                 )
-
-                AnimatedVisibility(recipe.imageUrl.isBlank()) {
-                    Text(
-                        recipe.title, modifier = Modifier.padding(
-                            start = V_RECIPE_CARD_CONTENT_PADDING_START,
-                            bottom = V_RECIPE_CARD_CONTENT_PADDING_BOTTOM
-                        )
-                    )
-                }
-
+            } else {
+                Text(
+                    recipe.title.replace(" ", "\n"),
+                    modifier = Modifier,
+                )
+            }
 //                Text(
 //                    recipe.courseType, modifier = Modifier.padding(
 //                        start = V_RECIPE_CARD_CONTENT_PADDING_START,

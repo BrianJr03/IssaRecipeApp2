@@ -290,6 +290,7 @@ fun GenerateScreenComponent.GenerateScreen(
                     ),
                 onClick = {
                     if (ingredients.value.isNotEmpty()) {
+                        isEmptyIngredientsError.value = false
                         scope.launch {
                             validateTextFields()
                             isLoading.value = true
@@ -307,14 +308,10 @@ fun GenerateScreenComponent.GenerateScreen(
                             )
                             isLoading.value = false
                             isRecipeGenerated.value = true
-                            status.saveRecipeInCache()
-                            sqlDataSourceImpl.insert(
-                                imageUrl = RecipeCache.recipe.imageUrl,
-                                title = RecipeCache.recipe.content.extractRecipeTitle(),
-                                content = RecipeCache.recipe.content,
-                                courseType = RecipeCache.recipe.courseType,
-                                duration = RecipeCache.recipe.duration,
-                                rating = RecipeCache.recipe.rating,
+                            RecipeCache.saveInDatabase(
+                                status = status,
+                                courseType = occasion.value,
+                                sqlDataSourceImpl = sqlDataSourceImpl
                             )
                             onEvent(
                                 GenerateScreenEvent.OnGenerateRecipe(
@@ -357,7 +354,11 @@ fun GenerateScreenComponent.GenerateScreen(
                         )
                         isLoading.value = false
                         isRecipeGenerated.value = true
-                        status.saveRecipeInCache()
+                        RecipeCache.saveInDatabase(
+                            status = status,
+                            courseType = occasion.value,
+                            sqlDataSourceImpl = sqlDataSourceImpl
+                        )
                         onEvent(
                             GenerateScreenEvent.OnRandomizeRecipe(
                                 recipe = RecipeCache.recipe
@@ -408,13 +409,33 @@ private object RecipeCache {
     fun reset() {
         recipe = Recipe.EMPTY
     }
-    fun Status.saveRecipeInCache() {
+
+    suspend fun saveInDatabase(
+        status: Status,
+        courseType: String,
+        sqlDataSourceImpl: SqlDataSourceImpl
+    ) {
+        status.saveRecipeInCache(courseType)
+        sqlDataSourceImpl.insert(
+            imageUrl = recipe.imageUrl,
+            title = recipe.content.extractRecipeTitle(),
+            content = recipe.content,
+            courseType = recipe.courseType,
+            duration = recipe.duration,
+            rating = recipe.rating,
+        )
+    }
+    private fun Status.saveRecipeInCache(courseType: String) {
         when (this) {
             is Status.Success -> {
-                recipe = Recipe.EMPTY.copy(content = this.data)
+                recipe = recipe.copy(
+                    title = this.data.extractRecipeTitle(),
+                    content = this.data,
+                    courseType = courseType
+                )
             }
             is Status.Error -> {
-                recipe = Recipe.EMPTY.copy(content = this.message)
+                recipe = recipe.copy(content = this.message)
             }
             else -> Unit
         }
