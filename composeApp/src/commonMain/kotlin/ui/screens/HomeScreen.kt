@@ -16,7 +16,6 @@ import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -41,7 +40,6 @@ import ui.composables.VerticalRecipeCard
 import ui.composables.HorizontalRecipeCard
 import ui.composables.SeeAllCard
 import constants.YOU_GOTTA_TRY_THIS
-import jr.brian.shared.database.AppDatabase
 import kotlinx.coroutines.launch
 import models.local.Recipe
 import models.local.SqlDataSourceImpl
@@ -52,11 +50,14 @@ fun HomeScreenComponent.HomeScreen(
     sqlDataSourceImpl: SqlDataSourceImpl
 )  {
     val scope = rememberCoroutineScope()
-    val favorites = rememberSaveable { mutableStateOf(listOf<Recipe>()) }
+    val recentRecipes = rememberSaveable { mutableStateOf(listOf<Recipe>()) }
 
     scope.launch {
         sqlDataSourceImpl.recipes.collect {
-            favorites.value = it.map { sqlRecipe -> sqlRecipe.toRecipe() }
+            if (it.size > 10) {
+                sqlDataSourceImpl.deleteWithId(it.first().content)
+            }
+            recentRecipes.value = it.map { sqlRecipe -> sqlRecipe.toRecipe() }
         }
     }
 
@@ -80,7 +81,7 @@ fun HomeScreenComponent.HomeScreen(
             ScreenOptionCardRow()
             FavRecipesRow(
                 rowLabel = RECENT_RECIPES,
-                list = favorites.value
+                list = recentRecipes.value
             )
         }
 

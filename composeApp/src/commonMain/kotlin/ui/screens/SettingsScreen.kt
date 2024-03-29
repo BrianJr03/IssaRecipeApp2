@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import blocs.settingsScreen.SettingsScreenComponent
 import blocs.settingsScreen.SettingsScreenEvent
-import jr.brian.shared.database.AppDatabase
 import kotlinx.coroutines.launch
 import models.local.LocalStorage
 import models.local.SqlDataSourceImpl
@@ -113,12 +112,10 @@ fun SettingsPage(
                 key.value = str
                 repository.setApiKey(str)
                 LocalStorage.saveApiKey(str)
-
             },
             onDietaryValueChange = { str ->
                 dietary.value = str
                 LocalStorage.saveDietaryRestrictions(str.lowercase())
-
             },
             onAllergiesValueChange = { str ->
                 allergies.value = str
@@ -328,12 +325,9 @@ fun Settings(
                 }
             }
 
-
             SettingsDivider()
 
             Column {
-
-
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
                     text = clearFavoritesLabel.value,

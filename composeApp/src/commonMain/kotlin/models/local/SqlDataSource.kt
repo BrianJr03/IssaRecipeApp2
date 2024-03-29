@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 private interface SqlDataSource {
     val recipes : Flow<List<Recipe>>
     suspend fun removeAllRecipes()
-    suspend fun deleteWithId(id: String)
+    suspend fun deleteWithId(content: String)
     suspend fun insert(
         imageUrl: String,
         title: String,
@@ -35,8 +35,8 @@ class SqlDataSourceImpl internal constructor(
         database.appDatabaseQueries.removeAllRecentRecipes()
     }
 
-    override suspend fun deleteWithId(id: String) {
-
+    override suspend fun deleteWithId(content: String) {
+        database.appDatabaseQueries.removeRecentRecipe(content)
     }
 
     override suspend fun insert(

@@ -41,8 +41,7 @@ class GeminiService {
         }
     }
 
-    // TODO - SAVE TO LOCAL STORAGE
-    private var apiKey: String = "AIzaSyD9jCURxSyLtSe5tL4KsPdEeW2a3dvgnDM"
+    private var apiKey: String = ""
 
     fun getApiKey(): String {
         return apiKey
