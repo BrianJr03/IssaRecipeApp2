@@ -34,13 +34,17 @@ import constants.INGREDIENTS_LABEL
 import constants.OCCASION_LABEL
 import constants.OTHER_INFO
 import constants.PARTY_SIZE_LABEL
+import jr.brian.shared.database.AppDatabase
 import kotlinx.coroutines.launch
 import models.local.Recipe
+import models.local.SqlDataSourceImpl
 import models.local.Status
+import models.local.TEST_RECENT_RECIPES
 import repositories.API
 import ui.animation.LoadingAnimation
 import ui.composables.DefaultTextField
-import ui.screens.RecipeCache.saveRecipe
+import ui.screens.RecipeCache.saveRecipeInCache
+import util.extractRecipeTitle
 import util.generateRecipeQuery
 import util.loadingHints
 import util.validateAllergies
@@ -51,7 +55,9 @@ import util.validateOtherInfo
 import util.validatePartySize
 
 @Composable
-fun GenerateScreenComponent.GenerateScreen() {
+fun GenerateScreenComponent.GenerateScreen(
+    sqlDataSourceImpl: SqlDataSourceImpl
+) {
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -284,6 +290,7 @@ fun GenerateScreenComponent.GenerateScreen() {
                     ),
                 onClick = {
                     if (ingredients.value.isNotEmpty()) {
+                        isEmptyIngredientsError.value = false
                         scope.launch {
                             validateTextFields()
                             isLoading.value = true
@@ -301,7 +308,11 @@ fun GenerateScreenComponent.GenerateScreen() {
                             )
                             isLoading.value = false
                             isRecipeGenerated.value = true
-                            status.saveRecipe()
+                            RecipeCache.saveInDatabase(
+                                status = status,
+                                courseType = occasion.value,
+                                sqlDataSourceImpl = sqlDataSourceImpl
+                            )
                             onEvent(
                                 GenerateScreenEvent.OnGenerateRecipe(
                                     recipe = RecipeCache.recipe
@@ -343,7 +354,11 @@ fun GenerateScreenComponent.GenerateScreen() {
                         )
                         isLoading.value = false
                         isRecipeGenerated.value = true
-                        status.saveRecipe()
+                        RecipeCache.saveInDatabase(
+                            status = status,
+                            courseType = occasion.value,
+                            sqlDataSourceImpl = sqlDataSourceImpl
+                        )
                         onEvent(
                             GenerateScreenEvent.OnRandomizeRecipe(
                                 recipe = RecipeCache.recipe
@@ -394,13 +409,33 @@ private object RecipeCache {
     fun reset() {
         recipe = Recipe.EMPTY
     }
-    fun Status.saveRecipe() {
+
+    suspend fun saveInDatabase(
+        status: Status,
+        courseType: String,
+        sqlDataSourceImpl: SqlDataSourceImpl
+    ) {
+        status.saveRecipeInCache(courseType)
+        sqlDataSourceImpl.insert(
+            imageUrl = recipe.imageUrl,
+            title = recipe.content.extractRecipeTitle(),
+            content = recipe.content,
+            courseType = recipe.courseType,
+            duration = recipe.duration,
+            rating = recipe.rating,
+        )
+    }
+    private fun Status.saveRecipeInCache(courseType: String) {
         when (this) {
             is Status.Success -> {
-                recipe = Recipe.EMPTY.copy(content = this.data)
+                recipe = recipe.copy(
+                    title = this.data.extractRecipeTitle(),
+                    content = this.data,
+                    courseType = courseType
+                )
             }
             is Status.Error -> {
-                recipe = Recipe.EMPTY.copy(content = this.message)
+                recipe = recipe.copy(content = this.message)
             }
             else -> Unit
         }

@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS Recipe (
+    imageUrl TEXT NOT NULL,
+    title TEXT NOT NULL,
+    content TEXT PRIMARY KEY NOT NULL,
+    courseType TEXT NOT NULL,
+    duration TEXT NOT NULL,
+    rating TEXT NOT NULL
+);
+
+insertRecipe:
+INSERT OR REPLACE INTO Recipe(imageUrl, title, content, courseType, duration, rating)
+VALUES(
+:imageUrl,
+:title,
+:content,
+:courseType,
+:duration,
+ :rating
+);
+
+removeAllRecentRecipes:
+DELETE FROM Recipe;
+
+selectAllRecipes:
+SELECT Recipe.*
+FROM Recipe;

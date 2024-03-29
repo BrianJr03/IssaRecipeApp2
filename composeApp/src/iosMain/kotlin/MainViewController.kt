@@ -8,6 +8,8 @@ import com.seiko.imageloader.ImageLoader
 import com.seiko.imageloader.LocalImageLoader
 import com.seiko.imageloader.component.setupDefaultComponents
 import com.seiko.imageloader.defaultImageResultMemoryCache
+import jr.brian.shared.database.AppDatabase
+import models.local.DatabaseDriver
 import okio.Path.Companion.toPath
 import platform.Foundation.NSCachesDirectory
 import platform.Foundation.NSSearchPathForDirectoriesInDomains
@@ -18,10 +20,17 @@ fun MainViewController() = ComposeUIViewController {
     val root = remember {
         RootComponent(DefaultComponentContext(LifecycleRegistry()))
     }
+
+    val driver = DatabaseDriver().createDriver()
+    val appDatabase = AppDatabase(driver)
+
     CompositionLocalProvider(
         LocalImageLoader provides remember { generateImageLoader() }
     ) {
-        App(root)
+        App(
+            root = root,
+            appDatabase = appDatabase
+        )
     }
 }
 

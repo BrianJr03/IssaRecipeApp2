@@ -15,6 +15,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -32,15 +36,30 @@ import constants.SHARE
 import models.local.TEST_RECENT_RECIPES
 import blocs.homeScreen.HomeScreenComponent
 import blocs.homeScreen.HomeScreenEvent
-import ui.composables.ArrowIcon
 import ui.composables.OptionCard
 import ui.composables.VerticalRecipeCard
 import ui.composables.HorizontalRecipeCard
 import ui.composables.SeeAllCard
 import constants.YOU_GOTTA_TRY_THIS
+import jr.brian.shared.database.AppDatabase
+import kotlinx.coroutines.launch
+import models.local.Recipe
+import models.local.SqlDataSourceImpl
+import models.local.toRecipe
 
 @Composable
-fun HomeScreenComponent.HomeScreen() {
+fun HomeScreenComponent.HomeScreen(
+    sqlDataSourceImpl: SqlDataSourceImpl
+)  {
+    val scope = rememberCoroutineScope()
+    val favorites = rememberSaveable { mutableStateOf(listOf<Recipe>()) }
+
+    scope.launch {
+        sqlDataSourceImpl.recipes.collect {
+            favorites.value = it.map { sqlRecipe -> sqlRecipe.toRecipe() }
+        }
+    }
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -59,7 +78,10 @@ fun HomeScreenComponent.HomeScreen() {
 
             HeaderRow()
             ScreenOptionCardRow()
-            RecipesRow(rowLabel = RECENT_RECIPES)
+            FavRecipesRow(
+                rowLabel = RECENT_RECIPES,
+                list = favorites.value
+            )
         }
 
         item {
@@ -165,9 +187,11 @@ private fun HomeScreenComponent.ScreenOptionCardRow() {
 }
 
 @Composable
-private fun HomeScreenComponent.RecipesRow(
-    rowLabel: String
+private fun HomeScreenComponent.FavRecipesRow(
+    rowLabel: String,
+    list: List<Recipe>
 ) {
+    val reversed = list.reversed()
     Column(modifier = Modifier.padding(bottom = SECTION_PADDING_BOTTOM)) {
         Text(
             rowLabel,
@@ -179,10 +203,10 @@ private fun HomeScreenComponent.RecipesRow(
         )
         Spacer(Modifier.height(5.dp))
         LazyRow {
-            items(TEST_RECENT_RECIPES.takeLast(7).size) { index ->
-                VerticalRecipeCard(TEST_RECENT_RECIPES[index]) {
+            items(list.size) {
+                VerticalRecipeCard(reversed[it]) {
                     onEvent(
-                        HomeScreenEvent.OnRecentRecipeClick(TEST_RECENT_RECIPES[index])
+                        HomeScreenEvent.OnRecentRecipeClick(reversed[it])
                     )
                 }
             }

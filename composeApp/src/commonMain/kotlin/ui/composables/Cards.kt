@@ -1,5 +1,6 @@
 package ui.composables
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -46,59 +48,64 @@ fun VerticalRecipeCard(
     recipe: Recipe, onClick: () -> Unit
 ) {
     Card(
-        modifier = Modifier.height(RECIPE_CARD_HEIGHT).width(RECIPE_CARD_WIDTH).padding(
-            start = HOME_PADDING_START, end = RECIPE_CARD_PADDING_END
-        ).clickable { onClick() }, elevation = CARD_ELEVATION
+        modifier = Modifier
+            .height(RECIPE_CARD_HEIGHT)
+            .width(RECIPE_CARD_WIDTH)
+            .padding(start = 15.dp, end = 15.dp)
+            .clickable { onClick() },
+        elevation = CARD_ELEVATION
     ) {
+        val painter = rememberImagePainter(url = recipe.imageUrl)
+
         Box(
-            modifier = Modifier, contentAlignment = Alignment.TopCenter
+            modifier = Modifier, contentAlignment = Alignment.Center
         ) {
-            Column {
-                val painter = rememberImagePainter(url = recipe.imageUrl)
+//            Column {
+            if (recipe.imageUrl.isNotBlank()) {
                 Image(
                     painter = painter,
-                    modifier = Modifier.height(VERTICAL_RECIPE_CARD_IMAGE_HEIGHT).fillMaxWidth()
+                    modifier = Modifier.fillMaxSize()
                         .padding(
                             top = V_RECIPE_CARD_IMAGE_PADDING_TOP,
                             bottom = V_RECIPE_CARD_IMAGE_PADDING_BOTTOM
                         ),
                     contentDescription = RECIPE_IMAGE
                 )
+            } else {
                 Text(
-                    recipe.title, modifier = Modifier.padding(
-                        start = V_RECIPE_CARD_CONTENT_PADDING_START,
-                        bottom = V_RECIPE_CARD_CONTENT_PADDING_BOTTOM
-                    )
+                    recipe.title.replace(" ", "\n"),
+                    modifier = Modifier,
                 )
-                Text(
-                    recipe.courseType, modifier = Modifier.padding(
-                        start = V_RECIPE_CARD_CONTENT_PADDING_START,
-                        bottom = V_RECIPE_CARD_CONTENT_PADDING_BOTTOM
-                    )
-                )
-                Row(
-                    modifier = Modifier.padding(
-                        start = V_RECIPE_CARD_CONTENT_PADDING_START,
-                        bottom = V_RECIPE_CARD_CONTENT_PADDING_BOTTOM,
-                        end = V_RECIPE_CARD_CONTENT_PADDING_END
-                    )
-                ) {
-                    Text(recipe.duration)
-                    Spacer(Modifier.weight(1f))
-                    Box(
-                        modifier = Modifier.background(recipe.rating.getRatingBoxColor())
-                            .width(V_RECIPE_CARD_RATING_BOX_HEIGHT),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            recipe.rating, color = Color.White, modifier = Modifier.padding(
-                                start = V_RECIPE_CARD_RATING_BOX_PADDING_START,
-                                end = V_RECIPE_CARD_RATING_BOX_PADDING_END
-                            )
-                        )
-                    }
-                }
             }
+//                Text(
+//                    recipe.courseType, modifier = Modifier.padding(
+//                        start = V_RECIPE_CARD_CONTENT_PADDING_START,
+//                        bottom = V_RECIPE_CARD_CONTENT_PADDING_BOTTOM
+//                    )
+//                )
+//                Row(
+//                    modifier = Modifier.padding(
+//                        start = V_RECIPE_CARD_CONTENT_PADDING_START,
+//                        bottom = V_RECIPE_CARD_CONTENT_PADDING_BOTTOM,
+//                        end = V_RECIPE_CARD_CONTENT_PADDING_END
+//                    )
+//                ) {
+//                    Text(recipe.duration)
+//                    Spacer(Modifier.weight(1f))
+//                    Box(
+//                        modifier = Modifier.background(recipe.rating.getRatingBoxColor())
+//                            .width(V_RECIPE_CARD_RATING_BOX_HEIGHT),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        Text(
+//                            recipe.rating, color = Color.White, modifier = Modifier.padding(
+//                                start = V_RECIPE_CARD_RATING_BOX_PADDING_START,
+//                                end = V_RECIPE_CARD_RATING_BOX_PADDING_END
+//                            )
+//                        )
+//                    }
+//                }
+//            }
         }
     }
 }

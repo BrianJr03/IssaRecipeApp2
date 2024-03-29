@@ -32,7 +32,9 @@ import constants.RECIPE_IMAGE
 import util.getRatingBoxColor
 
 @Composable
-fun RecipeScreenComponent.RecipeScreen(recipe: Recipe) {
+fun RecipeScreenComponent.RecipeScreen(
+    recipe: Recipe
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
