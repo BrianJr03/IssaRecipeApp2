@@ -21,6 +21,9 @@ VALUES(
 removeAllRecentRecipes:
 DELETE FROM Recipe;
 
+removeRecentRecipe:
+DELETE FROM Recipe WHERE content = :contentValue;
+
 selectAllRecipes:
 SELECT Recipe.*
 FROM Recipe;
