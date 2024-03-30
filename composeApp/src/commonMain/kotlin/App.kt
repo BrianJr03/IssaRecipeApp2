@@ -34,7 +34,7 @@ fun App(
                 }
 
                 is RootComponent.Child.AskScreen -> {
-                    instance.component.AskScreen()
+                    instance.component.AskScreen(sqlDataSourceImpl)
                 }
 
                 is RootComponent.Child.GenerateScreen -> {
