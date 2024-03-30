@@ -42,7 +42,6 @@ import blocs.settingsScreen.SettingsScreenEvent
 import kotlinx.coroutines.launch
 import models.local.LocalStorage
 import models.local.SqlDataSourceImpl
-import repositories.API
 import ui.animation.DefaultLoadingAnimation
 import ui.composables.DefaultTextField
 import ui.composables.OptionsDialog
@@ -124,8 +123,6 @@ fun SettingsPage(
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
 
-    val repository = API.geminiRepository
-
     Scaffold {
         Settings(
             sqlDataSourceImpl = sqlDataSourceImpl,
@@ -135,7 +132,6 @@ fun SettingsPage(
             foodAllergies = foodAllergies,
             onApiKeyValueChange = { str ->
                 key.value = str
-                repository.setApiKey(str)
                 scope.launch {
                     sqlDataSourceImpl.updateApiKey(str)
                 }

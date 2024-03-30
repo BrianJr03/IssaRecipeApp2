@@ -40,27 +40,23 @@ class GeminiService {
             level = LogLevel.ALL
         }
     }
+    private fun getUrl(key: String) =  "$BASE_URL$ROUTE$key"
 
-    private var apiKey: String = ""
-
-    fun getApiKey(): String {
-        return apiKey
-    }
-
-    fun setApiKey(key: String) {
-        apiKey = key
-    }
-
-    private val url = "$BASE_URL$ROUTE$apiKey"
-
-    suspend fun generateContent(prompt: String): Response {
-        return makeApiRequest(url) {
+    suspend fun generateContent(
+        apiKey: String,
+        prompt: String
+    ): Response {
+        return makeApiRequest(getUrl(apiKey)) {
             addText(prompt)
         }
     }
 
-    suspend fun generateContentWithMedia(prompt: String, images: List<ByteArray>): Response {
-        return makeApiRequest("$BASE_URL$ROUTE$apiKey") {
+    suspend fun generateContentWithMedia(
+        apiKey: String,
+        prompt: String,
+        images: List<ByteArray>
+    ): Response {
+        return makeApiRequest(getUrl(apiKey)) {
             addText(prompt)
             addImages(images)
         }

@@ -12,13 +12,21 @@ class GeminiRepositoryImpl : GeminiRepository {
     private val geminiService = GeminiService()
 
     override suspend fun generate(
+        apiKey: String,
         prompt: String,
         images: List<ByteArray>
     ): Status {
         return try {
             val response = when {
-                images.isEmpty() -> geminiService.generateContent(prompt)
-                else -> geminiService.generateContentWithMedia(prompt, images)
+                images.isEmpty() -> geminiService.generateContent(
+                    apiKey = apiKey,
+                    prompt = prompt
+                )
+                else -> geminiService.generateContentWithMedia(
+                    apiKey = apiKey,
+                    prompt = prompt,
+                    images =images
+                )
             }
 
             val status = response.error?.let {
@@ -35,13 +43,5 @@ class GeminiRepositoryImpl : GeminiRepository {
         } catch (e: Exception) {
             Status.Error("An error occurred, please retry.")
         }
-    }
-
-    override fun getApiKey(): String {
-        return geminiService.getApiKey()
-    }
-
-    override fun setApiKey(key: String) {
-        geminiService.setApiKey(key)
     }
 }

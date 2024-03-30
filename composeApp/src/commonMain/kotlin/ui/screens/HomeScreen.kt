@@ -43,7 +43,6 @@ import constants.YOU_GOTTA_TRY_THIS
 import models.local.Recipe
 import models.local.SqlDataSourceImpl
 import models.local.toRecipe
-import repositories.API
 
 @Composable
 fun HomeScreenComponent.HomeScreen(
@@ -57,16 +56,6 @@ fun HomeScreenComponent.HomeScreen(
                 sqlDataSourceImpl.deleteWithId(it.first().content)
             }
             recentRecipes.value = it.map { sqlRecipe -> sqlRecipe.toRecipe() }
-        }
-    }
-
-    LaunchedEffect(2) {
-        try {
-            sqlDataSourceImpl.settings.collect {
-                API.geminiRepository.setApiKey(it.apiKey)
-            }
-        } catch (npe: NullPointerException) {
-            sqlDataSourceImpl.initSettings()
         }
     }
 

@@ -15,6 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -42,6 +43,7 @@ import repositories.API
 import ui.animation.DefaultLoadingAnimation
 import ui.animation.LoadingAnimation
 import ui.composables.DefaultTextField
+import util.DEFAULT_API_KEY_VALUE
 import util.extractRecipeTitle
 import util.generateRecipeQuery
 import util.loadingHints
@@ -59,6 +61,16 @@ fun GenerateScreenComponent.GenerateScreen(
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
+
+    val apiKey = rememberSaveable { mutableStateOf(DEFAULT_API_KEY_VALUE) }
+
+    LaunchedEffect(2) {
+        try {
+            sqlDataSourceImpl.settings.collect {
+                apiKey.value = it.apiKey
+            }
+        } catch (_: NullPointerException) {}
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -295,7 +307,8 @@ fun GenerateScreenComponent.GenerateScreen(
                             isRecipeGenerated.value = false
                             loadingHint.value = loadingHints.random()
                             val status = API.geminiRepository.generate(
-                                generateRecipeQuery(
+                                apiKey = apiKey.value,
+                                prompt = generateRecipeQuery(
                                     ingredients = ingredients.value,
                                     partySize = partySize.value,
                                     occasion = occasion.value,
@@ -341,7 +354,8 @@ fun GenerateScreenComponent.GenerateScreen(
                         isRecipeGenerated.value = false
                         loadingHint.value = loadingHints.random()
                         val status = API.geminiRepository.generate(
-                            generateRecipeQuery(
+                            apiKey = apiKey.value,
+                            prompt = generateRecipeQuery(
                                 ingredients = ingredients.value,
                                 partySize = partySize.value,
                                 occasion = occasion.value,
