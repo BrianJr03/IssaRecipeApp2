@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,7 +40,6 @@ import models.local.SqlDataSourceImpl
 import models.local.Status
 import repositories.API
 import ui.animation.DefaultLoadingAnimation
-import ui.animation.LoadingAnimation
 import ui.composables.DefaultTextField
 import util.DEFAULT_API_KEY_VALUE
 import util.extractRecipeTitle
