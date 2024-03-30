@@ -34,16 +34,14 @@ import constants.INGREDIENTS_LABEL
 import constants.OCCASION_LABEL
 import constants.OTHER_INFO
 import constants.PARTY_SIZE_LABEL
-import jr.brian.shared.database.AppDatabase
 import kotlinx.coroutines.launch
 import models.local.Recipe
 import models.local.SqlDataSourceImpl
 import models.local.Status
-import models.local.TEST_RECENT_RECIPES
 import repositories.API
+import ui.animation.DefaultLoadingAnimation
 import ui.animation.LoadingAnimation
 import ui.composables.DefaultTextField
-import ui.screens.RecipeCache.saveRecipeInCache
 import util.extractRecipeTitle
 import util.generateRecipeQuery
 import util.loadingHints
@@ -377,13 +375,7 @@ fun GenerateScreenComponent.GenerateScreen(
                     style = TextStyle(fontSize = 16.sp),
                     modifier = Modifier.padding(top = 10.dp, bottom = 10.dp, end = 10.dp)
                 )
-                LoadingAnimation(
-                    circleSize = 8.dp,
-                    spaceBetween = 5.dp,
-                    travelDistance = 10.dp,
-                    circleColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-                    modifier = Modifier.padding(top = 14.dp)
-                )
+                DefaultLoadingAnimation()
             }
         }
 
@@ -416,7 +408,7 @@ private object RecipeCache {
         sqlDataSourceImpl: SqlDataSourceImpl
     ) {
         status.saveRecipeInCache(courseType)
-        sqlDataSourceImpl.insert(
+        sqlDataSourceImpl.insertRecentRecipe(
             imageUrl = recipe.imageUrl,
             title = recipe.content.extractRecipeTitle(),
             content = recipe.content,

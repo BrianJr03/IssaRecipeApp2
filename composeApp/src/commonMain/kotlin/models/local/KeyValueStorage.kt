@@ -33,7 +33,7 @@ object LocalStorage {
 
     fun saveAutoGenerateImage(value: Boolean) {
         keyValueStorage.settingsConfig= keyValueStorage.settingsConfig?.copy(
-            autoGenerateImage = value
+//            autoGenerateImage = value
         )
     }
 }

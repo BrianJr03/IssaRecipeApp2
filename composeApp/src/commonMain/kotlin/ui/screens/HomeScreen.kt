@@ -15,8 +15,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,24 +40,33 @@ import ui.composables.VerticalRecipeCard
 import ui.composables.HorizontalRecipeCard
 import ui.composables.SeeAllCard
 import constants.YOU_GOTTA_TRY_THIS
-import kotlinx.coroutines.launch
 import models.local.Recipe
 import models.local.SqlDataSourceImpl
 import models.local.toRecipe
+import repositories.API
 
 @Composable
 fun HomeScreenComponent.HomeScreen(
     sqlDataSourceImpl: SqlDataSourceImpl
-)  {
-    val scope = rememberCoroutineScope()
+) {
     val recentRecipes = rememberSaveable { mutableStateOf(listOf<Recipe>()) }
 
-    scope.launch {
+    LaunchedEffect(1) {
         sqlDataSourceImpl.recipes.collect {
             if (it.size > 10) {
                 sqlDataSourceImpl.deleteWithId(it.first().content)
             }
             recentRecipes.value = it.map { sqlRecipe -> sqlRecipe.toRecipe() }
+        }
+    }
+
+    LaunchedEffect(2) {
+        try {
+            sqlDataSourceImpl.settings.collect {
+                API.geminiRepository.setApiKey(it.apiKey)
+            }
+        } catch (npe: NullPointerException) {
+            sqlDataSourceImpl.initSettings()
         }
     }
 

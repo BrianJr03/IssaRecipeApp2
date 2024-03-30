@@ -27,3 +27,29 @@ DELETE FROM Recipe WHERE content = :contentValue;
 selectAllRecipes:
 SELECT Recipe.*
 FROM Recipe;
+
+CREATE TABLE IF NOT EXISTS Settings (
+    apiKey TEXT PRIMARY KEY NOT NULL,
+    dietarySettings TEXT NOT NULL DEFAULT '',
+    allergySettings TEXT NOT NULL DEFAULT ''
+);
+
+initSettings:
+INSERT OR REPLACE INTO Settings(apiKey, dietarySettings, allergySettings)
+VALUES(
+:apiKey,
+:dietarySettings,
+:allergySettings
+);
+
+updateApiKey:
+UPDATE Settings SET apiKey = :newApiKey;
+
+updatedietarySettings:
+UPDATE Settings SET dietarySettings = :newDietarySettings;
+
+updateAllergySettings:
+UPDATE Settings SET allergySettings = :newAllergySettings;
+
+getSettings:
+SELECT * FROM Settings;

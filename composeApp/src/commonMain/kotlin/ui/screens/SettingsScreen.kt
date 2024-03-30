@@ -25,9 +25,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,9 +43,11 @@ import kotlinx.coroutines.launch
 import models.local.LocalStorage
 import models.local.SqlDataSourceImpl
 import repositories.API
+import ui.animation.DefaultLoadingAnimation
 import ui.composables.DefaultTextField
 import ui.composables.OptionsDialog
 import util.API_KEY_LABEL
+import util.DEFAULT_API_KEY_VALUE
 import util.DIETARY_RESTRICTIONS_LABEL
 import util.FOOD_ALLERGY_LABEL
 import util.allergyOptions
@@ -53,20 +57,39 @@ import util.dietaryOptions
 fun SettingsScreenComponent.SettingsScreen(
     sqlDataSourceImpl: SqlDataSourceImpl
 ) {
+    val apiKey = rememberSaveable { mutableStateOf(DEFAULT_API_KEY_VALUE) }
+    val dietarySettings = rememberSaveable { mutableStateOf("") }
+    val allergySettings = rememberSaveable { mutableStateOf("") }
+
+    LaunchedEffect(1) {
+        try {
+            sqlDataSourceImpl.settings.collect {
+                    apiKey.value = it.apiKey
+                    dietarySettings.value = it.dietarySettings
+                    allergySettings.value = it.allergySettings
+                }
+        } catch (npe: NullPointerException) {
+            sqlDataSourceImpl.initSettings()
+        }
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        val settingsConfig = LocalStorage.keyValueStorage.settingsConfig
-        SettingsPage(
-            sqlDataSourceImpl = sqlDataSourceImpl,
-            apiKey = settingsConfig?.apiKey.orEmpty(),
-            dietaryRestrictions = settingsConfig?.dietaryRestrictions.orEmpty(),
-            foodAllergies = settingsConfig?.foodAllergies.orEmpty(),
-            autoGenerateImage = settingsConfig?.autoGenerateImage ?: false
-        ) {
-            onEvent(SettingsScreenEvent.OnNavBack)
+        if (apiKey.value != DEFAULT_API_KEY_VALUE) {
+            SettingsPage(
+                sqlDataSourceImpl = sqlDataSourceImpl,
+                apiKey = apiKey.value,
+                dietaryRestrictions = dietarySettings.value,
+                foodAllergies = allergySettings.value,
+                autoGenerateImage = false,
+            ) {
+                onEvent(SettingsScreenEvent.OnNavBack)
+            }
+        } else {
+            DefaultLoadingAnimation()
         }
     }
 }
@@ -80,6 +103,8 @@ fun SettingsPage(
     autoGenerateImage: Boolean,
     onNavBack: () -> Unit
 ) {
+    val scope = rememberCoroutineScope()
+
     val key = remember {
         mutableStateOf(apiKey)
     }
@@ -105,21 +130,27 @@ fun SettingsPage(
         Settings(
             sqlDataSourceImpl = sqlDataSourceImpl,
             apiKey = key.value,
-            dietaryRestrictions = dietary.value,
+            dietaryRestrictions = dietaryRestrictions,
             isImageGenEnabled = isImageGenEnabled.value,
-            foodAllergies = allergies.value,
+            foodAllergies = foodAllergies,
             onApiKeyValueChange = { str ->
                 key.value = str
                 repository.setApiKey(str)
-                LocalStorage.saveApiKey(str)
+                scope.launch {
+                    sqlDataSourceImpl.updateApiKey(str)
+                }
             },
             onDietaryValueChange = { str ->
                 dietary.value = str
-                LocalStorage.saveDietaryRestrictions(str.lowercase())
+                scope.launch {
+                    sqlDataSourceImpl.updateDietarySetting(str.lowercase())
+                }
             },
             onAllergiesValueChange = { str ->
                 allergies.value = str
-                LocalStorage.saveFoodAllergies(str.lowercase())
+                scope.launch {
+                    sqlDataSourceImpl.updateAllergySetting(str.lowercase())
+                }
             },
             onEnableImageGenCheckChange = { isChecked ->
                 LocalStorage.saveAutoGenerateImage(isChecked)
@@ -211,6 +242,7 @@ fun Settings(
         options = dietaryOptions,
         onSelectItem = {
             onDietaryValueChange(it)
+            isDietaryOptionsShowing.value = false
         },
         onDismissRequest = {
             isDietaryOptionsShowing.value = false
@@ -223,6 +255,7 @@ fun Settings(
         options = allergyOptions,
         onSelectItem = {
             onAllergiesValueChange(it)
+            isAllergyOptionsShowing.value = false
         },
         onDismissRequest = {
             isAllergyOptionsShowing.value = false
@@ -376,7 +409,7 @@ fun Settings(
 
             Spacer(Modifier.height(15.dp))
 
-            Button(onClick = { onNavBack()}) {
+            Button(onClick = { onNavBack() }) {
                 Text("Back")
             }
         }
