@@ -1,3 +1,4 @@
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,7 +27,7 @@ fun App(
         val childStack by root.childStack.subscribeAsState()
         Children(
             stack = childStack,
-            animation = stackAnimation(slide())
+            animation = stackAnimation(slide(orientation = Orientation.Vertical))
         ) { child ->
             when (val instance = child.instance) {
                 is RootComponent.Child.HomeScreen -> {
@@ -42,7 +43,7 @@ fun App(
                 }
 
                 is RootComponent.Child.FavoritesScreen -> {
-                    instance.component.FavoritesScreen()
+                    instance.component.FavoritesScreen(sqlDataSourceImpl)
                 }
 
                 is RootComponent.Child.SettingsScreen -> {

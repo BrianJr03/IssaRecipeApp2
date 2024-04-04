@@ -429,6 +429,7 @@ private object RecipeCache {
             rating = recipe.rating,
         )
     }
+
     private fun Status.saveRecipeInCache(courseType: String) {
         when (this) {
             is Status.Success -> {

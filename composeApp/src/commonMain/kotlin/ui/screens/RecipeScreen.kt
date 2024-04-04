@@ -10,11 +10,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -71,6 +76,30 @@ fun RecipeScreenComponent.RecipeScreen(
                         )
                     )
                 }
+                Row {
+                    Spacer(Modifier.weight(1f))
+                    Button(
+                        modifier = Modifier.padding(bottom = 10.dp),
+                        onClick = {
+                            onEvent(RecipeScreenEvent.OnNavBack)
+                        }) {
+                        Text("Back")
+                    }
+                    Spacer(Modifier.weight(1f))
+                    IconButton(
+                        modifier = Modifier.padding(bottom = 10.dp),
+                        onClick = {
+                            onEvent(RecipeScreenEvent.OnNavBack)
+                        }) {
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            contentDescription = Icons.Default.Favorite.name,
+                            modifier = Modifier.size(50.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    Spacer(Modifier.weight(1f))
+                }
                 Markdown(
                     content = recipe.content,
                     colors = markdownColor(
@@ -83,17 +112,6 @@ fun RecipeScreenComponent.RecipeScreen(
                         bottom = 10.dp
                     )
                 )
-                Row {
-                    Spacer(Modifier.weight(1f))
-                    Button(
-                        modifier = Modifier.padding(bottom = 10.dp),
-                        onClick = {
-                            onEvent(RecipeScreenEvent.OnNavBack)
-                        }) {
-                        Text("Back")
-                    }
-                    Spacer(Modifier.weight(1f))
-                }
             }
         }
     }

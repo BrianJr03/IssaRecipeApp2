@@ -10,9 +10,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import blocs.favoritesScreen.FavsScreenComponent
 import blocs.favoritesScreen.FavsScreenEvent
+import models.local.SqlDataSourceImpl
 
 @Composable
-fun FavsScreenComponent.FavoritesScreen() {
+fun FavsScreenComponent.FavoritesScreen(
+    sqlDataSourceImpl: SqlDataSourceImpl
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
