@@ -13,7 +13,6 @@ const val DINNER = "Dinner"
 const val SNACKS = "Snacks"
 
 const val MENU = "Menu"
-const val SHARE = "Share"
 
 const val RECENT_RECIPES = "Recent Recipes"
 const val YOU_GOTTA_TRY_THIS = "You Gotta Try This!"

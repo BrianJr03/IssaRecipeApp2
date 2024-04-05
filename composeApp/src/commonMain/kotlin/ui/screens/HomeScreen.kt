@@ -13,7 +13,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material.icons.rounded.Share
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +31,6 @@ import constants.home.*
 import constants.MENU
 import constants.RECENT_RECIPES
 import constants.SETTINGS
-import constants.SHARE
 import models.local.TEST_RECENT_RECIPES
 import blocs.homeScreen.HomeScreenComponent
 import blocs.homeScreen.HomeScreenEvent
@@ -134,11 +133,11 @@ private fun HomeScreenComponent.HeaderRow() {
         Spacer(Modifier.weight(1f))
 
         Icon(
-            imageVector = Icons.Rounded.Share,
-            contentDescription = SHARE,
+            imageVector = Icons.Rounded.Settings,
+            contentDescription = SETTINGS,
             modifier = Modifier.clickable {
                 onEvent(
-                    HomeScreenEvent.OnShareClick
+                    HomeScreenEvent.OnSettingsClick
                 )
             }
         )
@@ -147,41 +146,33 @@ private fun HomeScreenComponent.HeaderRow() {
 
 @Composable
 private fun HomeScreenComponent.ScreenOptionCardRow() {
-    LazyRow {
-        item {
-            OptionCard(
-                text = ASK,
-                onClick = {
-                    onEvent(
-                        HomeScreenEvent.OnAskClick
-                    )
-                }
-            )
-            OptionCard(
-                text = GENERATE,
-                onClick = {
-                    onEvent(
-                        HomeScreenEvent.OnGenerateClick
-                    )
-                }
-            )
-            OptionCard(
-                text = FAVORITES,
-                onClick = {
-                    onEvent(
-                        HomeScreenEvent.OnFavoritesClick
-                    )
-                }
-            )
-            OptionCard(
-                text = SETTINGS,
-                onClick = {
-                    onEvent(
-                        HomeScreenEvent.OnSettingsClick
-                    )
-                }
-            )
-        }
+    Row {
+        Spacer(Modifier.weight(1f))
+        OptionCard(
+            text = ASK,
+            onClick = {
+                onEvent(
+                    HomeScreenEvent.OnAskClick
+                )
+            }
+        )
+        OptionCard(
+            text = GENERATE,
+            onClick = {
+                onEvent(
+                    HomeScreenEvent.OnGenerateClick
+                )
+            }
+        )
+        OptionCard(
+            text = FAVORITES,
+            onClick = {
+                onEvent(
+                    HomeScreenEvent.OnFavoritesClick
+                )
+            }
+        )
+        Spacer(Modifier.weight(1f))
     }
 }
 

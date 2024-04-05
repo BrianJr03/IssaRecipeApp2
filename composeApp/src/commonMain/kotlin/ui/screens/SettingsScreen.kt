@@ -68,6 +68,7 @@ fun SettingsScreenComponent.SettingsScreen(
                     allergySettings.value = it.allergySettings
                 }
         } catch (npe: NullPointerException) {
+            apiKey.value = ""
             sqlDataSourceImpl.initSettings()
         }
     }
