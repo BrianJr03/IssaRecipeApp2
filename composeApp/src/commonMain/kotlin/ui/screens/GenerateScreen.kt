@@ -35,14 +35,12 @@ import constants.OCCASION_LABEL
 import constants.OTHER_INFO
 import constants.PARTY_SIZE_LABEL
 import kotlinx.coroutines.launch
-import models.local.Recipe
+import models.local.RecipeCache
 import models.local.SqlDataSourceImpl
-import models.local.Status
 import repositories.API
 import ui.animation.DefaultLoadingAnimation
 import ui.composables.DefaultTextField
 import util.DEFAULT_API_KEY_VALUE
-import util.extractRecipeTitle
 import util.generateRecipeQuery
 import util.loadingHints
 import util.validateAllergies
@@ -402,47 +400,6 @@ fun GenerateScreenComponent.GenerateScreen(
                 onEvent(GenerateScreenEvent.OnNavBack)
             }) {
             Text("Back")
-        }
-    }
-}
-
-private object RecipeCache {
-    var recipe = Recipe.EMPTY
-
-    @Suppress("unused")
-    fun reset() {
-        recipe = Recipe.EMPTY
-    }
-
-    suspend fun saveInDatabase(
-        status: Status,
-        courseType: String,
-        sqlDataSourceImpl: SqlDataSourceImpl
-    ) {
-        status.saveRecipeInCache(courseType)
-        sqlDataSourceImpl.insertRecentRecipe(
-            imageUrl = recipe.imageUrl,
-            title = recipe.content.extractRecipeTitle(),
-            content = recipe.content,
-            courseType = recipe.courseType,
-            duration = recipe.duration,
-            rating = recipe.rating,
-        )
-    }
-
-    private fun Status.saveRecipeInCache(courseType: String) {
-        when (this) {
-            is Status.Success -> {
-                recipe = recipe.copy(
-                    title = this.data.extractRecipeTitle(),
-                    content = this.data,
-                    courseType = courseType
-                )
-            }
-            is Status.Error -> {
-                recipe = recipe.copy(content = this.message)
-            }
-            else -> Unit
         }
     }
 }

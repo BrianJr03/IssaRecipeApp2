@@ -11,11 +11,13 @@ class FavsScreenComponent(
 
     private var _text = MutableValue("")
     val text: Value<String> = _text
-
     fun onEvent(event: FavsScreenEvent) {
         when (event) {
             FavsScreenEvent.OnNavBack -> {
                 onNavBack()
+            }
+            FavsScreenEvent.OnRecipeClick -> {
+
             }
         }
     }

@@ -45,12 +45,12 @@ import util.getRatingBoxColor
 
 @Composable
 fun VerticalRecipeCard(
-    recipe: Recipe, onClick: () -> Unit
+    recipe: Recipe,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
 ) {
     Card(
-        modifier = Modifier
-            .height(RECIPE_CARD_HEIGHT)
-            .width(RECIPE_CARD_WIDTH)
+        modifier = modifier
             .padding(start = 15.dp, end = 15.dp)
             .clickable { onClick() },
         elevation = CARD_ELEVATION

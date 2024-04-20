@@ -4,6 +4,7 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import jr.brian.shared.database.AppDatabase
+import jrbrianshareddatabase.FavoriteRecipes
 import jrbrianshareddatabase.Recipe
 import jrbrianshareddatabase.Settings
 import kotlinx.coroutines.CoroutineDispatcher
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 
 private interface SqlDataSource {
     val recipes: Flow<List<Recipe>>
+    val favoriteRecipes: Flow<List<FavoriteRecipes>>
     val settings: Flow<Settings>
     suspend fun removeAllRecipes()
     suspend fun deleteWithId(content: String)
@@ -20,6 +22,15 @@ private interface SqlDataSource {
     suspend fun updateDietarySetting(value: String)
     suspend fun updateAllergySetting(value: String)
     suspend fun insertRecentRecipe(
+        imageUrl: String,
+        title: String,
+        content: String,
+        courseType: String,
+        duration: String,
+        rating: String
+    )
+
+    suspend fun insertFavoriteRecipe(
         imageUrl: String,
         title: String,
         content: String,
@@ -38,6 +49,9 @@ class SqlDataSourceImpl internal constructor(
 
     override val recipes: Flow<List<Recipe>> =
         database.appDatabaseQueries.selectAllRecipes().asFlow().mapToList(ioDispatcher)
+
+    override val favoriteRecipes: Flow<List<FavoriteRecipes>> =
+        database.appDatabaseQueries.selectAllFavoriteRecipes().asFlow().mapToList(ioDispatcher)
 
     override val settings: Flow<Settings>
         get() = database.appDatabaseQueries.getSettings().asFlow().mapToOne(ioDispatcher)
@@ -59,6 +73,24 @@ class SqlDataSourceImpl internal constructor(
         rating: String
     ) {
         database.appDatabaseQueries.insertRecipe(
+            imageUrl,
+            title,
+            content,
+            courseType,
+            duration,
+            rating
+        )
+    }
+
+    override suspend fun insertFavoriteRecipe(
+        imageUrl: String,
+        title: String,
+        content: String,
+        courseType: String,
+        duration: String,
+        rating: String
+    ) {
+        database.appDatabaseQueries.insertFavoriteRecipe(
             imageUrl,
             title,
             content,

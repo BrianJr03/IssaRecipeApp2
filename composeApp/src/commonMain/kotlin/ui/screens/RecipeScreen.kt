@@ -1,7 +1,9 @@
 package ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +25,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,12 +40,50 @@ import com.mikepenz.markdown.compose.Markdown
 import com.mikepenz.markdown.model.markdownColor
 import com.seiko.imageloader.rememberImagePainter
 import constants.RECIPE_IMAGE
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import models.local.SqlDataSourceImpl
+import ui.composables.FavoriteDialog
+import util.extractRecipeTitle
 import util.getRatingBoxColor
+import kotlin.jvm.JvmOverloads
 
 @Composable
 fun RecipeScreenComponent.RecipeScreen(
-    recipe: Recipe
+    recipe: Recipe,
+    sqlDataSourceImpl: SqlDataSourceImpl
 ) {
+    val scope = rememberCoroutineScope()
+    val favoriteRecipeTitle = remember { mutableStateOf(recipe.content.extractRecipeTitle()) }
+    val isFavoriteDialogShowing = remember { mutableStateOf(false) }
+    val isFavoriteIconHidden = remember { mutableStateOf(false) }
+
+    FavoriteDialog(
+        isShowing = isFavoriteDialogShowing.value,
+        textFieldValue = favoriteRecipeTitle.value,
+        onValueChange = {
+            favoriteRecipeTitle.value = it
+        },
+        onConfirmClick = {
+            scope.launch {
+                sqlDataSourceImpl.insertFavoriteRecipe(
+                    imageUrl =" recipe.imageUrl",
+                    title = "favoriteRecipeTitle.value",
+                    content = "recipe.content",
+                    courseType = "recipe.courseType",
+                    duration = "recipe.duration",
+                    rating = "recipe.rating",
+                )
+                delay(500)
+                isFavoriteIconHidden.value = true
+            }
+            isFavoriteDialogShowing.value = false
+        },
+        onDismissRequest = {
+            isFavoriteDialogShowing.value = false
+        }
+    )
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
@@ -76,30 +120,32 @@ fun RecipeScreenComponent.RecipeScreen(
                         )
                     )
                 }
-                Row {
-                    Spacer(Modifier.weight(1f))
+
+                Row(horizontalArrangement = Arrangement.Center) {
                     Button(
-                        modifier = Modifier.padding(bottom = 10.dp),
+                        modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
                         onClick = {
                             onEvent(RecipeScreenEvent.OnNavBack)
                         }) {
                         Text("Back")
                     }
-                    Spacer(Modifier.weight(1f))
-                    IconButton(
-                        modifier = Modifier.padding(bottom = 10.dp),
-                        onClick = {
-                            onEvent(RecipeScreenEvent.OnNavBack)
-                        }) {
-                        Icon(
-                            imageVector = Icons.Default.Favorite,
-                            contentDescription = Icons.Default.Favorite.name,
-                            modifier = Modifier.size(50.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
+
+                    AnimatedVisibility(!isFavoriteIconHidden.value) {
+                        IconButton(
+                            modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
+                            onClick = {
+                                isFavoriteDialogShowing.value = !isFavoriteDialogShowing.value
+                            }) {
+                            Icon(
+                                imageVector = Icons.Default.Favorite,
+                                contentDescription = Icons.Default.Favorite.name,
+                                modifier = Modifier.size(50.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
                     }
-                    Spacer(Modifier.weight(1f))
                 }
+
                 Markdown(
                     content = recipe.content,
                     colors = markdownColor(

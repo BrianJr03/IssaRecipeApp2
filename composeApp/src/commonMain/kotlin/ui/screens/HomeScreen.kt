@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.Icon
@@ -39,6 +40,8 @@ import ui.composables.VerticalRecipeCard
 import ui.composables.HorizontalRecipeCard
 import ui.composables.SeeAllCard
 import constants.YOU_GOTTA_TRY_THIS
+import constants.cards.RECIPE_CARD_HEIGHT
+import constants.cards.RECIPE_CARD_WIDTH
 import models.local.Recipe
 import models.local.SqlDataSourceImpl
 import models.local.toRecipe
@@ -194,7 +197,12 @@ private fun HomeScreenComponent.FavRecipesRow(
         Spacer(Modifier.height(5.dp))
         LazyRow {
             items(list.size) {
-                VerticalRecipeCard(reversed[it]) {
+                VerticalRecipeCard(
+                    reversed[it],
+                    modifier = Modifier
+                        .height(RECIPE_CARD_HEIGHT)
+                        .width(RECIPE_CARD_WIDTH)
+                ) {
                     onEvent(
                         HomeScreenEvent.OnRecentRecipeClick(reversed[it])
                     )

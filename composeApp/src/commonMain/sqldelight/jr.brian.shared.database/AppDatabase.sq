@@ -28,6 +28,36 @@ selectAllRecipes:
 SELECT Recipe.*
 FROM Recipe;
 
+CREATE TABLE IF NOT EXISTS FavoriteRecipes (
+    imageUrl TEXT NOT NULL,
+    title TEXT NOT NULL,
+    content TEXT PRIMARY KEY NOT NULL,
+    courseType TEXT NOT NULL,
+    duration TEXT NOT NULL,
+    rating TEXT NOT NULL
+);
+
+insertFavoriteRecipe:
+INSERT OR REPLACE INTO FavoriteRecipes(imageUrl, title, content, courseType, duration, rating)
+VALUES(
+:imageUrl,
+:title,
+:content,
+:courseType,
+:duration,
+ :rating
+);
+
+removeAllFavoriteRecipes:
+DELETE FROM FavoriteRecipes;
+
+removeFavoriteRecipe:
+DELETE FROM FavoriteRecipes WHERE content = :contentValue;
+
+selectAllFavoriteRecipes:
+SELECT FavoriteRecipes.*
+FROM FavoriteRecipes;
+
 CREATE TABLE IF NOT EXISTS Settings (
     apiKey TEXT PRIMARY KEY NOT NULL,
     dietarySettings TEXT NOT NULL DEFAULT '',

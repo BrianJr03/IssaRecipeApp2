@@ -55,7 +55,10 @@ fun App(
                 }
 
                 is RootComponent.Child.RecipeScreen -> {
-                    instance.component.RecipeScreen(instance.component.recipe)
+                    instance.component.RecipeScreen(
+                        recipe = instance.component.recipe,
+                        sqlDataSourceImpl = sqlDataSourceImpl
+                    )
                 }
             }
         }
