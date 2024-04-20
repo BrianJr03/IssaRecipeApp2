@@ -1,8 +1,6 @@
 package ui.composables
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,9 +18,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
@@ -41,7 +36,6 @@ import constants.SNACKS
 import constants.cards.*
 import constants.home.HOME_PADDING_START
 import models.local.Recipe
-import util.getRatingBoxColor
 
 @Composable
 fun VerticalRecipeCard(
