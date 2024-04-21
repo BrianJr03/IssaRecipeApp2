@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import blocs.favoritesScreen.FavsScreenComponent
 import blocs.favoritesScreen.FavsScreenEvent
+import constants.getCardInListColor
 import models.local.Recipe
 import models.local.SqlDataSourceImpl
 import models.local.toRecipe
@@ -61,7 +63,7 @@ fun FavsScreenComponent.FavoritesScreen(
         )
 
         if (filteredRecipes.value.isEmpty()) {
-            androidx.compose.material3.Text(
+            Text(
                 "No Favorites",
                 color = MaterialTheme.colors.primary,
                 fontSize = 20.sp
@@ -69,11 +71,13 @@ fun FavsScreenComponent.FavoritesScreen(
         } else {
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Fixed(2),
+                modifier = Modifier.fillMaxSize()
             ) {
                 items(filteredRecipes.value.size) { index ->
                     VerticalRecipeCard(
-                        favoriteRecipes.value.reversed()[index],
-                        modifier = Modifier.height(250.dp).padding(10.dp)
+                        recipe = favoriteRecipes.value.reversed()[index],
+                        color = getCardInListColor(index),
+                        modifier = Modifier.height(250.dp).padding(10.dp),
                     ) {
                         onEvent(
                             FavsScreenEvent.OnNavBack

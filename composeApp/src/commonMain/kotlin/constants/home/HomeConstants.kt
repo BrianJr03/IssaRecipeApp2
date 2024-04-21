@@ -2,8 +2,8 @@ package constants.home
 
 import androidx.compose.ui.unit.dp
 
-val HOME_PADDING_START = 15.dp
-val HOME_PADDING_END = 15.dp
+val DEFAULT_PADDING_START = 15.dp
+val DEFAULT_PADDING_END = 15.dp
 
 val HEADER_ROW_PADDING_TOP = 20.dp
 val HEADER_ROW_PADDING_BOTTOM = 20.dp

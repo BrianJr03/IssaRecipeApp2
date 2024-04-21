@@ -64,12 +64,12 @@ fun RecipeScreenComponent.RecipeScreen(
         onConfirmClick = {
             scope.launch {
                 sqlDataSourceImpl.insertFavoriteRecipe(
-                    imageUrl =" recipe.imageUrl",
-                    title = "favoriteRecipeTitle.value",
-                    content = "recipe.content",
-                    courseType = "recipe.courseType",
-                    duration = "recipe.duration",
-                    rating = "recipe.rating",
+                    imageUrl = recipe.imageUrl,
+                    title = favoriteRecipeTitle.value,
+                    content = recipe.content,
+                    courseType = recipe.courseType,
+                    duration = recipe.duration,
+                    rating = recipe.rating,
                 )
                 delay(500)
                 isFavoriteIconHidden.value = true

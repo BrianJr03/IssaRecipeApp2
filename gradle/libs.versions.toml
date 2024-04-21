@@ -27,6 +27,7 @@ multiplatformMarkdownRenderer = "0.10.0"
 multiplatformSettings = "1.0.0"
 peekabooUi = "0.3.0"
 sqlDelightVersion = "2.0.1"
+uiGraphicsAndroid = "1.6.6"
 
 [libraries]
 decompose-jetbrains = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "extensionsComposeJetbrains" }
@@ -71,6 +72,7 @@ sqldelight-android = { module = "app.cash.sqldelight:android-driver", version.re
 sqldelight-ios = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelightVersion" }
 sqldelight-desktop = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqlDelightVersion" }
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelightVersion" }
+androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

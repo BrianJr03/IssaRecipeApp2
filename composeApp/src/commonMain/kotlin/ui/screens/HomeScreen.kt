@@ -1,16 +1,21 @@
 package ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
@@ -35,13 +40,20 @@ import constants.SETTINGS
 import models.local.TEST_RECENT_RECIPES
 import blocs.homeScreen.HomeScreenComponent
 import blocs.homeScreen.HomeScreenEvent
+import constants.DEFAULT_TEXT_STYLE
+import constants.PALE_VIOLET_RED
 import ui.composables.OptionCard
 import ui.composables.VerticalRecipeCard
 import ui.composables.HorizontalRecipeCard
 import ui.composables.SeeAllCard
 import constants.YOU_GOTTA_TRY_THIS
+import constants.cards.OPTION_CARD_PADDING_END
 import constants.cards.RECIPE_CARD_HEIGHT
 import constants.cards.RECIPE_CARD_WIDTH
+import constants.cards.SEE_ALL_CARD_HEIGHT
+import constants.cards.SEE_ALL_CARD_PADDING_BOTTOM
+import constants.cards.SEE_ALL_CARD_PADDING_END
+import constants.getCardInListColor
 import models.local.Recipe
 import models.local.SqlDataSourceImpl
 import models.local.toRecipe
@@ -61,56 +73,92 @@ fun HomeScreenComponent.HomeScreen(
         }
     }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        item {
-            val isShareShowing = isShareDialogShowing.subscribeAsState()
+    Scaffold {
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(2),
+            modifier = Modifier.fillMaxSize()
+        ) {
+            item(span = StaggeredGridItemSpan.FullLine) {
+                val isShareShowing = isShareDialogShowing.subscribeAsState()
 
-            ShareDialog(
-                isShowing = isShareShowing.value,
-                onConfirmClick = {
-                    hideShareDialog()
-                },
-                onDismissRequest = {
-                    hideShareDialog()
-                }
-            )
-
-            HeaderRow()
-            ScreenOptionCardRow()
-            FavRecipesRow(
-                rowLabel = RECENT_RECIPES,
-                list = recentRecipes.value
-            )
-        }
-
-        item {
-            Text(
-                YOU_GOTTA_TRY_THIS,
-                modifier = Modifier.padding(
-                    start = HOME_PADDING_START,
-                    bottom = ROW_LABEL_PADDING_BOTTOM
-                )
-            )
-        }
-
-        items(TEST_RECENT_RECIPES.take(5).size) {
-            HorizontalRecipeCard(TEST_RECENT_RECIPES[it]) {
-                onEvent(
-                    HomeScreenEvent.OnRecentRecipeClick(TEST_RECENT_RECIPES[it])
+                ShareDialog(
+                    isShowing = isShareShowing.value,
+                    onConfirmClick = {
+                        hideShareDialog()
+                    },
+                    onDismissRequest = {
+                        hideShareDialog()
+                    }
                 )
             }
-        }
 
-        item {
-            SeeAllCard {
-                onEvent(
-                    HomeScreenEvent.OnSeeAllClick
+            item(span = StaggeredGridItemSpan.FullLine) {
+                HeaderRow()
+            }
+
+            item(span = StaggeredGridItemSpan.FullLine) {
+                ScreenOptionCardRow()
+            }
+
+            item(span = StaggeredGridItemSpan.FullLine) {
+                RecentRecipesRow(
+                    rowLabel = RECENT_RECIPES,
+                    list = recentRecipes.value
+                )
+            }
+
+            item(span = StaggeredGridItemSpan.FullLine) {
+                Text(
+                    YOU_GOTTA_TRY_THIS,
+                    style = DEFAULT_TEXT_STYLE,
+                    modifier = Modifier.padding(
+                        start = DEFAULT_PADDING_START,
+                        bottom = ROW_LABEL_PADDING_BOTTOM
+                    )
+                )
+            }
+
+            items(TEST_RECENT_RECIPES.take(4).size) {
+                HorizontalRecipeCard(
+                    TEST_RECENT_RECIPES[it],
+                    modifier = Modifier
+                        .height(100.dp)
+                        .padding(
+                            start = DEFAULT_PADDING_START,
+                            bottom = 10.dp,
+                            end = OPTION_CARD_PADDING_END
+                        ).clickable {
+                            onEvent(
+                                HomeScreenEvent.OnRecentRecipeClick(TEST_RECENT_RECIPES[it])
+                            )
+                        },
+                    boxModifier = Modifier.background(
+                        getCardInListColor(it)
+                    )
+                )
+            }
+
+            item {
+                SeeAllCard(
+                    modifier = Modifier
+                        .height(SEE_ALL_CARD_HEIGHT)
+                        .fillMaxWidth()
+                        .padding(
+                            start = DEFAULT_PADDING_START,
+                            bottom = SEE_ALL_CARD_PADDING_BOTTOM,
+                            end = SEE_ALL_CARD_PADDING_END
+                        ).clickable {
+                            onEvent(
+                                HomeScreenEvent.OnSeeAllClick
+                            )
+                        },
+                    boxModifier = Modifier.background(PALE_VIOLET_RED)
                 )
             }
         }
     }
+
+
 }
 
 @Composable
@@ -120,8 +168,8 @@ private fun HomeScreenComponent.HeaderRow() {
         modifier = Modifier.padding(
             top = HEADER_ROW_PADDING_TOP,
             bottom = HEADER_ROW_PADDING_BOTTOM,
-            start = HOME_PADDING_START,
-            end = HOME_PADDING_END
+            start = DEFAULT_PADDING_START,
+            end = DEFAULT_PADDING_END
         )
     ) {
         Icon(
@@ -131,7 +179,10 @@ private fun HomeScreenComponent.HeaderRow() {
 
         Spacer(Modifier.weight(1f))
 
-        Text(APP_NAME)
+        Text(
+            text = APP_NAME,
+            style = DEFAULT_TEXT_STYLE
+        )
 
         Spacer(Modifier.weight(1f))
 
@@ -153,6 +204,7 @@ private fun HomeScreenComponent.ScreenOptionCardRow() {
         Spacer(Modifier.weight(1f))
         OptionCard(
             text = ASK,
+            boxModifier = Modifier.background(PALE_VIOLET_RED),
             onClick = {
                 onEvent(
                     HomeScreenEvent.OnAskClick
@@ -161,6 +213,7 @@ private fun HomeScreenComponent.ScreenOptionCardRow() {
         )
         OptionCard(
             text = GENERATE,
+            boxModifier = Modifier.background(PALE_VIOLET_RED),
             onClick = {
                 onEvent(
                     HomeScreenEvent.OnGenerateClick
@@ -169,6 +222,7 @@ private fun HomeScreenComponent.ScreenOptionCardRow() {
         )
         OptionCard(
             text = FAVORITES,
+            boxModifier = Modifier.background(PALE_VIOLET_RED),
             onClick = {
                 onEvent(
                     HomeScreenEvent.OnFavoritesClick
@@ -180,16 +234,18 @@ private fun HomeScreenComponent.ScreenOptionCardRow() {
 }
 
 @Composable
-private fun HomeScreenComponent.FavRecipesRow(
+private fun HomeScreenComponent.RecentRecipesRow(
     rowLabel: String,
     list: List<Recipe>
 ) {
     val reversed = list.reversed()
+
     Column(modifier = Modifier.padding(bottom = SECTION_PADDING_BOTTOM)) {
         Text(
             rowLabel,
+            style = DEFAULT_TEXT_STYLE,
             modifier = Modifier.padding(
-                start = HOME_PADDING_START,
+                start = DEFAULT_PADDING_START,
                 top = ROW_LABEL_PADDING_TOP,
                 bottom = ROW_LABEL_PADDING_BOTTOM
             )
@@ -198,7 +254,8 @@ private fun HomeScreenComponent.FavRecipesRow(
         LazyRow {
             items(list.size) {
                 VerticalRecipeCard(
-                    reversed[it],
+                    color = getCardInListColor(it),
+                    recipe = reversed[it],
                     modifier = Modifier
                         .height(RECIPE_CARD_HEIGHT)
                         .width(RECIPE_CARD_WIDTH)

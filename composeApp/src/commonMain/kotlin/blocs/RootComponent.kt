@@ -116,6 +116,9 @@ class RootComponent(
                 Child.SeeAllScreen(
                     SeeAllScreenComponent(
                         componentContext = context,
+                        onNavToRecipePage = {
+                            navigation.pushNew(Config.RecipeScreen(it))
+                        },
                         onNavBack = { navigation.pop() }
                     )
                 )

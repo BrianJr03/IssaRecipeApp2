@@ -1,44 +1,36 @@
 package ui.composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.seiko.imageloader.rememberImagePainter
 import constants.BREAKFAST
+import constants.DEFAULT_TEXT_STYLE
 import constants.DINNER
 import constants.LUNCH
 import constants.RECIPE_IMAGE
 import constants.SEE_ALL
 import constants.SNACKS
 import constants.cards.*
-import constants.home.HOME_PADDING_START
+import constants.home.DEFAULT_PADDING_START
 import models.local.Recipe
 
 @Composable
 fun VerticalRecipeCard(
+    color: Color = Color.White,
     recipe: Recipe,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
@@ -52,7 +44,8 @@ fun VerticalRecipeCard(
         val painter = rememberImagePainter(url = recipe.imageUrl)
 
         Box(
-            modifier = Modifier, contentAlignment = Alignment.Center
+            modifier = Modifier.background(color),
+            contentAlignment = Alignment.Center
         ) {
 //            Column {
             if (recipe.imageUrl.isNotBlank()) {
@@ -67,12 +60,15 @@ fun VerticalRecipeCard(
                 )
             } else {
                 Text(
-                    recipe.title.replace(" ", "\n"),
-                    modifier = Modifier,
+                    text = recipe.title.replace(" ", "\n"),
+                    style = DEFAULT_TEXT_STYLE,
+                    modifier = Modifier
                 )
             }
 //                Text(
-//                    recipe.courseType, modifier = Modifier.padding(
+//                    recipe.courseType,
+//            style = DEFAULT_TEXT_STYLE
+            //                    modifier = Modifier.padding(
 //                        start = V_RECIPE_CARD_CONTENT_PADDING_START,
 //                        bottom = V_RECIPE_CARD_CONTENT_PADDING_BOTTOM
 //                    )
@@ -84,7 +80,7 @@ fun VerticalRecipeCard(
 //                        end = V_RECIPE_CARD_CONTENT_PADDING_END
 //                    )
 //                ) {
-//                    Text(recipe.duration)
+//                    Text(recipe.duration, style = DEFAULT_TEXT_STYLE)
 //                    Spacer(Modifier.weight(1f))
 //                    Box(
 //                        modifier = Modifier.background(recipe.rating.getRatingBoxColor())
@@ -92,7 +88,9 @@ fun VerticalRecipeCard(
 //                        contentAlignment = Alignment.Center
 //                    ) {
 //                        Text(
-//                            recipe.rating, color = Color.White, modifier = Modifier.padding(
+//                            recipe.rating, color = Color.White,
+            //                       style = DEFAULT_TEXT_STYLE,
+            //                            modifier = Modifier.padding(
 //                                start = V_RECIPE_CARD_RATING_BOX_PADDING_START,
 //                                end = V_RECIPE_CARD_RATING_BOX_PADDING_END
 //                            )
@@ -106,20 +104,29 @@ fun VerticalRecipeCard(
 
 @Composable
 fun OptionCard(
-    text: String, onClick: () -> Unit, trailingIcon: @Composable (() -> Unit)? = null
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+        .height(OPTION_CARD_HEIGHT)
+        .padding(
+            start = DEFAULT_PADDING_START,
+            end = OPTION_CARD_PADDING_END
+        ).clickable { onClick() },
+    boxModifier: Modifier = Modifier,
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     Card(
-        modifier = Modifier.height(OPTION_CARD_HEIGHT).padding(
-            start = HOME_PADDING_START, end = OPTION_CARD_PADDING_END
-        ).clickable { onClick() }, elevation = CARD_ELEVATION
+        modifier = modifier,
+        elevation = CARD_ELEVATION
     ) {
         Box(
-            modifier = Modifier, contentAlignment = Alignment.Center
+            modifier = boxModifier,
+            contentAlignment = Alignment.Center
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = text,
-                    style = TextStyle(fontSize = OPTION_CARD_TEXT_FONT_SIZE),
+                    style = DEFAULT_TEXT_STYLE,
                     color = Color.Black,
                     modifier = Modifier.padding(
                         start = OPTION_CARD_TEXT_PADDING_START,
@@ -135,34 +142,41 @@ fun OptionCard(
 
 @Composable
 fun HorizontalRecipeCard(
-    recipe: Recipe, onClick: () -> Unit
+    recipe: Recipe,
+    modifier: Modifier = Modifier,
+    boxModifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier.height(100.dp).padding(
-            start = HOME_PADDING_START, bottom = 10.dp, end = OPTION_CARD_PADDING_END
-        ).clickable { onClick() }, elevation = CARD_ELEVATION
+        modifier = modifier,
+        elevation = CARD_ELEVATION
     ) {
         Box(
-            modifier = Modifier, contentAlignment = Alignment.Center
+            modifier = boxModifier, contentAlignment = Alignment.Center
         ) {
-            val painter = rememberImagePainter(url = recipe.imageUrl)
-
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 7.dp,
-                        start = 10.dp,
-                        bottom = 5.dp
-                    )
-            ) {
-                Image(
-                    painter = painter,
-                    modifier = Modifier.size(100.dp).padding(top = 5.dp, bottom = 5.dp),
-                    contentDescription = RECIPE_IMAGE
+//            val painter = rememberImagePainter(url = recipe.imageUrl)
+            Text(
+                text = recipe.title,
+                style = DEFAULT_TEXT_STYLE,
+                modifier = Modifier.padding(
+                    start = 5.dp, bottom = 10.dp
                 )
-
-                Column(modifier = Modifier.padding(start = 10.dp)) {
+            )
+//            Row(
+//                Modifier
+//                    .fillMaxWidth()
+//                    .padding(
+//                        top = 7.dp,
+//                        start = 10.dp,
+//                        bottom = 5.dp
+//                    )
+//            ) {
+//                Image(
+//                    painter = painter,
+//                    modifier = Modifier.size(100.dp).padding(top = 5.dp, bottom = 5.dp),
+//                    contentDescription = RECIPE_IMAGE
+//                )
+//
+//                Column(modifier = Modifier.padding(start = 10.dp)) {
 
 //                    Row(modifier = Modifier.padding(bottom = 10.dp)) {
 //                        Spacer(Modifier.weight(1f))
@@ -170,77 +184,102 @@ fun HorizontalRecipeCard(
 //                        Spacer(Modifier.weight(1f))
 //                    }
 
-                    Text(recipe.title, modifier = Modifier.padding(start = 5.dp, bottom = 10.dp))
+//                    Text(recipe.title,
+//             style = DEFAULT_TEXT_STYLE,
+        //                    modifier = Modifier.padding(start = 5.dp, bottom = 10.dp))
 
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Rounded.Star,
-                            contentDescription = Icons.Rounded.Star.name,
-                            tint = MaterialTheme.colors.primary,
-                            modifier = Modifier.size(20.dp)
-                        )
+//                    Row(verticalAlignment = Alignment.CenterVertically) {
+//                        Icon(
+//                            imageVector = Icons.Rounded.Star,
+//                            contentDescription = Icons.Rounded.Star.name,
+//                            tint = MaterialTheme.colors.primary,
+//                            modifier = Modifier.size(20.dp)
+//                        )
+//
+//                        Spacer(Modifier.width(5.dp))
+//
+//                        Text(recipe.courseType,style = DEFAULT_TEXT_STYLE)
+//                    }
+//
+//                    Row(verticalAlignment = Alignment.CenterVertically) {
+//                        Icon(
+//                            imageVector = Icons.Rounded.Info,
+//                            contentDescription = Icons.Rounded.Info.name,
+//                            tint = MaterialTheme.colors.primary,
+//                            modifier = Modifier.size(18.dp)
+//                        )
+//
+//                        Spacer(Modifier.width(5.dp))
+//
+//                        Text(
+//                            recipe.duration,
+//                            style = DEFAULT_TEXT_STYLE
+//                        )
+//                    }
 
-                        Spacer(Modifier.width(5.dp))
-
-                        Text(recipe.courseType)
-                    }
-
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Rounded.Info,
-                            contentDescription = Icons.Rounded.Info.name,
-                            tint = MaterialTheme.colors.primary,
-                            modifier = Modifier.size(18.dp)
-                        )
-
-                        Spacer(Modifier.width(5.dp))
-
-                        Text(
-                            recipe.duration
-                        )
-                    }
-
-                }
-            }
+//                }
+//            }
         }
     }
 }
 
 @Composable
 fun SeeAllCard(
-    onClick: () -> Unit
+    modifier: Modifier = Modifier,
+    boxModifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier.height(SEE_ALL_CARD_HEIGHT).fillMaxWidth().padding(
-            start = HOME_PADDING_START,
-            bottom = SEE_ALL_CARD_PADDING_BOTTOM,
-            end = SEE_ALL_CARD_PADDING_END
-        ).clickable { onClick() }, elevation = CARD_ELEVATION
+        modifier = modifier,
+        elevation = CARD_ELEVATION
     ) {
         Box(
-            modifier = Modifier, contentAlignment = Alignment.Center
+            modifier = boxModifier,
+            contentAlignment = Alignment.Center
         ) {
-            Text(SEE_ALL)
+            Text(
+                text = SEE_ALL,
+                style = DEFAULT_TEXT_STYLE
+            )
         }
     }
 }
 
 @Composable
-fun CourseOptionCardRow() {
-    LazyRow {
+fun CourseOptionCardRow(
+    modifier: Modifier = Modifier,
+    optionCard1Modifier: Modifier = Modifier,
+    optionCard2Modifier: Modifier = Modifier,
+    optionCard3Modifier: Modifier = Modifier,
+    optionCard4Modifier: Modifier = Modifier,
+) {
+    LazyRow(
+        modifier = modifier
+    ) {
         item {
-            OptionCard(text = BREAKFAST, onClick = {
+            OptionCard(
+                text = BREAKFAST,
+                boxModifier = optionCard1Modifier,
+                onClick = {
 
-            })
-            OptionCard(text = LUNCH, onClick = {
+                })
+            OptionCard(
+                text = LUNCH,
+                boxModifier = optionCard2Modifier,
+                onClick = {
 
-            })
-            OptionCard(text = DINNER, onClick = {
+                })
+            OptionCard(
+                text = DINNER,
+                boxModifier = optionCard3Modifier,
+                onClick = {
 
-            })
-            OptionCard(text = SNACKS, onClick = {
+                })
+            OptionCard(
+                text = SNACKS,
+                boxModifier = optionCard4Modifier,
+                onClick = {
 
-            })
+                })
         }
     }
 }
