@@ -6,6 +6,7 @@ import app.cash.sqldelight.coroutines.mapToOne
 import jr.brian.shared.database.AppDatabase
 import jrbrianshareddatabase.FavoriteRecipes
 import jrbrianshareddatabase.Recipe
+import models.local.Recipe as LocalRecipe
 import jrbrianshareddatabase.Settings
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +38,11 @@ private interface SqlDataSource {
         courseType: String,
         duration: String,
         rating: String
+    )
+
+    suspend fun updateRecentRecipe(
+        recipe: LocalRecipe,
+        title: String
     )
 
     suspend fun initSettings()
@@ -97,6 +103,21 @@ class SqlDataSourceImpl internal constructor(
             courseType,
             duration,
             rating
+        )
+    }
+
+    override suspend fun updateRecentRecipe(
+        recipe: LocalRecipe,
+        title: String
+    ) {
+        database.appDatabaseQueries.updateRecentRecipe(
+            newImageUrl = recipe.imageUrl,
+            newTitle =  title,
+            newContent = recipe.content,
+            newCourseType = recipe.courseType,
+            newDuration = recipe.duration,
+            newRating = recipe.rating,
+            oldContent = recipe.content
         )
     }
 

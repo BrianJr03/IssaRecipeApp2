@@ -38,7 +38,14 @@ CREATE TABLE IF NOT EXISTS FavoriteRecipes (
 );
 
 insertFavoriteRecipe:
-INSERT OR REPLACE INTO FavoriteRecipes(imageUrl, title, content, courseType, duration, rating)
+INSERT OR REPLACE INTO Recipe(
+    imageUrl,
+    title,
+    content,
+    courseType,
+    duration,
+    rating
+)
 VALUES(
 :imageUrl,
 :title,
@@ -47,6 +54,16 @@ VALUES(
 :duration,
  :rating
 );
+
+updateRecentRecipe:
+UPDATE FavoriteRecipes SET
+    imageUrl = :newImageUrl,
+    title = :newTitle,
+    content = :newContent,
+    courseType = :newCourseType,
+    duration = :newDuration,
+    rating = :newRating
+WHERE content = :oldContent;
 
 removeAllFavoriteRecipes:
 DELETE FROM FavoriteRecipes;

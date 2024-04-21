@@ -71,6 +71,10 @@ fun RecipeScreenComponent.RecipeScreen(
                     duration = recipe.duration,
                     rating = recipe.rating,
                 )
+                sqlDataSourceImpl.updateRecentRecipe(
+                    recipe = recipe,
+                    title = favoriteRecipeTitle.value
+                )
                 delay(500)
                 isFavoriteIconHidden.value = true
             }
