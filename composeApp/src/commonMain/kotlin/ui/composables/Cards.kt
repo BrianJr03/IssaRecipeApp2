@@ -103,7 +103,7 @@ fun VerticalRecipeCard(
 }
 
 @Composable
-fun OptionCard(
+fun CardButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -256,25 +256,25 @@ fun CourseOptionCardRow(
         modifier = modifier
     ) {
         item {
-            OptionCard(
+            CardButton(
                 text = BREAKFAST,
                 boxModifier = optionCard1Modifier,
                 onClick = {
 
                 })
-            OptionCard(
+            CardButton(
                 text = LUNCH,
                 boxModifier = optionCard2Modifier,
                 onClick = {
 
                 })
-            OptionCard(
+            CardButton(
                 text = DINNER,
                 boxModifier = optionCard3Modifier,
                 onClick = {
 
                 })
-            OptionCard(
+            CardButton(
                 text = SNACKS,
                 boxModifier = optionCard4Modifier,
                 onClick = {

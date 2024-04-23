@@ -23,6 +23,7 @@ import models.local.SqlDataSourceImpl
 import models.local.Status
 import repositories.API
 import ui.composables.CustomBottomBar
+import ui.composables.DefaultTopAppBar
 import util.DEFAULT_API_KEY_VALUE
 
 @Composable
@@ -39,10 +40,20 @@ fun AskScreenComponent.AskScreen(
             sqlDataSourceImpl.settings.collect {
                 apiKey.value = it.apiKey
             }
-        } catch (_: NullPointerException) {}
+        } catch (_: NullPointerException) {
+        }
     }
 
     Scaffold(
+        topBar = {
+            DefaultTopAppBar(
+                onBackClick = {
+                    onEvent(
+                        AskScreenEvent.OnNavBack
+                    )
+                }
+            )
+        },
         bottomBar = {
             CustomBottomBar(
                 modifier = Modifier
@@ -60,9 +71,11 @@ fun AskScreenComponent.AskScreen(
                             is Status.Success -> {
                                 data.value = status.data
                             }
+
                             is Status.Error -> {
                                 data.value = status.message
                             }
+
                             else -> Unit
                         }
                     }
@@ -70,18 +83,17 @@ fun AskScreenComponent.AskScreen(
             )
         }
     ) {
-
-    }
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Text(text = data.value)
-        Button(onClick = {
-            onEvent(AskScreenEvent.OnNavBack)
-        }) {
-            Text("Back - Ask")
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize().padding(it)
+        ) {
+            Text(text = data.value)
+            Button(onClick = {
+                onEvent(AskScreenEvent.OnNavBack)
+            }) {
+                Text("Back - Ask")
+            }
         }
     }
 }

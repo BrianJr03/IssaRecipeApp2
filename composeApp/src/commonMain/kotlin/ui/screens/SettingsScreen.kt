@@ -37,6 +37,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import blocs.askScreen.AskScreenEvent
 import blocs.settingsScreen.SettingsScreenComponent
 import blocs.settingsScreen.SettingsScreenEvent
 import kotlinx.coroutines.launch
@@ -44,6 +45,7 @@ import models.local.LocalStorage
 import models.local.SqlDataSourceImpl
 import ui.animation.DefaultLoadingAnimation
 import ui.composables.DefaultTextField
+import ui.composables.DefaultTopAppBar
 import ui.composables.OptionsDialog
 import util.API_KEY_LABEL
 import util.DEFAULT_API_KEY_VALUE
@@ -63,33 +65,45 @@ fun SettingsScreenComponent.SettingsScreen(
     LaunchedEffect(1) {
         try {
             sqlDataSourceImpl.settings.collect {
-                    apiKey.value = it.apiKey
-                    dietarySettings.value = it.dietarySettings
-                    allergySettings.value = it.allergySettings
-                }
+                apiKey.value = it.apiKey
+                dietarySettings.value = it.dietarySettings
+                allergySettings.value = it.allergySettings
+            }
         } catch (npe: NullPointerException) {
             apiKey.value = ""
             sqlDataSourceImpl.initSettings()
         }
     }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
+    Scaffold(
+        topBar = {
+            DefaultTopAppBar(
+                onBackClick = {
+                    onEvent(
+                        SettingsScreenEvent.OnNavBack
+                    )
+                }
+            )
+        }
     ) {
-        if (apiKey.value != DEFAULT_API_KEY_VALUE) {
-            SettingsPage(
-                sqlDataSourceImpl = sqlDataSourceImpl,
-                apiKey = apiKey.value,
-                dietaryRestrictions = dietarySettings.value,
-                foodAllergies = allergySettings.value,
-                autoGenerateImage = false,
-            ) {
-                onEvent(SettingsScreenEvent.OnNavBack)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize().padding(it)
+        ) {
+            if (apiKey.value != DEFAULT_API_KEY_VALUE) {
+                SettingsPage(
+                    sqlDataSourceImpl = sqlDataSourceImpl,
+                    apiKey = apiKey.value,
+                    dietaryRestrictions = dietarySettings.value,
+                    foodAllergies = allergySettings.value,
+                    autoGenerateImage = false,
+                ) {
+                    onEvent(SettingsScreenEvent.OnNavBack)
+                }
+            } else {
+                DefaultLoadingAnimation()
             }
-        } else {
-            DefaultLoadingAnimation()
         }
     }
 }
@@ -124,50 +138,47 @@ fun SettingsPage(
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
 
-    Scaffold {
-        Settings(
-            sqlDataSourceImpl = sqlDataSourceImpl,
-            apiKey = key.value,
-            dietaryRestrictions = dietaryRestrictions,
-            isImageGenEnabled = isImageGenEnabled.value,
-            foodAllergies = foodAllergies,
-            onApiKeyValueChange = { str ->
-                key.value = str
-                scope.launch {
-                    sqlDataSourceImpl.updateApiKey(str)
-                }
+    Settings(
+        sqlDataSourceImpl = sqlDataSourceImpl,
+        apiKey = key.value,
+        dietaryRestrictions = dietaryRestrictions,
+        isImageGenEnabled = isImageGenEnabled.value,
+        foodAllergies = foodAllergies,
+        onApiKeyValueChange = { str ->
+            key.value = str
+            scope.launch {
+                sqlDataSourceImpl.updateApiKey(str)
+            }
+        },
+        onDietaryValueChange = { str ->
+            dietary.value = str
+            scope.launch {
+                sqlDataSourceImpl.updateDietarySetting(str.lowercase())
+            }
+        },
+        onAllergiesValueChange = { str ->
+            allergies.value = str
+            scope.launch {
+                sqlDataSourceImpl.updateAllergySetting(str.lowercase())
+            }
+        },
+        onEnableImageGenCheckChange = { isChecked ->
+            LocalStorage.saveAutoGenerateImage(isChecked)
+        },
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(interactionSource = interactionSource, indication = null) {
+                focusManager.clearFocus()
             },
-            onDietaryValueChange = { str ->
-                dietary.value = str
-                scope.launch {
-                    sqlDataSourceImpl.updateDietarySetting(str.lowercase())
-                }
-            },
-            onAllergiesValueChange = { str ->
-                allergies.value = str
-                scope.launch {
-                    sqlDataSourceImpl.updateAllergySetting(str.lowercase())
-                }
-            },
-            onEnableImageGenCheckChange = { isChecked ->
-                LocalStorage.saveAutoGenerateImage(isChecked)
-            },
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
-                .clickable(interactionSource = interactionSource, indication = null) {
-                    focusManager.clearFocus()
-                },
-            onClearSettings = {
-                key.value = ""
-                dietary.value = ""
-                allergies.value = ""
-                isImageGenEnabled.value = false
-                LocalStorage.keyValueStorage.clearSettings()
-            },
-            onNavBack = { onNavBack() }
-        )
-    }
+        onClearSettings = {
+            key.value = ""
+            dietary.value = ""
+            allergies.value = ""
+            isImageGenEnabled.value = false
+            LocalStorage.keyValueStorage.clearSettings()
+        },
+        onNavBack = { onNavBack() }
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)

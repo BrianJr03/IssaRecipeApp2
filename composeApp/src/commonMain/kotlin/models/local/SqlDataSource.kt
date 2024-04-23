@@ -112,7 +112,7 @@ class SqlDataSourceImpl internal constructor(
     ) {
         database.appDatabaseQueries.updateRecentRecipe(
             newImageUrl = recipe.imageUrl,
-            newTitle =  title,
+            newTitle = title,
             newContent = recipe.content,
             newCourseType = recipe.courseType,
             newDuration = recipe.duration,

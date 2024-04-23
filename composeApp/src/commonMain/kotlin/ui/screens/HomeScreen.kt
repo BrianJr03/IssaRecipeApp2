@@ -41,12 +41,12 @@ import models.local.TEST_RECENT_RECIPES
 import blocs.homeScreen.HomeScreenComponent
 import blocs.homeScreen.HomeScreenEvent
 import constants.DEFAULT_TEXT_STYLE
-import constants.PALE_VIOLET_RED
-import ui.composables.OptionCard
+import ui.composables.CardButton
 import ui.composables.VerticalRecipeCard
 import ui.composables.HorizontalRecipeCard
 import ui.composables.SeeAllCard
 import constants.YOU_GOTTA_TRY_THIS
+import constants.cards.MAX_RECENT_RECIPE_COUNT
 import constants.cards.OPTION_CARD_PADDING_END
 import constants.cards.RECIPE_CARD_HEIGHT
 import constants.cards.RECIPE_CARD_WIDTH
@@ -54,6 +54,7 @@ import constants.cards.SEE_ALL_CARD_HEIGHT
 import constants.cards.SEE_ALL_CARD_PADDING_BOTTOM
 import constants.cards.SEE_ALL_CARD_PADDING_END
 import constants.getCardInListColor
+import constants.defaultVerticalGradient
 import models.local.Recipe
 import models.local.SqlDataSourceImpl
 import models.local.toRecipe
@@ -64,19 +65,23 @@ fun HomeScreenComponent.HomeScreen(
 ) {
     val recentRecipes = rememberSaveable { mutableStateOf(listOf<Recipe>()) }
 
-    LaunchedEffect(1) {
+    LaunchedEffect(Unit) {
         sqlDataSourceImpl.recipes.collect {
-            if (it.size > 10) {
+            if (it.size > MAX_RECENT_RECIPE_COUNT) {
                 sqlDataSourceImpl.deleteWithId(it.first().content)
             }
             recentRecipes.value = it.map { sqlRecipe -> sqlRecipe.toRecipe() }
         }
     }
 
-    Scaffold {
+    Scaffold(
+        topBar = {
+            HeaderRow()
+        }
+    ) {
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Fixed(2),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().padding(it)
         ) {
             item(span = StaggeredGridItemSpan.FullLine) {
                 val isShareShowing = isShareDialogShowing.subscribeAsState()
@@ -90,10 +95,6 @@ fun HomeScreenComponent.HomeScreen(
                         hideShareDialog()
                     }
                 )
-            }
-
-            item(span = StaggeredGridItemSpan.FullLine) {
-                HeaderRow()
             }
 
             item(span = StaggeredGridItemSpan.FullLine) {
@@ -152,13 +153,13 @@ fun HomeScreenComponent.HomeScreen(
                                 HomeScreenEvent.OnSeeAllClick
                             )
                         },
-                    boxModifier = Modifier.background(PALE_VIOLET_RED)
+                    boxModifier = Modifier.background(
+                        defaultVerticalGradient()
+                    )
                 )
             }
         }
     }
-
-
 }
 
 @Composable
@@ -202,27 +203,27 @@ private fun HomeScreenComponent.HeaderRow() {
 private fun HomeScreenComponent.ScreenOptionCardRow() {
     Row {
         Spacer(Modifier.weight(1f))
-        OptionCard(
+        CardButton(
             text = ASK,
-            boxModifier = Modifier.background(PALE_VIOLET_RED),
+            boxModifier = Modifier.background(defaultVerticalGradient()),
             onClick = {
                 onEvent(
                     HomeScreenEvent.OnAskClick
                 )
             }
         )
-        OptionCard(
+        CardButton(
             text = GENERATE,
-            boxModifier = Modifier.background(PALE_VIOLET_RED),
+            boxModifier = Modifier.background(defaultVerticalGradient()),
             onClick = {
                 onEvent(
                     HomeScreenEvent.OnGenerateClick
                 )
             }
         )
-        OptionCard(
+        CardButton(
             text = FAVORITES,
-            boxModifier = Modifier.background(PALE_VIOLET_RED),
+            boxModifier = Modifier.background(defaultVerticalGradient()),
             onClick = {
                 onEvent(
                     HomeScreenEvent.OnFavoritesClick
@@ -252,7 +253,7 @@ private fun HomeScreenComponent.RecentRecipesRow(
         )
         Spacer(Modifier.height(5.dp))
         LazyRow {
-            items(list.size) {
+            items(reversed.take(MAX_RECENT_RECIPE_COUNT).size) {
                 VerticalRecipeCard(
                     color = getCardInListColor(it),
                     recipe = reversed[it],

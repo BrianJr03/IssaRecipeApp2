@@ -1,28 +1,19 @@
 package ui.screens
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,8 +33,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import models.local.SqlDataSourceImpl
 import ui.composables.FavoriteDialog
+import ui.composables.RecipeScreenTopAppBar
 import util.extractRecipeTitle
 import util.getRatingBoxColor
+import util.negate
 
 @Composable
 fun RecipeScreenComponent.RecipeScreen(
@@ -85,11 +78,25 @@ fun RecipeScreenComponent.RecipeScreen(
         }
     )
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
+    Scaffold(
+        topBar = {
+            RecipeScreenTopAppBar(
+                isFavoriteHidden = isFavoriteIconHidden.value,
+                onFavoriteClick = {
+                    isFavoriteDialogShowing.negate()
+                },
+                onBackClick = {
+                    onEvent(
+                        RecipeScreenEvent.OnNavBack
+                    )
+                }
+            )
+        }
     ) {
-        LazyColumn {
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize().padding(it)
+        ) {
             item {
                 if (recipe.imageUrl.isNotBlank()) {
                     Image(
@@ -120,31 +127,6 @@ fun RecipeScreenComponent.RecipeScreen(
                             end = 5.dp
                         )
                     )
-                }
-
-                Row(horizontalArrangement = Arrangement.Center) {
-                    Button(
-                        modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
-                        onClick = {
-                            onEvent(RecipeScreenEvent.OnNavBack)
-                        }) {
-                        Text("Back")
-                    }
-
-                    AnimatedVisibility(!isFavoriteIconHidden.value) {
-                        IconButton(
-                            modifier = Modifier.padding(start = 10.dp, bottom = 10.dp),
-                            onClick = {
-                                isFavoriteDialogShowing.value = !isFavoriteDialogShowing.value
-                            }) {
-                            Icon(
-                                imageVector = Icons.Default.Favorite,
-                                contentDescription = Icons.Default.Favorite.name,
-                                modifier = Modifier.size(50.dp),
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
                 }
 
                 Markdown(

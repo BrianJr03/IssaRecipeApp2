@@ -1,13 +1,14 @@
 package ui.screens
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,11 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import blocs.favoritesScreen.FavsScreenComponent
 import blocs.favoritesScreen.FavsScreenEvent
+import constants.STEEL_BLUE
 import constants.getCardInListColor
 import models.local.Recipe
 import models.local.SqlDataSourceImpl
 import models.local.toRecipe
 import ui.composables.DefaultTextField
+import ui.composables.FavoritesScreenTopAppBar
 import ui.composables.VerticalRecipeCard
 
 @Composable
@@ -49,39 +52,52 @@ fun FavsScreenComponent.FavoritesScreen(
         }
     }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Spacer(Modifier.height(15.dp))
-        DefaultTextField(
-            label = "Search Favorites",
-            value = searchQuery.value,
-            onValueChange = {
-                searchQuery.value = it
+    Scaffold(
+        topBar = {
+            FavoritesScreenTopAppBar {
+                onEvent(
+                    FavsScreenEvent.OnNavBack
+                )
             }
-        )
-
-        if (filteredRecipes.value.isEmpty()) {
-            Text(
-                "No Favorites",
-                color = MaterialTheme.colors.primary,
-                fontSize = 20.sp
-            )
-        } else {
-            LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Fixed(2),
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(filteredRecipes.value.size) { index ->
-                    VerticalRecipeCard(
-                        recipe = favoriteRecipes.value.reversed()[index],
-                        color = getCardInListColor(index),
-                        modifier = Modifier.height(250.dp).padding(10.dp),
+        }
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize().padding(it)
+        ) {
+            if (filteredRecipes.value.isEmpty()) {
+                Text(
+                    "No Favorites",
+                    color = STEEL_BLUE,
+                    fontSize = 20.sp
+                )
+            } else {
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    item(
+                        span = StaggeredGridItemSpan.FullLine
                     ) {
-                        onEvent(
-                            FavsScreenEvent.OnNavBack
+                        DefaultTextField(
+                            label = "Search Favorites",
+                            value = searchQuery.value,
+                            onValueChange = {
+                                searchQuery.value = it
+                            }
                         )
+                    }
+
+                    items(filteredRecipes.value.size) { index ->
+                        VerticalRecipeCard(
+                            recipe = favoriteRecipes.value.reversed()[index],
+                            color = getCardInListColor(index),
+                            modifier = Modifier.height(250.dp).padding(10.dp),
+                        ) {
+                            onEvent(
+                                FavsScreenEvent.OnNavBack
+                            )
+                        }
                     }
                 }
             }

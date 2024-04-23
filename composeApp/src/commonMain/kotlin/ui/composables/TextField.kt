@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import constants.GREEN
+import constants.STEEL_BLUE
 
 @Composable
 fun DefaultTextField(
@@ -63,7 +64,7 @@ fun DefaultTextField(
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = if (showErrorColor.value) Color.Red else GREEN,
             unfocusedIndicatorColor = if (showErrorColor.value) Color.Red
-            else MaterialTheme.colorScheme.background
+            else STEEL_BLUE
         ),
         trailingIcon = trailingIcon,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
