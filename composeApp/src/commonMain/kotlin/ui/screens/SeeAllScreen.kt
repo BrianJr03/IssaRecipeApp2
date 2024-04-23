@@ -1,7 +1,6 @@
 package ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,15 +16,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import blocs.seeAllScreen.SeeAllScreenComponent
 import blocs.seeAllScreen.SeeAllScreenEvent
-import constants.DEFAULT_TEXT_STYLE
+import util.DEFAULT_TEXT_STYLE
 import constants.YOU_GOTTA_TRY_THIS
-import constants.cards.OPTION_CARD_PADDING_END
-import constants.getCardInListColor
-import constants.home.DEFAULT_PADDING_END
+import util.cards.HORIZONTAL_CARD_HEIGHT
+import util.cards.OPTION_CARD_PADDING_END
+import util.getCardInListColor
+import util.home.DEFAULT_PADDING_END
 import ui.composables.HorizontalRecipeCard
-import constants.home.DEFAULT_PADDING_START
-import constants.home.ROW_LABEL_PADDING_BOTTOM
-import constants.defaultVerticalGradient
+import util.home.DEFAULT_PADDING_START
+import util.home.ROW_LABEL_PADDING_BOTTOM
+import util.defaultVerticalGradient
 import models.local.TEST_RECENT_RECIPES
 import ui.composables.CourseOptionCardRow
 import ui.composables.DefaultTopAppBar
@@ -104,18 +104,18 @@ fun SeeAllScreenComponent.SeeAllScreen() {
                 HorizontalRecipeCard(
                     TEST_RECENT_RECIPES[it],
                     modifier = Modifier
-                        .height(100.dp)
+                        .height(HORIZONTAL_CARD_HEIGHT)
                         .padding(
                             start = DEFAULT_PADDING_START,
                             bottom = 10.dp,
                             end = OPTION_CARD_PADDING_END
-                        ).clickable {
-                            onEvent(
-                                SeeAllScreenEvent.OnRecentRecipeClick(TEST_RECENT_RECIPES[it])
-                            )
-                        },
-                    boxModifier = Modifier.background(getCardInListColor(it))
-                )
+                        ),
+                    color = getCardInListColor(it)
+                ) {
+                    onEvent(
+                        SeeAllScreenEvent.OnRecentRecipeClick(TEST_RECENT_RECIPES[it])
+                    )
+                }
             }
         }
     }

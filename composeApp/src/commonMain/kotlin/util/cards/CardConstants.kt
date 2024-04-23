@@ -1,4 +1,4 @@
-package constants.cards
+package util.cards
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,3 +31,5 @@ val V_RECIPE_CARD_RATING_BOX_PADDING_START = 5.dp
 val V_RECIPE_CARD_RATING_BOX_PADDING_END = 5.dp
 
 const val MAX_RECENT_RECIPE_COUNT = 7
+
+val HORIZONTAL_CARD_HEIGHT = 125.dp

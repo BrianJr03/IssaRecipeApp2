@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
@@ -39,6 +38,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import blocs.settingsScreen.SettingsScreenComponent
 import blocs.settingsScreen.SettingsScreenEvent
+import constants.API_KEY_LABEL
+import constants.DEFAULT_API_KEY_VALUE
+import constants.DIETARY_RESTRICTIONS_LABEL
+import constants.FOOD_ALLERGY_LABEL
 import kotlinx.coroutines.launch
 import models.local.LocalStorage
 import models.local.SqlDataSourceImpl
@@ -46,10 +49,6 @@ import ui.animation.DefaultLoadingAnimation
 import ui.composables.DefaultTextField
 import ui.composables.DefaultTopAppBar
 import ui.composables.OptionsDialog
-import util.API_KEY_LABEL
-import util.DEFAULT_API_KEY_VALUE
-import util.DIETARY_RESTRICTIONS_LABEL
-import util.FOOD_ALLERGY_LABEL
 import util.allergyOptions
 import util.dietaryOptions
 
@@ -97,9 +96,7 @@ fun SettingsScreenComponent.SettingsScreen(
                     dietaryRestrictions = dietarySettings.value,
                     foodAllergies = allergySettings.value,
                     autoGenerateImage = false,
-                ) {
-                    onEvent(SettingsScreenEvent.OnNavBack)
-                }
+                )
             } else {
                 DefaultLoadingAnimation()
             }
@@ -113,8 +110,7 @@ fun SettingsPage(
     apiKey: String,
     dietaryRestrictions: String,
     foodAllergies: String,
-    autoGenerateImage: Boolean,
-    onNavBack: () -> Unit
+    autoGenerateImage: Boolean
 ) {
     val scope = rememberCoroutineScope()
 
@@ -168,16 +164,14 @@ fun SettingsPage(
             .fillMaxSize()
             .clickable(interactionSource = interactionSource, indication = null) {
                 focusManager.clearFocus()
-            },
-        onClearSettings = {
-            key.value = ""
-            dietary.value = ""
-            allergies.value = ""
-            isImageGenEnabled.value = false
-            LocalStorage.keyValueStorage.clearSettings()
-        },
-        onNavBack = { onNavBack() }
-    )
+            }
+    ) {
+        key.value = ""
+        dietary.value = ""
+        allergies.value = ""
+        isImageGenEnabled.value = false
+        LocalStorage.keyValueStorage.clearSettings()
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -194,7 +188,6 @@ fun Settings(
     onEnableImageGenCheckChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     onClearSettings: () -> Unit,
-    onNavBack: () -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -413,12 +406,6 @@ fun Settings(
                         }
                     })
             )
-
-            Spacer(Modifier.height(15.dp))
-
-            Button(onClick = { onNavBack() }) {
-                Text("Back")
-            }
         }
     }
 }

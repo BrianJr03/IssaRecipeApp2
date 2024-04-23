@@ -18,13 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import blocs.askScreen.AskScreenComponent
 import blocs.askScreen.AskScreenEvent
+import constants.DEFAULT_API_KEY_VALUE
 import kotlinx.coroutines.launch
 import models.local.SqlDataSourceImpl
 import models.local.Status
 import repositories.API
 import ui.composables.CustomBottomBar
 import ui.composables.DefaultTopAppBar
-import util.DEFAULT_API_KEY_VALUE
 
 @Composable
 fun AskScreenComponent.AskScreen(

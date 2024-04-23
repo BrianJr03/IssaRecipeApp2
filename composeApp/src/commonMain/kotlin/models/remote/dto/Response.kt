@@ -47,6 +47,5 @@ data class SafetyRating(
 data class Error(
     @SerialName("code") val code: Int,
     @SerialName("message") val message: String,
-    @SerialName("status") val status: String,
-
-    )
+    @SerialName("status") val status: String
+)

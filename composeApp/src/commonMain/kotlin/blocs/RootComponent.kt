@@ -74,6 +74,7 @@ class RootComponent(
                 Child.FavoritesScreen(
                     FavsScreenComponent(
                         componentContext = context,
+                        onNavToRecipePage = { navigation.pushNew(Config.RecipeScreen(it)) },
                         onNavBack = { navigation.pop() }
                     )
                 )

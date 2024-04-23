@@ -3,9 +3,11 @@ package blocs.favoritesScreen
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import models.local.Recipe
 
 class FavsScreenComponent(
     componentContext: ComponentContext,
+    private val onNavToRecipePage: (Recipe) -> Unit,
     private val onNavBack: () -> Unit
 ) : ComponentContext by componentContext {
 
@@ -13,11 +15,11 @@ class FavsScreenComponent(
     val text: Value<String> = _text
     fun onEvent(event: FavsScreenEvent) {
         when (event) {
-            FavsScreenEvent.OnNavBack -> {
+            is FavsScreenEvent.OnNavBack -> {
                 onNavBack()
             }
-            FavsScreenEvent.OnRecipeClick -> {
-
+            is FavsScreenEvent.OnRecipeClick -> {
+                onNavToRecipePage(event.recipe)
             }
         }
     }

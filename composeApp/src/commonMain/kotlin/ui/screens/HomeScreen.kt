@@ -1,6 +1,7 @@
 package ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import ui.composables.ShareDialog
@@ -33,31 +35,38 @@ import constants.APP_NAME
 import constants.ASK
 import constants.FAVORITES
 import constants.GENERATE
-import constants.home.*
 import constants.MENU
 import constants.RECENT_RECIPES
 import constants.SETTINGS
 import models.local.TEST_RECENT_RECIPES
 import blocs.homeScreen.HomeScreenComponent
 import blocs.homeScreen.HomeScreenEvent
-import constants.DEFAULT_TEXT_STYLE
+import util.DEFAULT_TEXT_STYLE
 import ui.composables.CardButton
 import ui.composables.VerticalRecipeCard
 import ui.composables.HorizontalRecipeCard
 import ui.composables.SeeAllCard
 import constants.YOU_GOTTA_TRY_THIS
-import constants.cards.MAX_RECENT_RECIPE_COUNT
-import constants.cards.OPTION_CARD_PADDING_END
-import constants.cards.RECIPE_CARD_HEIGHT
-import constants.cards.RECIPE_CARD_WIDTH
-import constants.cards.SEE_ALL_CARD_HEIGHT
-import constants.cards.SEE_ALL_CARD_PADDING_BOTTOM
-import constants.cards.SEE_ALL_CARD_PADDING_END
-import constants.getCardInListColor
-import constants.defaultVerticalGradient
+import util.cards.HORIZONTAL_CARD_HEIGHT
+import util.cards.MAX_RECENT_RECIPE_COUNT
+import util.cards.OPTION_CARD_PADDING_END
+import util.cards.RECIPE_CARD_HEIGHT
+import util.cards.RECIPE_CARD_WIDTH
+import util.cards.SEE_ALL_CARD_HEIGHT
+import util.cards.SEE_ALL_CARD_PADDING_BOTTOM
+import util.cards.SEE_ALL_CARD_PADDING_END
+import util.getCardInListColor
+import util.defaultVerticalGradient
 import models.local.Recipe
 import models.local.SqlDataSourceImpl
 import models.local.toRecipe
+import util.home.DEFAULT_PADDING_END
+import util.home.DEFAULT_PADDING_START
+import util.home.HEADER_ROW_PADDING_BOTTOM
+import util.home.HEADER_ROW_PADDING_TOP
+import util.home.ROW_LABEL_PADDING_BOTTOM
+import util.home.ROW_LABEL_PADDING_TOP
+import util.home.SECTION_PADDING_BOTTOM
 
 @Composable
 fun HomeScreenComponent.HomeScreen(
@@ -119,24 +128,23 @@ fun HomeScreenComponent.HomeScreen(
                 )
             }
 
-            items(TEST_RECENT_RECIPES.take(4).size) {
+            items(TEST_RECENT_RECIPES.take(4).size) { index ->
                 HorizontalRecipeCard(
-                    TEST_RECENT_RECIPES[it],
+                    TEST_RECENT_RECIPES[index],
                     modifier = Modifier
-                        .height(100.dp)
+                        .height(HORIZONTAL_CARD_HEIGHT)
                         .padding(
                             start = DEFAULT_PADDING_START,
                             bottom = 10.dp,
                             end = OPTION_CARD_PADDING_END
-                        ).clickable {
-                            onEvent(
-                                HomeScreenEvent.OnRecentRecipeClick(TEST_RECENT_RECIPES[it])
-                            )
-                        },
-                    boxModifier = Modifier.background(
-                        getCardInListColor(it)
+                        ),
+                    color = getCardInListColor(index)
+
+                ) {
+                    onEvent(
+                        HomeScreenEvent.OnRecentRecipeClick(TEST_RECENT_RECIPES[index])
                     )
-                )
+                }
             }
 
             item {
@@ -205,7 +213,11 @@ private fun HomeScreenComponent.ScreenOptionCardRow() {
         Spacer(Modifier.weight(1f))
         CardButton(
             text = ASK,
-            boxModifier = Modifier.background(defaultVerticalGradient()),
+            boxModifier = Modifier
+                .background(defaultVerticalGradient()).border(
+                    width = 1.dp,
+                    color = Color.Black
+                ),
             onClick = {
                 onEvent(
                     HomeScreenEvent.OnAskClick
@@ -214,7 +226,10 @@ private fun HomeScreenComponent.ScreenOptionCardRow() {
         )
         CardButton(
             text = GENERATE,
-            boxModifier = Modifier.background(defaultVerticalGradient()),
+            boxModifier = Modifier.background(defaultVerticalGradient()).border(
+                width = 1.dp,
+                color = Color.Black
+            ),
             onClick = {
                 onEvent(
                     HomeScreenEvent.OnGenerateClick
@@ -223,7 +238,10 @@ private fun HomeScreenComponent.ScreenOptionCardRow() {
         )
         CardButton(
             text = FAVORITES,
-            boxModifier = Modifier.background(defaultVerticalGradient()),
+            boxModifier = Modifier.background(defaultVerticalGradient()).border(
+                width = 1.dp,
+                color = Color.Black
+            ),
             onClick = {
                 onEvent(
                     HomeScreenEvent.OnFavoritesClick

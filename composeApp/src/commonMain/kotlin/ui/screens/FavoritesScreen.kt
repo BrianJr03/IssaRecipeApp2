@@ -21,14 +21,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import blocs.favoritesScreen.FavsScreenComponent
 import blocs.favoritesScreen.FavsScreenEvent
-import constants.STEEL_BLUE
-import constants.getCardInListColor
+import util.COLOR_STEEL_BLUE
+import util.cards.HORIZONTAL_CARD_HEIGHT
+import util.getCardInListColor
 import models.local.Recipe
 import models.local.SqlDataSourceImpl
 import models.local.toRecipe
 import ui.composables.DefaultTextField
 import ui.composables.FavoritesScreenTopAppBar
-import ui.composables.VerticalRecipeCard
+import ui.composables.HorizontalRecipeCard
 
 @Composable
 fun FavsScreenComponent.FavoritesScreen(
@@ -67,7 +68,7 @@ fun FavsScreenComponent.FavoritesScreen(
             if (filteredRecipes.value.isEmpty()) {
                 Text(
                     "No Favorites",
-                    color = STEEL_BLUE,
+                    color = COLOR_STEEL_BLUE,
                     fontSize = 20.sp
                 )
             } else {
@@ -88,13 +89,13 @@ fun FavsScreenComponent.FavoritesScreen(
                     }
 
                     items(filteredRecipes.value.size) { index ->
-                        VerticalRecipeCard(
+                        HorizontalRecipeCard(
                             recipe = favoriteRecipes.value.reversed()[index],
                             color = getCardInListColor(index),
-                            modifier = Modifier.height(250.dp).padding(10.dp),
+                            modifier = Modifier.height(HORIZONTAL_CARD_HEIGHT).padding(10.dp),
                         ) {
                             onEvent(
-                                FavsScreenEvent.OnNavBack
+                                FavsScreenEvent.OnRecipeClick(favoriteRecipes.value.reversed()[index])
                             )
                         }
                     }

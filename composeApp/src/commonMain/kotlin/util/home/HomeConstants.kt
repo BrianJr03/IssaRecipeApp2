@@ -1,4 +1,4 @@
-package constants.home
+package util.home
 
 import androidx.compose.ui.unit.dp
 

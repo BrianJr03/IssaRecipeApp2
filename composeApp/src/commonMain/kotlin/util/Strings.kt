@@ -1,11 +1,5 @@
 package util
 
-const val API_KEY_LABEL = "API Key"
-const val DEFAULT_API_KEY_VALUE = " "
-const val DIETARY_RESTRICTIONS_LABEL = "Dietary Restrictions"
-const val FOOD_ALLERGY_LABEL = "Food Allergies"
-const val DEFAULT_RECIPE_TITLE = "Recipe"
-
 val loadingHints = listOf(
     "Do you smell what's cooking?",
     "Generating thy Recipe",

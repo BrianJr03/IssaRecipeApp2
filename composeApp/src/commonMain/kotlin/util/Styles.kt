@@ -1,4 +1,4 @@
-package constants
+package util
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -12,7 +12,7 @@ val DEFAULT_TEXT_STYLE = TextStyle(
 )
 
 fun defaultVerticalGradient(
-    colors: List<Color> = listOf(STEEL_BLUE, WHEAT)
+    colors: List<Color> = listOf(COLOR_STEEL_BLUE, COLOR_WHEAT)
 ): Brush {
     return Brush.verticalGradient(
         colors

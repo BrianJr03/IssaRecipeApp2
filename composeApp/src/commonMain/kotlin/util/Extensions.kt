@@ -2,16 +2,15 @@ package util
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
-import constants.GOLD
-import constants.GREEN
+import constants.DEFAULT_RECIPE_TITLE
 
 fun String.getRatingBoxColor(): Color {
     val double = this.toDoubleOrNull()
     double?.let {
         return when (it) {
             in 0.0..2.99 -> Color.Red
-            in 3.0..3.99 -> GOLD
-            else -> GREEN
+            in 3.0..3.99 -> COLOR_GOLD
+            else -> COLOR_GREEN
         }
     }
     return Color.Transparent

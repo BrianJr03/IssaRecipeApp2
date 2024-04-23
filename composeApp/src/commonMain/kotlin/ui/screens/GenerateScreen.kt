@@ -29,13 +29,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import blocs.generateScreen.GenerateScreenComponent
 import blocs.generateScreen.GenerateScreenEvent
+import constants.DEFAULT_API_KEY_VALUE
 import constants.DIETARY_LABEL
 import constants.FOOD_ALLERGIES
 import constants.INGREDIENTS_LABEL
 import constants.OCCASION_LABEL
 import constants.OTHER_INFO
 import constants.PARTY_SIZE_LABEL
-import constants.defaultVerticalGradient
+import util.defaultVerticalGradient
 import kotlinx.coroutines.launch
 import models.local.RecipeCache
 import models.local.SqlDataSourceImpl
@@ -44,7 +45,6 @@ import ui.animation.DefaultLoadingAnimation
 import ui.composables.DefaultTextField
 import ui.composables.DefaultTopAppBar
 import ui.composables.CardButton
-import util.DEFAULT_API_KEY_VALUE
 import util.generateRecipeQuery
 import util.loadingHints
 import util.validateAllergies
@@ -183,11 +183,11 @@ fun GenerateScreenComponent.GenerateScreen(
                         isError = isEmptyIngredientsError.value,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .onFocusChanged {
-                                isIngredientsFocused.value = it.isFocused
+                            .onFocusChanged { focusState ->
+                                isIngredientsFocused.value = focusState.isFocused
                             },
-                        onValueChange = {
-                            ingredients.value = it
+                        onValueChange = { str ->
+                            ingredients.value = str
                         },
                         onDone = {
                             focusManager.clearFocus()
@@ -201,11 +201,11 @@ fun GenerateScreenComponent.GenerateScreen(
                         value = partySize.value,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .onFocusChanged {
-                                isPartySizeFocused.value = it.isFocused
+                            .onFocusChanged { focusState ->
+                                isPartySizeFocused.value = focusState.isFocused
                             },
-                        onValueChange = {
-                            partySize.value = it
+                        onValueChange = { str ->
+                            partySize.value = str
                         },
                         onDone = {
                             focusManager.clearFocus()
@@ -219,11 +219,11 @@ fun GenerateScreenComponent.GenerateScreen(
                         value = occasion.value,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .onFocusChanged {
-                                isOccasionFocused.value = it.isFocused
+                            .onFocusChanged { focusState ->
+                                isOccasionFocused.value = focusState.isFocused
                             },
-                        onValueChange = {
-                            occasion.value = it
+                        onValueChange = { str ->
+                            occasion.value = str
                         },
                         onDone = {
                             focusManager.clearFocus()
@@ -237,11 +237,11 @@ fun GenerateScreenComponent.GenerateScreen(
                         value = foodAllergies.value,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .onFocusChanged {
-                                isDietaryFocused.value = it.isFocused
+                            .onFocusChanged { focusState ->
+                                isDietaryFocused.value = focusState.isFocused
                             },
-                        onValueChange = {
-                            foodAllergies.value = it
+                        onValueChange = { str ->
+                            foodAllergies.value = str
                         },
                         onDone = {
                             focusManager.clearFocus()
@@ -255,11 +255,11 @@ fun GenerateScreenComponent.GenerateScreen(
                         value = dietaryRestrictions.value,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .onFocusChanged {
-                                isAllergiesFocused.value = it.isFocused
+                            .onFocusChanged { focusState ->
+                                isAllergiesFocused.value = focusState.isFocused
                             },
-                        onValueChange = {
-                            dietaryRestrictions.value = it
+                        onValueChange = { str ->
+                            dietaryRestrictions.value = str
                         },
                         onDone = {
                             focusManager.clearFocus()
@@ -274,11 +274,11 @@ fun GenerateScreenComponent.GenerateScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 15.dp)
-                            .onFocusChanged {
-                                isOtherFocused.value = it.isFocused
+                            .onFocusChanged { focusState ->
+                                isOtherFocused.value = focusState.isFocused
                             },
-                        onValueChange = {
-                            otherInfo.value = it
+                        onValueChange = { str ->
+                            otherInfo.value = str
                         },
                         onDone = {
                             focusManager.clearFocus()
@@ -289,7 +289,7 @@ fun GenerateScreenComponent.GenerateScreen(
                 AnimatedVisibility(isRecipeGenerated.value && !isLoading.value) {
                     CardButton(
                         text = "View Again",
-                        modifier = Modifier.fillMaxWidth()
+                        boxModifier = Modifier.fillMaxWidth()
                             .background(defaultVerticalGradient())
                             .padding(
                                 start = 15.dp,
@@ -304,6 +304,8 @@ fun GenerateScreenComponent.GenerateScreen(
                         }
                     )
                 }
+
+                Spacer(Modifier.height(20.dp))
 
                 AnimatedVisibility(!isLoading.value) {
                     CardButton(

@@ -2,6 +2,7 @@ package ui.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -18,21 +19,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.seiko.imageloader.rememberImagePainter
 import constants.BREAKFAST
-import constants.DEFAULT_TEXT_STYLE
+import util.DEFAULT_TEXT_STYLE
 import constants.DINNER
 import constants.LUNCH
 import constants.RECIPE_IMAGE
 import constants.SEE_ALL
 import constants.SNACKS
-import constants.cards.*
-import constants.home.DEFAULT_PADDING_START
+import util.home.DEFAULT_PADDING_START
 import models.local.Recipe
+import util.cards.CARD_ELEVATION
+import util.cards.OPTION_CARD_HEIGHT
+import util.cards.OPTION_CARD_ICON_PADDING_END
+import util.cards.OPTION_CARD_PADDING_END
+import util.cards.OPTION_CARD_TEXT_PADDING_END
+import util.cards.OPTION_CARD_TEXT_PADDING_START
+import util.cards.V_RECIPE_CARD_IMAGE_PADDING_BOTTOM
+import util.cards.V_RECIPE_CARD_IMAGE_PADDING_TOP
 
 @Composable
 fun VerticalRecipeCard(
-    color: Color = Color.White,
     recipe: Recipe,
+    color: Color = Color.White,
     modifier: Modifier = Modifier,
+    boxModifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
     Card(
@@ -44,7 +53,12 @@ fun VerticalRecipeCard(
         val painter = rememberImagePainter(url = recipe.imageUrl)
 
         Box(
-            modifier = Modifier.background(color),
+            modifier = boxModifier
+                .background(color)
+                .border(
+                    width = 1.dp,
+                    color = Color.Black
+                ),
             contentAlignment = Alignment.Center
         ) {
 //            Column {
@@ -116,7 +130,10 @@ fun CardButton(
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.border(
+            width = 1.dp,
+            color = Color.Black
+        ),
         elevation = CARD_ELEVATION
     ) {
         Box(
@@ -143,15 +160,24 @@ fun CardButton(
 @Composable
 fun HorizontalRecipeCard(
     recipe: Recipe,
+    color: Color = Color.White,
     modifier: Modifier = Modifier,
-    boxModifier: Modifier = Modifier
+    boxModifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable {  },
         elevation = CARD_ELEVATION
     ) {
         Box(
-            modifier = boxModifier, contentAlignment = Alignment.Center
+            modifier = boxModifier
+                .background(color)
+                .border(
+                    width = 1.dp,
+                    color = Color.Black
+                )
+                .clickable { onClick() },
+            contentAlignment = Alignment.Center
         ) {
 //            val painter = rememberImagePainter(url = recipe.imageUrl)
             Text(
@@ -186,7 +212,7 @@ fun HorizontalRecipeCard(
 
 //                    Text(recipe.title,
 //             style = DEFAULT_TEXT_STYLE,
-        //                    modifier = Modifier.padding(start = 5.dp, bottom = 10.dp))
+            //                    modifier = Modifier.padding(start = 5.dp, bottom = 10.dp))
 
 //                    Row(verticalAlignment = Alignment.CenterVertically) {
 //                        Icon(
@@ -233,7 +259,10 @@ fun SeeAllCard(
         elevation = CARD_ELEVATION
     ) {
         Box(
-            modifier = boxModifier,
+            modifier = boxModifier.border(
+                width = 1.dp,
+                color = Color.Black
+            ),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -258,25 +287,37 @@ fun CourseOptionCardRow(
         item {
             CardButton(
                 text = BREAKFAST,
-                boxModifier = optionCard1Modifier,
+                boxModifier = optionCard1Modifier.border(
+                    width = 1.dp,
+                    color = Color.Black
+                ),
                 onClick = {
 
                 })
             CardButton(
                 text = LUNCH,
-                boxModifier = optionCard2Modifier,
+                boxModifier = optionCard2Modifier.border(
+                    width = 1.dp,
+                    color = Color.Black
+                ),
                 onClick = {
 
                 })
             CardButton(
                 text = DINNER,
-                boxModifier = optionCard3Modifier,
+                boxModifier = optionCard3Modifier.border(
+                    width = 1.dp,
+                    color = Color.Black
+                ),
                 onClick = {
 
                 })
             CardButton(
                 text = SNACKS,
-                boxModifier = optionCard4Modifier,
+                boxModifier = optionCard4Modifier.border(
+                    width = 1.dp,
+                    color = Color.Black
+                ),
                 onClick = {
 
                 })

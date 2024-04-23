@@ -56,7 +56,7 @@ VALUES(
 );
 
 updateRecentRecipe:
-UPDATE FavoriteRecipes SET
+UPDATE Recipe SET
     imageUrl = :newImageUrl,
     title = :newTitle,
     content = :newContent,

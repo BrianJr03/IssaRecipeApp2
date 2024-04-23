@@ -11,7 +11,8 @@ data class Recipe(
     val courseType: String,
     val duration: String,
     val rating: String
-) { override fun toString(): String {
+) {
+    override fun toString(): String {
         return "imgUrl: $imageUrl\n" +
                 "title: $title\n" +
                 "content: $content\n" +

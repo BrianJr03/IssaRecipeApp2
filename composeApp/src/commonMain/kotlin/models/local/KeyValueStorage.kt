@@ -9,30 +9,29 @@ import com.russhwolf.settings.serialization.encodeValue
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.ExperimentalSerializationApi
 
-
 object LocalStorage {
     val keyValueStorage: KeyValueStorage = KeyValueStorageImpl()
 
     fun saveApiKey(value: String) {
-        keyValueStorage.settingsConfig= keyValueStorage.settingsConfig?.copy(
+        keyValueStorage.settingsConfig = keyValueStorage.settingsConfig?.copy(
             apiKey = value
         )
     }
 
     fun saveFoodAllergies(value: String) {
-        keyValueStorage.settingsConfig= keyValueStorage.settingsConfig?.copy(
+        keyValueStorage.settingsConfig = keyValueStorage.settingsConfig?.copy(
             foodAllergies = value
         )
     }
 
     fun saveDietaryRestrictions(value: String) {
-        keyValueStorage.settingsConfig= keyValueStorage.settingsConfig?.copy(
+        keyValueStorage.settingsConfig = keyValueStorage.settingsConfig?.copy(
             dietaryRestrictions = value
         )
     }
 
     fun saveAutoGenerateImage(value: Boolean) {
-        keyValueStorage.settingsConfig= keyValueStorage.settingsConfig?.copy(
+        keyValueStorage.settingsConfig = keyValueStorage.settingsConfig?.copy(
 //            autoGenerateImage = value
         )
     }
