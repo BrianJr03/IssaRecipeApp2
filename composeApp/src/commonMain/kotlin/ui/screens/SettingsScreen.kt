@@ -37,7 +37,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import blocs.askScreen.AskScreenEvent
 import blocs.settingsScreen.SettingsScreenComponent
 import blocs.settingsScreen.SettingsScreenEvent
 import kotlinx.coroutines.launch
