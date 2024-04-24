@@ -28,7 +28,7 @@ import models.local.Recipe
 import models.local.SqlDataSourceImpl
 import models.local.toRecipe
 import ui.composables.DefaultTextField
-import ui.composables.FavoritesScreenTopAppBar
+import ui.composables.DefaultTopAppBar
 import ui.composables.HorizontalRecipeCard
 
 @Composable
@@ -54,7 +54,7 @@ fun FavsScreenComponent.FavoritesScreen(
 
     Scaffold(
         topBar = {
-            FavoritesScreenTopAppBar {
+            DefaultTopAppBar {
                 onEvent(
                     FavsScreenEvent.OnNavBack
                 )
@@ -80,7 +80,7 @@ fun FavsScreenComponent.FavoritesScreen(
                         span = StaggeredGridItemSpan.FullLine
                     ) {
                         DefaultTextField(
-                            label = "Search Favorites",
+                            placeholderStr = "Search Favorites",
                             value = searchQuery.value,
                             onValueChange = {
                                 searchQuery.value = it

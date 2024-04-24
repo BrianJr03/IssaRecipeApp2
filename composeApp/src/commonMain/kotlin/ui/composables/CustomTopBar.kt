@@ -19,7 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import ui.animation.DefaultLoadingAnimation
+import util.COLOR_STEEL_BLUE
 import util.DEFAULT_TEXT_STYLE
+import util.TOP_BAR_TEXT_STYLE
 
 @Composable
 fun DefaultTopAppBar(
@@ -62,7 +66,7 @@ fun RecipeScreenTopAppBar(
         BackButton {
             onBackClick()
         }
-        Spacer(Modifier.width(30.dp))
+        Spacer(Modifier.width(20.dp))
         AnimatedVisibility(!isFavoriteHidden) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -84,8 +88,9 @@ fun RecipeScreenTopAppBar(
                         tint = MaterialTheme.colors.primary
                     )
                 }
-                Text("Add to Favorites",
-                    style = DEFAULT_TEXT_STYLE,
+                Text(
+                    text = "Add to Favorites",
+                    style = TOP_BAR_TEXT_STYLE,
                     modifier = Modifier.clickable {
                         onFavoriteClick()
                     }
@@ -96,7 +101,8 @@ fun RecipeScreenTopAppBar(
 }
 
 @Composable
-fun FavoritesScreenTopAppBar(
+fun AskScreenTopAppBar(
+    isGeminiTyping: Boolean,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit
 ) {
@@ -112,6 +118,23 @@ fun FavoritesScreenTopAppBar(
     ) {
         BackButton {
             onBackClick()
+        }
+
+        Spacer(Modifier.width(20.dp))
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = if (isGeminiTyping) "Gemini is typing" else "Ask Gemini",
+                style = TOP_BAR_TEXT_STYLE
+            )
+
+            Spacer(Modifier.width(15.dp))
+
+            AnimatedVisibility(isGeminiTyping) {
+                DefaultLoadingAnimation()
+            }
         }
     }
 }

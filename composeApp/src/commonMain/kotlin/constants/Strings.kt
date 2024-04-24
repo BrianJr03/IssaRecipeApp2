@@ -32,3 +32,7 @@ const val DEFAULT_API_KEY_VALUE = " "
 const val DIETARY_RESTRICTIONS_LABEL = "Dietary Restrictions"
 const val FOOD_ALLERGY_LABEL = "Food Allergies"
 const val DEFAULT_RECIPE_TITLE = "Recipe"
+
+const val USER_LABEL = "ME"
+const val AI_LABEL = "Gemini"
+const val ERROR_LABEL = "ERROR"

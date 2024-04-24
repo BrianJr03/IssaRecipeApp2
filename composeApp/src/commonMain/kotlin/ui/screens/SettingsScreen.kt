@@ -98,7 +98,7 @@ fun SettingsScreenComponent.SettingsScreen(
                     autoGenerateImage = false,
                 )
             } else {
-                DefaultLoadingAnimation()
+                DefaultLoadingAnimation(modifier = Modifier.padding(top = 14.dp))
             }
         }
     }
@@ -270,61 +270,58 @@ fun Settings(
             Spacer(modifier = Modifier.height(15.dp))
 
             DefaultTextField(
-                label = API_KEY_LABEL,
+                placeholderStr = API_KEY_LABEL,
                 value = apiKey,
                 onValueChange = onApiKeyValueChange,
-                modifier = Modifier.fillMaxWidth(),
-                trailingIcon = {
-                    Icon(
-                        Icons.Rounded.Info,
-                        tint = MaterialTheme.colorScheme.primary,
-                        contentDescription = "API Key",
-                        modifier = Modifier.clickable {
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    Icons.Rounded.Info,
+                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = "API Key",
+                    modifier = Modifier.clickable {
 
-                        }
-                    )
-                }
-            )
+                    }
+                )
+            }
 
             DefaultTextField(
-                label = DIETARY_RESTRICTIONS_LABEL,
+                placeholderStr = DIETARY_RESTRICTIONS_LABEL,
                 value = dietaryRestrictions,
                 modifier = Modifier.fillMaxWidth(),
-                onValueChange = onDietaryValueChange,
-                trailingIcon = {
-                    Icon(
-                        Icons.Rounded.Menu,
-                        tint = MaterialTheme.colorScheme.primary,
-                        contentDescription = "View preset dietary restrictions",
-                        modifier = Modifier.clickable {
-                            focusManager.clearFocus()
-                            isAllergyOptionsShowing.value = false
-                            isModelOptionsShowing.value = false
-                            isDietaryOptionsShowing.value = !isDietaryOptionsShowing.value
-                        }
-                    )
-                }
-            )
+                onValueChange = onDietaryValueChange
+            ) {
+                Icon(
+                    Icons.Rounded.Menu,
+                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = "View preset dietary restrictions",
+                    modifier = Modifier.clickable {
+                        focusManager.clearFocus()
+                        isAllergyOptionsShowing.value = false
+                        isModelOptionsShowing.value = false
+                        isDietaryOptionsShowing.value = !isDietaryOptionsShowing.value
+                    }
+                )
+            }
 
             DefaultTextField(
-                label = FOOD_ALLERGY_LABEL,
+                placeholderStr = FOOD_ALLERGY_LABEL,
                 value = foodAllergies,
                 modifier = Modifier.fillMaxWidth(),
-                onValueChange = onAllergiesValueChange,
-                trailingIcon = {
-                    Icon(
-                        Icons.Rounded.Menu,
-                        tint = MaterialTheme.colorScheme.primary,
-                        contentDescription = "View preset food allergies",
-                        modifier = Modifier.clickable {
-                            focusManager.clearFocus()
-                            isDietaryOptionsShowing.value = false
-                            isModelOptionsShowing.value = false
-                            isAllergyOptionsShowing.value = !isAllergyOptionsShowing.value
-                        }
-                    )
-                }
-            )
+                onValueChange = onAllergiesValueChange
+            ) {
+                Icon(
+                    Icons.Rounded.Menu,
+                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = "View preset food allergies",
+                    modifier = Modifier.clickable {
+                        focusManager.clearFocus()
+                        isDietaryOptionsShowing.value = false
+                        isModelOptionsShowing.value = false
+                        isAllergyOptionsShowing.value = !isAllergyOptionsShowing.value
+                    }
+                )
+            }
 
             SettingsDivider()
 

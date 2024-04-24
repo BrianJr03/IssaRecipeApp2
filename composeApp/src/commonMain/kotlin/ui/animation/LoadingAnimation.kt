@@ -25,13 +25,14 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
 @Composable
-fun DefaultLoadingAnimation() = LoadingAnimation(
-    circleSize = 8.dp,
-    spaceBetween = 5.dp,
-    travelDistance = 10.dp,
-    circleColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-    modifier = Modifier.padding(top = 14.dp)
-)
+fun DefaultLoadingAnimation(modifier: Modifier = Modifier) =
+    LoadingAnimation(
+        circleSize = 8.dp,
+        spaceBetween = 5.dp,
+        travelDistance = 10.dp,
+        circleColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+        modifier = modifier
+    )
 
 @Composable
 fun LoadingAnimation(

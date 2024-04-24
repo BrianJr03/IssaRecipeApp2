@@ -11,6 +11,11 @@ val DEFAULT_TEXT_STYLE = TextStyle(
     fontSize = 16.sp
 )
 
+val TOP_BAR_TEXT_STYLE = TextStyle(
+    fontFamily = FontFamily.Monospace,
+    fontSize = 20.sp
+)
+
 fun defaultVerticalGradient(
     colors: List<Color> = listOf(COLOR_STEEL_BLUE, COLOR_WHEAT)
 ): Brush {

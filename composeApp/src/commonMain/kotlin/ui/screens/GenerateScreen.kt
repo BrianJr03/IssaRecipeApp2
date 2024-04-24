@@ -178,7 +178,7 @@ fun GenerateScreenComponent.GenerateScreen(
 
                 AnimatedVisibility(visible = isIngredientsOnlyFocused) {
                     DefaultTextField(
-                        label = INGREDIENTS_LABEL,
+                        placeholderStr = INGREDIENTS_LABEL,
                         value = ingredients.value,
                         isError = isEmptyIngredientsError.value,
                         modifier = Modifier
@@ -197,7 +197,7 @@ fun GenerateScreenComponent.GenerateScreen(
 
                 AnimatedVisibility(visible = isPartySizeOnlyFocused) {
                     DefaultTextField(
-                        label = PARTY_SIZE_LABEL,
+                        placeholderStr = PARTY_SIZE_LABEL,
                         value = partySize.value,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -215,7 +215,7 @@ fun GenerateScreenComponent.GenerateScreen(
 
                 AnimatedVisibility(visible = isOccasionOnlyFocused) {
                     DefaultTextField(
-                        label = OCCASION_LABEL,
+                        placeholderStr = OCCASION_LABEL,
                         value = occasion.value,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -233,7 +233,7 @@ fun GenerateScreenComponent.GenerateScreen(
 
                 AnimatedVisibility(visible = isDietaryOnlyFocused) {
                     DefaultTextField(
-                        label = DIETARY_LABEL,
+                        placeholderStr = DIETARY_LABEL,
                         value = foodAllergies.value,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -251,7 +251,7 @@ fun GenerateScreenComponent.GenerateScreen(
 
                 AnimatedVisibility(visible = isAllergiesOnlyFocused) {
                     DefaultTextField(
-                        label = FOOD_ALLERGIES,
+                        placeholderStr = FOOD_ALLERGIES,
                         value = dietaryRestrictions.value,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -269,7 +269,7 @@ fun GenerateScreenComponent.GenerateScreen(
 
                 AnimatedVisibility(visible = isOtherOnlyFocused) {
                     DefaultTextField(
-                        label = OTHER_INFO,
+                        placeholderStr = OTHER_INFO,
                         value = otherInfo.value,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -412,7 +412,7 @@ fun GenerateScreenComponent.GenerateScreen(
                                 end = 10.dp
                             )
                         )
-                        DefaultLoadingAnimation()
+                        DefaultLoadingAnimation(modifier = Modifier.padding(top = 14.dp))
                     }
                 }
             }

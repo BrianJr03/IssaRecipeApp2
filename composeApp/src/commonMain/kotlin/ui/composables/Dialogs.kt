@@ -1,6 +1,7 @@
 package ui.composables
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -77,8 +79,8 @@ fun FavoriteDialog(
         title = "Favorite",
         content = {
             DefaultTextField(
-                label = "",
-                value  = textFieldValue,
+                placeholderStr = "",
+                value = textFieldValue,
                 onValueChange = {
                     onValueChange(it)
                 }
@@ -140,6 +142,82 @@ fun OptionsDialog(
         confirmButton = {},
         dismissButton = {},
         onDismissRequest = onDismissRequest,
+        isShowing = isShowing
+    )
+}
+
+@Composable
+fun DeleteDialog(
+    title: String,
+    isShowing: Boolean,
+    modifier: Modifier = Modifier,
+    onDeleteClick: () -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    ShowDialog(
+        title = title,
+        modifier = modifier,
+        content = {
+            Column {
+                Text(
+                    "This can't be undone.",
+                    fontSize = 16.sp,
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onDeleteClick()
+                    onDismissRequest()
+                }) {
+                Text(text = "Delete", color = Color.White)
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDismissRequest()
+                }) {
+                Text(text = "Cancel", color = Color.White)
+            }
+        },
+        onDismissRequest = {},
+        isShowing = isShowing
+    )
+}
+
+@Composable
+fun EmptyPromptDialog(
+    isShowing: Boolean,
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit
+) {
+    ShowDialog(
+        title = "Please provide a prompt",
+        modifier = modifier,
+        content = {
+            Column {
+                Text(
+                    "The text field can not be empty.",
+                    fontSize = 16.sp,
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onDismissRequest()
+                }) {
+                Text(text = "Dismiss", color = Color.White)
+            }
+        },
+        dismissButton = {
+
+        },
+        onDismissRequest = {
+            onDismissRequest()
+        },
         isShowing = isShowing
     )
 }

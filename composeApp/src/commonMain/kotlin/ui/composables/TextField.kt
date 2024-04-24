@@ -1,10 +1,11 @@
 package ui.composables
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -15,29 +16,29 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import util.COLOR_GREEN
 import util.COLOR_STEEL_BLUE
 
 @Composable
 fun DefaultTextField(
-    label: String,
     value: String,
+    placeholderStr: String,
     modifier: Modifier = Modifier,
     maxCount: Int = Int.MAX_VALUE,
     readOnly: Boolean = false,
     isError: Boolean = false,
     onValueChange: ((str: String) -> Unit)?,
     onDone: (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null
+    leadingIcon: @Composable() (() -> Unit)? = null,
+    trailingIcon: @Composable() (() -> Unit)? = null
 ) {
     val showErrorColor = remember {
         mutableStateOf(false)
     }
-    OutlinedTextField(
+    TextField(
         modifier = modifier.padding(
-            start = 15.dp,
-            end = 15.dp,
-            bottom = 15.dp
+            start = 10.dp,
+            end = 10.dp,
+            bottom = 10.dp
         ),
         value = value,
         isError = isError,
@@ -52,19 +53,23 @@ fun DefaultTextField(
             }
             onValueChange?.invoke(str)
         },
-        label = {
+        placeholder = {
             Text(
-                text = label,
+                text = placeholderStr,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold
                 )
             )
         },
         colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = if (showErrorColor.value) Color.Red else COLOR_GREEN,
-            unfocusedIndicatorColor = if (showErrorColor.value) Color.Red
-            else COLOR_STEEL_BLUE
+            focusedContainerColor = COLOR_STEEL_BLUE,
+            unfocusedContainerColor = COLOR_STEEL_BLUE,
+            focusedIndicatorColor = if (showErrorColor.value) Color.Red else Color.Transparent,
+            unfocusedIndicatorColor = if (showErrorColor.value) Color.Red else Color.Transparent,
+            disabledContainerColor = Color.LightGray,
         ),
+        shape = RoundedCornerShape(24),
+        leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {

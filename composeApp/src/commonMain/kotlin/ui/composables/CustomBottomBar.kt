@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -21,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -47,6 +47,8 @@ import androidx.compose.ui.unit.sp
 //import com.preat.peekaboo.image.picker.rememberImagePickerLauncher
 //import com.preat.peekaboo.image.picker.toImageBitmap
 import models.local.Status
+import util.COLOR_STEEL_BLUE
+import util.COLOR_WHEAT
 
 /**
  * TODO : allow sending attachments without text
@@ -81,60 +83,17 @@ fun CustomBottomBar(
 //
 //            }
 //        }
-        TextField(
+        DefaultTextField(
             value = textState.value,
+            placeholderStr = "What would you like to know?",
             onValueChange = { textState.value = it },
-            maxLines = 3,
-            placeholder = {
-                Text(
-                    text = "Type a message...",
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        color = Color.Gray,
-                    ),
-                    textAlign = TextAlign.Center
-                )
-            },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-            ),
-            trailingIcon = {
-                Button(
-                    onClick = {
-                        onSendClick(textState.value, images.value)
-                        images.value = emptyList()
-                        textState.value = ""
-                    },
-                    enabled = textState.value.isNotBlank() && status != Status.Loading,
-                    content = {
-                        if (status is Status.Loading)
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(20.dp),
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
-                        else {
-                            Icon(
-                                Icons.Default.ArrowForward,
-                                contentDescription = null,
-                                modifier = Modifier.rotate(-90.0F).size(20.dp),
-                            )
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        disabledContainerColor = MaterialTheme.colorScheme.onSecondaryContainer
-                    ),
-                    shape = RoundedCornerShape(30),
-                    modifier = Modifier.padding(horizontal = 10.dp)
-                )
-            },
+            modifier = modifier,
             leadingIcon = {
                 IconButton(
+                    colors = IconButtonDefaults.iconButtonColors(
+                        contentColor = COLOR_STEEL_BLUE,
+                        containerColor = COLOR_WHEAT,
+                    ),
                     onClick = {
 //                        multipleImagePicker.launch()
                     },
@@ -147,10 +106,39 @@ fun CustomBottomBar(
                         )
                     },
                 )
-            },
-            modifier = modifier,
-            shape = RoundedCornerShape(24),
-        )
+            }
+        ) {
+            Button(
+                onClick = {
+                    onSendClick(textState.value, images.value)
+                    images.value = emptyList()
+                    textState.value = ""
+                },
+                enabled = textState.value.isNotBlank() && status != Status.Loading,
+                content = {
+                    if (status is Status.Loading)
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    else {
+                        Icon(
+                            Icons.Default.ArrowForward,
+                            contentDescription = null,
+                                modifier = Modifier.rotate(-90.0F).size(20.dp),
+                        )
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = COLOR_STEEL_BLUE,
+                    containerColor = COLOR_WHEAT,
+                    disabledContainerColor = Color.LightGray,
+                    disabledContentColor = COLOR_STEEL_BLUE
+                ),
+                shape = RoundedCornerShape(30),
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
+        }
     }
 }
 
